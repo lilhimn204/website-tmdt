@@ -55,12 +55,14 @@
 
 ## Gói bàn giao
 
+Gói ZIP dưới đây giữ bản bàn giao local trước khi kết nối GitHub. Mã ứng dụng không đổi trong lần kết nối; tài liệu trạng thái Git đã được cập nhật tại [repository hiện tại](https://github.com/lilhimn204/website-tmdt).
+
 [Gói ZIP đầy đủ](../artifacts/website-tmdt-stage06.zip) gồm các tệp ở trên, tài liệu/bản vẽ đã có được giữ nguyên và bằng chứng local (check.log, smoke.log, starter-api-success.jpg, audit.json, audit-production.json). Không có node_modules, .git, build, cache hoặc tệp secret. Sau giải nén, dùng hướng dẫn npm ci trong README để cài lại thư viện.
 
 [SHA-256 của gói ZIP](../artifacts/website-tmdt-stage06.sha256) giúp kiểm tra tệp tải về còn nguyên. Các tệp trong artifacts được bỏ qua trong Git; khi clone từ GitHub sẽ không có gói ZIP/log/ảnh local này.
 
 ## Những thay đổi không phải tệp source
 
-- Git HEAD local dùng nhánh main; chưa commit hoặc nối remote khi chưa có URL đã xác nhận.
+- Git HEAD local dùng nhánh main, đã commit và push tới `origin/main` tại repo `lilhimn204/website-tmdt` do người dùng xác nhận.
 - node_modules được cài và kiểm tra lại từ lockfile; .react-router, .wrangler và build là output có thể sinh lại.
 - Không đổi dữ liệu kinh doanh, không tạo cloud project, không cài GitHub CLI và không nâng cấp phần mềm toàn máy.

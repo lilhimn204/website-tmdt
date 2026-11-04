@@ -84,4 +84,6 @@ Giai đoạn 06 tạo source trong src/, functions/, server/, shared/, tests/ v�
 
 ## Tiếp tục khi được yêu cầu
 
-Hoàn tất kiểm chứng và bàn giao Giai đoạn 06; cần URL repository do người dùng xác nhận để nối GitHub đúng đích. Không tự bắt đầu catalog/checkout/admin, dựng database hoặc deploy. Hướng thiết kế A/B/C và các quyết định kinh doanh chưa được đóng bằng việc khởi tạo project. Nếu thay đổi phạm vi, cập nhật PRD, PRODUCT_BACKLOG, USER_STORIES, SITEMAP và DESIGN cùng nhau. Không biến dữ liệu/quy tắc còn mở thành thông tin đã xác minh.
+Giai đoạn 06 đã hoàn tất bộ khung local và kết nối GitHub. Ngày 04/11/2026, người dùng xác nhận repo https://github.com/lilhimn204/website-tmdt; đã đặt origin, tạo commit khởi tạo abbd97c, push main thành công và đối chiếu SHA local/remote. Main theo dõi origin/main; không thay đổi chế độ hiển thị hoặc quyền truy cập của repo. Các tài liệu trạng thái Git được cập nhật sau commit khởi tạo.
+
+Chờ yêu cầu giai đoạn tiếp theo; không tự bắt đầu catalog/checkout/admin, dựng database hoặc deploy. Hướng thiết kế A/B/C và các quyết định kinh doanh chưa được đóng bằng việc khởi tạo project. Nếu thay đổi phạm vi, cập nhật PRD, PRODUCT_BACKLOG, USER_STORIES, SITEMAP và DESIGN cùng nhau. Không biến dữ liệu/quy tắc còn mở thành thông tin đã xác minh.

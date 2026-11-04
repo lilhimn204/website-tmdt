@@ -13,7 +13,7 @@
 - [x] S06-07: Wrangler config có output/compatibility date; Functions compile và local runtime đã chạy.
 - [x] S06-08: `.env.example`, `.dev.vars.example`, `.gitignore`, `.editorconfig`, README và lockfile đầy đủ; không cần secret để chạy.
 - [x] S06-09: Git local tồn tại, dùng nhánh main; có hướng dẫn commit đầu tiên và đăng nhập/kết nối GitHub.
-- [ ] S06-10: Nối remote GitHub và xác minh push — **cần URL repository**; chưa tự đoán đích.
+- [x] S06-10: Đã nối `origin` tới `lilhimn204/website-tmdt`, push `main` thành công và đối chiếu SHA remote/local ngày 04/11/2026.
 - [x] S06-11: Cấu hình build Pages đã chuẩn bị: `npm run build`, output `build/client`, Node được ghi phiên bản.
 - [x] S06-12: Kiểm tra localhost 8788 và Vite 5173, API proxy, typecheck, lint, test và production build.
 - [x] S06-13: Trang lỗi HTTP 404 thật; API không tồn tại trả JSON 404; method ghi health trả 405.
@@ -31,4 +31,4 @@
 - [ ] Rà soát/cập nhật dependencies công cụ có advisory trước pipeline nhận nguồn không tin cậy.
 - [ ] Build/deploy kiểm chứng trên tài khoản Cloudflare thật, domain và cấu hình môi trường thật.
 
-Hoàn thành bộ khung local không tự đánh dấu các mục production hoặc GitHub là đã xong.
+Hoàn thành bộ khung local và kết nối GitHub không tự đánh dấu các mục production là đã xong.

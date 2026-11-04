@@ -1,5 +1,7 @@
 # Git và GitHub trên Windows
 
+**Trạng thái ngày 04/11/2026:** đã kết nối `origin` tới [lilhimn204/website-tmdt](https://github.com/lilhimn204/website-tmdt), tạo commit khởi tạo và push thành công nhánh `main`; `main` theo dõi `origin/main`. Không cần chạy lại các bước tạo repo/commit đầu tiên bên dưới trên workspace hiện tại. Các bước đó được giữ làm hướng dẫn cho thư mục hoặc máy mới.
+
 Chạy từng lệnh trong **PowerShell của VS Code, tại gốc `Website TMDT`**, dùng terminal không đang chạy server. Git lưu lịch sử trên máy; GitHub là nơi lưu bản sao online. Thư mục này đã có `.git`, chưa có commit ở lần kiểm tra ban đầu; không cần khởi tạo lồng một Git repository khác.
 
 ## 1. Commit đầu tiên
@@ -38,11 +40,11 @@ Không commit `.env.local`, `.dev.vars`, token, bản backup hoặc dữ liệu 
 
 Trên github.com, đăng nhập → **New repository**. Đặt tên bạn chọn; **Private** phù hợp khi repo còn chứa tài liệu nội bộ. Tạo repo rỗng, không thêm README, license hoặc `.gitignore` trên GitHub vì dự án đã có tệp riêng. Copy địa chỉ HTTPS của repo.
 
-Trong **PowerShell cùng thư mục**, thay URL mẫu bằng URL thật. Không nhúng token vào URL:
+Trong **PowerShell cùng thư mục**, các lệnh dưới đây dùng URL repo đã xác nhận; chỉ cần khi kết nối một kho local mới. Không nhúng token vào URL:
 
 ```powershell
 # Chỉ chạy khi chưa có origin; nối kho local với repo bạn vừa tạo.
-git remote add origin https://github.com/TAI_KHOAN/TEN_REPO.git
+git remote add origin https://github.com/lilhimn204/website-tmdt.git
 # Xem lại đích fetch/push trước khi gửi source.
 git remote -v
 # Gửi nhánh main lần đầu, đồng thời ghi nhớ upstream cho các lần sau.
@@ -64,4 +66,4 @@ Nếu đã có `origin`, xem bằng `git remote -v`; chỉ khi xác nhận đíc
 | `non-fast-forward` | Repo online có lịch sử riêng; không force-push. Giữ nguyên cả hai lịch sử và kiểm tra nội dung repo trước khi hợp nhất |
 | GitHub đòi password ở HTTPS | Dùng đăng nhập trình duyệt qua Git Credential Manager; mật khẩu tài khoản không thay cho token Git |
 
-Không có URL repository đã xác nhận thì chưa thể nối/push đúng đích. Không tự tạo một kho public hoặc tự đoán tài khoản.
+URL repository trong hướng dẫn đã được người dùng xác nhận. Không thay đổi chế độ hiển thị hay quyền truy cập của repo trong lần kết nối này.

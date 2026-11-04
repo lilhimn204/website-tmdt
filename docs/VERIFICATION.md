@@ -22,9 +22,11 @@ Ngày thực hiện: **04/11/2026**, Windows, thư mục `C:\Users\Minh\Document
 | Trình duyệt thật | Mở home, click liên kết tới `/kiem-tra`, click nút gọi API; hiển thị “Kết nối thành công. API đang chạy; database chưa cấu hình.” |
 | Console trình duyệt | Không có error/warn trong log thu được ở lượt kiểm tra đó |
 | Git local | Kho `.git` đã có từ trước; nhánh hiện tại đã đặt thành `main` |
-| Commit | Chưa tạo commit; đã có hướng dẫn để người dùng ghi đúng tên/email tác giả |
-| GitHub | Chưa có `origin`, chưa push; đang chờ URL repo do người dùng xác nhận |
+| Commit | Đã tạo commit khởi tạo `abbd97c` với thông tin tác giả Git có sẵn trên máy |
+| GitHub | `origin` = `https://github.com/lilhimn204/website-tmdt.git`; `git push --set-upstream origin main` exit 0, sau đó `git ls-remote` xác nhận SHA nhánh main trùng local |
 | Cloudflare/Supabase online | Chưa tạo project, chưa deploy, chưa kết nối database |
+
+Bổ sung kết nối GitHub ngày 04/11/2026: đã rà soát 115 tệp trong commit, không đưa secret, node_modules, build/cache hoặc artifacts lên GitHub. Trước commit, toàn bộ 115 tệp có hash trùng bản ZIP đã kiểm thử; không thay đổi mã ứng dụng trong lần kết nối GitHub nên không chạy lại bộ test ứng dụng. Các thay đổi sau push khởi tạo chỉ cập nhật tài liệu trạng thái.
 
 ## Nội dung đã kiểm tra bằng HTTP
 

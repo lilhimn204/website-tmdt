@@ -169,6 +169,7 @@ Khi giai đoạn backend cần secret, `.dev.vars` dùng cho Wrangler local; Clo
 
 ## 7. GitHub, commit đầu tiên và Cloudflare
 
+- Repository đã kết nối: [lilhimn204/website-tmdt](https://github.com/lilhimn204/website-tmdt), nhánh `main`. Bộ khung đã được commit/push; bạn không cần tạo lại repo hoặc commit khởi tạo.
 - [Hướng dẫn commit đầu tiên và nối GitHub](docs/GITHUB.md): giải thích từng lệnh PowerShell, đăng nhập qua Git Credential Manager, xử lý lỗi push.
 - [Cấu hình Cloudflare Pages](docs/CLOUDFLARE.md): build command, output, Node, Functions routing và những việc chưa triển khai online.
 - Trạng thái remote/push thực tế nằm trong [biên bản kiểm tra](docs/VERIFICATION.md). Tệp cấu hình local không đồng nghĩa đã tạo repository hoặc triển khai cloud.
