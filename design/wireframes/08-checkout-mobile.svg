@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="2125" viewBox="0 0 390 2125">
+<title>08-checkout-mobile</title>
+<rect x="0" y="0" width="390" height="2125" rx="0" fill="#F5F7F8" stroke="none"/>
+<rect x="0" y="0" width="390" height="64" rx="0" fill="#172B35" stroke="none"/>
+<text x="16" y="25" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="16" dy="0">DES08 · Checkout</tspan>
+</text>
+<text x="16" y="47" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#FFFFFF">
+<tspan x="16" dy="0">WIREFRAME • 390 px • Dữ liệu giữ chỗ</tspan>
+</text>
+<rect x="0" y="64" width="390" height="64" rx="0" fill="#FFFFFF" stroke="none"/>
+<text x="16" y="99" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="16" dy="0">Menu</tspan>
+</text>
+<text x="80" y="100" font-family="Segoe UI, sans-serif" font-size="20" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Tên website</tspan>
+</text>
+<text x="308" y="99" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="308" dy="0">Giỏ</tspan>
+</text>
+<text x="16" y="165" font-family="Segoe UI, sans-serif" font-size="13" font-weight="400" fill="#52636B">
+<tspan x="16" dy="0">Trang chủ / Đặt hàng</tspan>
+</text>
+<text x="16" y="212" font-family="Segoe UI, sans-serif" font-size="28" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">Đặt hàng</tspan>
+</text>
+<text x="16" y="253" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#52636B">
+<tspan x="16" dy="0">Không cần tài khoản · * Trường bắt buộc</tspan>
+</text>
+<text x="16" y="307" font-family="Segoe UI, sans-serif" font-size="22" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">1. Thông tin liên hệ</tspan>
+</text>
+<text x="16" y="347" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">Họ tên *</tspan>
+</text>
+<rect x="16" y="359" width="358" height="48" rx="8" fill="#FFFFFF" stroke="#75858D"/>
+<text x="16" y="445" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">Điện thoại *</tspan>
+</text>
+<rect x="16" y="457" width="358" height="48" rx="8" fill="#FFFFFF" stroke="#75858D"/>
+<text x="16" y="543" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">Email (tùy chọn)</tspan>
+</text>
+<rect x="16" y="555" width="358" height="48" rx="8" fill="#FFFFFF" stroke="#75858D"/>
+<text x="16" y="649" font-family="Segoe UI, sans-serif" font-size="22" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">2. Địa chỉ giao hàng</tspan>
+</text>
+<text x="16" y="691" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">Địa chỉ chi tiết *</tspan>
+</text>
+<rect x="16" y="703" width="358" height="48" rx="8" fill="#FFFFFF" stroke="#75858D"/>
+<text x="16" y="789" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">Địa bàn giao hàng *</tspan>
+</text>
+<rect x="16" y="801" width="358" height="48" rx="8" fill="#FFFFFF" stroke="#75858D"/>
+<text x="28" y="828" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#52636B">
+<tspan x="28" dy="0">[Dữ liệu đã duyệt]</tspan>
+</text>
+<text x="16" y="889" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="16" dy="0">□ Yêu cầu xuất hóa đơn</tspan>
+</text>
+<text x="16" y="953" font-family="Segoe UI, sans-serif" font-size="22" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">3. Giao hàng &amp; thanh toán</tspan>
+</text>
+<rect x="16" y="1011" width="358" height="86" rx="12" fill="#E7F4F1" stroke="#D9E1E5"/>
+<text x="32" y="1045" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="32" dy="0">[Phương thức giao / phí được xác</tspan>
+<tspan x="32" dy="24">nhận]</tspan>
+</text>
+<rect x="16" y="1121" width="358" height="66" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="32" y="1155" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="32" dy="0">○ COD — khi đơn đủ điều kiện</tspan>
+</text>
+<rect x="16" y="1203" width="358" height="66" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="32" y="1237" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="32" dy="0">○ Chuyển khoản thủ công</tspan>
+</text>
+<text x="16" y="1308" font-family="Segoe UI, sans-serif" font-size="23" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">4. Rà soát đơn hàng</tspan>
+</text>
+<rect x="16" y="1337" width="358" height="286" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="32" y="1371" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="32" dy="0">[Toàn bộ SKU / số lượng trong giỏ]</tspan>
+</text>
+<text x="32" y="1440" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="32" dy="0">Tạm tính: [Số tiền]</tspan>
+<tspan x="32" dy="24">Thuế / phí: [Đã xác nhận]</tspan>
+</text>
+<rect x="32" y="1513" width="326" height="1" rx="0" fill="#D9E1E5" stroke="none"/>
+<text x="32" y="1556" font-family="Segoe UI, sans-serif" font-size="22" font-weight="600" fill="#172B35">
+<tspan x="32" dy="0">Tổng: [Số tiền cuối]</tspan>
+</text>
+<text x="16" y="1666" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="16" dy="0">Rà soát địa chỉ, phương thức và điều kiện</tspan>
+<tspan x="16" dy="23">giao dịch trước khi đặt.</tspan>
+</text>
+<rect x="16" y="1751" width="358" height="48" rx="8" fill="#006B63" stroke="#006B63"/>
+<text x="28" y="1778.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="28" dy="0">Đặt hàng</tspan>
+</text>
+<text x="16" y="1842" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#52636B">
+<tspan x="16" dy="0">Sau khi tiếp nhận: mã đơn và hướng dẫn</tspan>
+<tspan x="16" dy="23">bước tiếp theo. Chuyển khoản chờ đối soát.</tspan>
+</text>
+<rect x="0" y="1925" width="390" height="200" rx="0" fill="#FFFFFF" stroke="none"/>
+<rect x="0" y="1925" width="390" height="1" rx="0" fill="#D9E1E5" stroke="none"/>
+<text x="16" y="1969" font-family="Segoe UI, sans-serif" font-size="20" font-weight="600" fill="#172B35">
+<tspan x="16" dy="0">Tên website</tspan>
+</text>
+<text x="16" y="2001" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#172B35">
+<tspan x="16" dy="0">Danh mục • Thương hiệu • Báo giá</tspan>
+</text>
+<text x="16" y="2037" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="16" dy="0">Hỗ trợ • Chính sách • Liên hệ</tspan>
+</text>
+</svg>

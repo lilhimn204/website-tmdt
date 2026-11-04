@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1510" viewBox="0 0 1440 1510">
+<title>00-design-system</title>
+<rect x="0" y="0" width="1440" height="1510" rx="0" fill="#F5F7F8" stroke="none"/>
+<rect x="0" y="0" width="1440" height="64" rx="0" fill="#172B35" stroke="none"/>
+<text x="40" y="25" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="40" dy="0">DESIGN SYSTEM · Hướng A</tspan>
+</text>
+<text x="40" y="47" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#FFFFFF">
+<tspan x="40" dy="0">WIREFRAME • 1440 px • Dữ liệu giữ chỗ</tspan>
+</text>
+<text x="80" y="133" font-family="Segoe UI, sans-serif" font-size="29" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Màu sắc có vai trò</tspan>
+</text>
+<rect x="80" y="164" width="200" height="88" rx="8" fill="#F5F7F8" stroke="#D9E1E5"/>
+<text x="80" y="286" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Canvas</tspan>
+</text>
+<text x="80" y="320" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="80" dy="0">#F5F7F8</tspan>
+</text>
+<rect x="296" y="164" width="200" height="88" rx="8" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="296" y="286" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="296" dy="0">Surface</tspan>
+</text>
+<text x="296" y="320" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="296" dy="0">#FFFFFF</tspan>
+</text>
+<rect x="512" y="164" width="200" height="88" rx="8" fill="#172B35" stroke="#D9E1E5"/>
+<text x="512" y="286" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="512" dy="0">Ink</tspan>
+</text>
+<text x="512" y="320" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="512" dy="0">#172B35</tspan>
+</text>
+<rect x="728" y="164" width="200" height="88" rx="8" fill="#52636B" stroke="#D9E1E5"/>
+<text x="728" y="286" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="728" dy="0">Muted</tspan>
+</text>
+<text x="728" y="320" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="728" dy="0">#52636B</tspan>
+</text>
+<rect x="944" y="164" width="200" height="88" rx="8" fill="#006B63" stroke="#D9E1E5"/>
+<text x="944" y="286" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="944" dy="0">Brand</tspan>
+</text>
+<text x="944" y="320" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="944" dy="0">#006B63</tspan>
+</text>
+<rect x="1160" y="164" width="200" height="88" rx="8" fill="#E7F4F1" stroke="#D9E1E5"/>
+<text x="1160" y="286" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="1160" dy="0">Brand soft</tspan>
+</text>
+<text x="1160" y="320" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="1160" dy="0">#E7F4F1</tspan>
+</text>
+<text x="80" y="403" font-family="Segoe UI, sans-serif" font-size="29" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Typography tiếng Việt</tspan>
+</text>
+<text x="80" y="474" font-family="Segoe UI, sans-serif" font-size="40" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Chọn thiết bị theo nhu cầu</tspan>
+</text>
+<text x="80" y="536" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Thông số rõ ràng, mua hàng thuận tiện.</tspan>
+</text>
+<text x="80" y="582" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="80" dy="0">Nội dung 16/24 px • Metadata 14/22 px • Không cắt model hoặc SKU</tspan>
+</text>
+<rect x="986" y="424" width="374" height="186" rx="12" fill="#E7F4F1" stroke="#D9E1E5"/>
+<text x="1006" y="465" font-family="Segoe UI, sans-serif" font-size="21" font-weight="600" fill="#172B35">
+<tspan x="1006" dy="0">Font đề xuất</tspan>
+</text>
+<text x="1006" y="511" font-family="Segoe UI, sans-serif" font-size="23" font-weight="600" fill="#172B35">
+<tspan x="1006" dy="0">Be Vietnam Pro</tspan>
+</text>
+<text x="1006" y="555" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="1006" dy="0">Bản vẽ dùng Segoe UI; chưa tải font.</tspan>
+</text>
+<text x="80" y="689" font-family="Segoe UI, sans-serif" font-size="29" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Hành động &amp; trạng thái</tspan>
+</text>
+<rect x="80" y="720" width="280" height="48" rx="8" fill="#006B63" stroke="#006B63"/>
+<text x="92" y="747.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="92" dy="0">Mua ngay</tspan>
+</text>
+<rect x="384" y="720" width="280" height="48" rx="8" fill="#FFFFFF" stroke="#006B63"/>
+<text x="396" y="747.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#006B63">
+<tspan x="396" dy="0">Thêm vào giỏ</tspan>
+</text>
+<text x="704" y="749" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#006B63">
+<tspan x="704" dy="0">Yêu cầu báo giá →</tspan>
+</text>
+<rect x="80" y="800" width="302" height="68" rx="12" fill="#ECFDF3" stroke="#D9E1E5"/>
+<text x="96" y="839" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#166534">
+<tspan x="96" dy="0">Thành công</tspan>
+</text>
+<rect x="406" y="800" width="302" height="68" rx="12" fill="#FFF5E6" stroke="#D9E1E5"/>
+<text x="422" y="839" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#8A4B08">
+<tspan x="422" dy="0">Cần kiểm tra</tspan>
+</text>
+<rect x="732" y="800" width="302" height="68" rx="12" fill="#FEF3F2" stroke="#D9E1E5"/>
+<text x="748" y="839" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#B42318">
+<tspan x="748" dy="0">Có lỗi</tspan>
+</text>
+<rect x="1058" y="800" width="302" height="68" rx="12" fill="#EFF6FF" stroke="#D9E1E5"/>
+<text x="1074" y="839" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#1D4ED8">
+<tspan x="1074" dy="0">Thông tin</tspan>
+</text>
+<text x="80" y="955" font-family="Segoe UI, sans-serif" font-size="29" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Form có nhãn &amp; phản hồi</tspan>
+</text>
+<text x="80" y="998" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Tên người liên hệ *</tspan>
+</text>
+<rect x="80" y="1010" width="584" height="48" rx="8" fill="#FFFFFF" stroke="#75858D"/>
+<text x="92" y="1037" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#52636B">
+<tspan x="92" dy="0">[Tên người liên hệ]</tspan>
+</text>
+<text x="704" y="998" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#172B35">
+<tspan x="704" dy="0">Điện thoại *</tspan>
+</text>
+<rect x="704" y="1010" width="656" height="48" rx="8" fill="#FFFFFF" stroke="#75858D"/>
+<text x="716" y="1037" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#52636B">
+<tspan x="716" dy="0">[Dữ liệu cần sửa]</tspan>
+</text>
+<text x="704" y="1092" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#B42318">
+<tspan x="704" dy="0">Vui lòng nhập số điện thoại hợp lệ.</tspan>
+</text>
+<text x="80" y="1197" font-family="Segoe UI, sans-serif" font-size="29" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Khoảng cách &amp; hình khối</tspan>
+</text>
+<text x="80" y="1248" font-family="Segoe UI, sans-serif" font-size="22" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Scale: 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 px</tspan>
+</text>
+<text x="80" y="1298" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#172B35">
+<tspan x="80" dy="0">Control 48 px · Icon button ≥44 px · Radius 8 / 12 / 16 px · Mobile gutter 16 px</tspan>
+</text>
+<text x="80" y="1400" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="80" dy="0">Đặc tả chuẩn ở DESIGN.md. Bản vẽ tĩnh minh họa, chưa chứng minh accessibility của ứng dụng.</tspan>
+</text>
+</svg>

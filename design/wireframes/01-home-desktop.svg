@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1468" viewBox="0 0 1440 1468">
+<title>01-home-desktop</title>
+<rect x="0" y="0" width="1440" height="1468" rx="0" fill="#F5F7F8" stroke="none"/>
+<rect x="0" y="0" width="1440" height="64" rx="0" fill="#172B35" stroke="none"/>
+<text x="40" y="25" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="40" dy="0">DES01 · Trang chủ</tspan>
+</text>
+<text x="40" y="47" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#FFFFFF">
+<tspan x="40" dy="0">WIREFRAME • 1440 px • Dữ liệu giữ chỗ</tspan>
+</text>
+<rect x="0" y="64" width="1440" height="88" rx="0" fill="#FFFFFF" stroke="none"/>
+<text x="80" y="117" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Tên website</tspan>
+</text>
+<rect x="345" y="84" width="620" height="48" rx="8" fill="#FFFFFF" stroke="#75858D"/>
+<text x="361" y="112" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="361" dy="0">Tìm tên sản phẩm, model hoặc SKU</tspan>
+</text>
+<text x="1040" y="113" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="1040" dy="0">Hỗ trợ     |     Giỏ hàng</tspan>
+</text>
+<rect x="0" y="152" width="1440" height="1" rx="0" fill="#D9E1E5" stroke="none"/>
+<rect x="0" y="153" width="1440" height="55" rx="0" fill="#FFFFFF" stroke="none"/>
+<text x="80" y="185" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="80" dy="0">Danh mục     Thương hiệu     Tất cả sản phẩm</tspan>
+</text>
+<text x="1055" y="185" font-family="Segoe UI, sans-serif" font-size="16" font-weight="600" fill="#006B63">
+<tspan x="1055" dy="0">Yêu cầu báo giá</tspan>
+</text>
+<rect x="80" y="236" width="816" height="282" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="112" y="302" font-family="Segoe UI, sans-serif" font-size="38" font-weight="600" fill="#172B35">
+<tspan x="112" dy="0">Chọn thiết bị theo nhu cầu</tspan>
+<tspan x="112" dy="57">và thông số</tspan>
+</text>
+<text x="112" y="407" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="112" dy="0">Tìm đúng model. Đọc rõ thông số. Chọn cách mua phù hợp.</tspan>
+</text>
+<rect x="112" y="443" width="286" height="48" rx="8" fill="#006B63" stroke="#006B63"/>
+<text x="124" y="470.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="124" dy="0">Khám phá sản phẩm</tspan>
+</text>
+<rect x="920" y="236" width="440" height="282" rx="12" fill="#E7F4F1" stroke="#D9E1E5"/>
+<text x="952" y="293" font-family="Segoe UI, sans-serif" font-size="27" font-weight="600" fill="#172B35">
+<tspan x="952" dy="0">Mua cho doanh nghiệp?</tspan>
+</text>
+<text x="952" y="375" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" fill="#172B35">
+<tspan x="952" dy="0">Gửi danh sách hoặc mô tả nhu cầu để</tspan>
+<tspan x="952" dy="26">được báo giá.</tspan>
+</text>
+<rect x="952" y="443" width="376" height="48" rx="8" fill="#FFFFFF" stroke="#006B63"/>
+<text x="964" y="470.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#006B63">
+<tspan x="964" dy="0">Yêu cầu báo giá</tspan>
+</text>
+<text x="80" y="582" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Danh mục sản phẩm</tspan>
+</text>
+<rect x="80" y="610" width="302" height="76" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="98" y="652" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="98" dy="0">UPS &amp; thiết bị nguồn</tspan>
+</text>
+<rect x="406" y="610" width="302" height="76" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="424" y="652" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="424" dy="0">Máy in &amp; vật tư</tspan>
+</text>
+<rect x="732" y="610" width="302" height="76" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="750" y="652" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="750" dy="0">Linh kiện máy tính</tspan>
+</text>
+<rect x="1058" y="610" width="302" height="76" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="1076" y="652" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="1076" dy="0">Mạng &amp; công nghiệp</tspan>
+</text>
+<text x="80" y="752" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Sản phẩm nổi bật</tspan>
+</text>
+<text x="1150" y="749" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#006B63">
+<tspan x="1150" dy="0">Xem tất cả →</tspan>
+</text>
+<rect x="80" y="780" width="302" height="328" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<rect x="96" y="796" width="270" height="112" rx="8" fill="#F5F7F8" stroke="#D9E1E5"/>
+<text x="108" y="842.0" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="108" dy="0">Ảnh sản phẩm</tspan>
+<tspan x="108" dy="21">đã duyệt</tspan>
+</text>
+<text x="96" y="943" font-family="Segoe UI, sans-serif" font-size="19" font-weight="600" fill="#172B35">
+<tspan x="96" dy="0">Sản phẩm A</tspan>
+</text>
+<text x="96" y="972" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="96" dy="0">Model / SKU</tspan>
+</text>
+<text x="96" y="1001" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#172B35">
+<tspan x="96" dy="0">[Thông số] · [Tình trạng]</tspan>
+</text>
+<text x="96" y="1038" font-family="Segoe UI, sans-serif" font-size="20" font-weight="600" fill="#172B35">
+<tspan x="96" dy="0">[Giá đã duyệt]</tspan>
+</text>
+<rect x="96" y="1058" width="270" height="40" rx="8" fill="#FFFFFF" stroke="#006B63"/>
+<text x="108" y="1081.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#006B63">
+<tspan x="108" dy="0">Xem sản phẩm</tspan>
+</text>
+<rect x="406" y="780" width="302" height="328" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<rect x="422" y="796" width="270" height="112" rx="8" fill="#F5F7F8" stroke="#D9E1E5"/>
+<text x="434" y="842.0" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="434" dy="0">Ảnh sản phẩm</tspan>
+<tspan x="434" dy="21">đã duyệt</tspan>
+</text>
+<text x="422" y="943" font-family="Segoe UI, sans-serif" font-size="19" font-weight="600" fill="#172B35">
+<tspan x="422" dy="0">Sản phẩm B</tspan>
+</text>
+<text x="422" y="972" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="422" dy="0">Model / SKU</tspan>
+</text>
+<text x="422" y="1001" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#172B35">
+<tspan x="422" dy="0">[Thông số] · [Tình trạng]</tspan>
+</text>
+<text x="422" y="1038" font-family="Segoe UI, sans-serif" font-size="20" font-weight="600" fill="#172B35">
+<tspan x="422" dy="0">[Giá đã duyệt]</tspan>
+</text>
+<rect x="422" y="1058" width="270" height="40" rx="8" fill="#FFFFFF" stroke="#006B63"/>
+<text x="434" y="1081.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#006B63">
+<tspan x="434" dy="0">Xem sản phẩm</tspan>
+</text>
+<rect x="732" y="780" width="302" height="328" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<rect x="748" y="796" width="270" height="112" rx="8" fill="#F5F7F8" stroke="#D9E1E5"/>
+<text x="760" y="842.0" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="760" dy="0">Ảnh sản phẩm</tspan>
+<tspan x="760" dy="21">đã duyệt</tspan>
+</text>
+<text x="748" y="943" font-family="Segoe UI, sans-serif" font-size="19" font-weight="600" fill="#172B35">
+<tspan x="748" dy="0">Sản phẩm C</tspan>
+</text>
+<text x="748" y="972" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="748" dy="0">Model / SKU</tspan>
+</text>
+<text x="748" y="1001" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#172B35">
+<tspan x="748" dy="0">[Thông số] · [Tình trạng]</tspan>
+</text>
+<text x="748" y="1038" font-family="Segoe UI, sans-serif" font-size="20" font-weight="600" fill="#172B35">
+<tspan x="748" dy="0">[Giá đã duyệt]</tspan>
+</text>
+<rect x="748" y="1058" width="270" height="40" rx="8" fill="#FFFFFF" stroke="#006B63"/>
+<text x="760" y="1081.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#006B63">
+<tspan x="760" dy="0">Xem sản phẩm</tspan>
+</text>
+<rect x="1058" y="780" width="302" height="328" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<rect x="1074" y="796" width="270" height="112" rx="8" fill="#F5F7F8" stroke="#D9E1E5"/>
+<text x="1086" y="842.0" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="1086" dy="0">Ảnh sản phẩm</tspan>
+<tspan x="1086" dy="21">đã duyệt</tspan>
+</text>
+<text x="1074" y="943" font-family="Segoe UI, sans-serif" font-size="19" font-weight="600" fill="#172B35">
+<tspan x="1074" dy="0">Sản phẩm D</tspan>
+</text>
+<text x="1074" y="972" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="1074" dy="0">Model / SKU</tspan>
+</text>
+<text x="1074" y="1001" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#172B35">
+<tspan x="1074" dy="0">[Thông số] · [Tình trạng]</tspan>
+</text>
+<text x="1074" y="1038" font-family="Segoe UI, sans-serif" font-size="20" font-weight="600" fill="#172B35">
+<tspan x="1074" dy="0">[Giá đã duyệt]</tspan>
+</text>
+<rect x="1074" y="1058" width="270" height="40" rx="8" fill="#FFFFFF" stroke="#006B63"/>
+<text x="1086" y="1081.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#006B63">
+<tspan x="1086" dy="0">Xem sản phẩm</tspan>
+</text>
+<text x="80" y="1171" font-family="Segoe UI, sans-serif" font-size="25" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Duyệt theo thương hiệu</tspan>
+</text>
+<rect x="80" y="1196" width="302" height="40" rx="8" fill="#E7F4F1" stroke="none"/>
+<text x="90" y="1219" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#006B63">
+<tspan x="90" dy="0">Thương hiệu A</tspan>
+</text>
+<rect x="406" y="1196" width="302" height="40" rx="8" fill="#E7F4F1" stroke="none"/>
+<text x="416" y="1219" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#006B63">
+<tspan x="416" dy="0">Thương hiệu B</tspan>
+</text>
+<rect x="732" y="1196" width="302" height="40" rx="8" fill="#E7F4F1" stroke="none"/>
+<text x="742" y="1219" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#006B63">
+<tspan x="742" dy="0">Thương hiệu C</tspan>
+</text>
+<rect x="1058" y="1196" width="302" height="40" rx="8" fill="#E7F4F1" stroke="none"/>
+<text x="1068" y="1219" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#006B63">
+<tspan x="1068" dy="0">Thương hiệu D</tspan>
+</text>
+<rect x="0" y="1284" width="1440" height="184" rx="0" fill="#FFFFFF" stroke="none"/>
+<rect x="0" y="1284" width="1440" height="1" rx="0" fill="#D9E1E5" stroke="none"/>
+<text x="80" y="1328" font-family="Segoe UI, sans-serif" font-size="20" font-weight="600" fill="#172B35">
+<tspan x="80" dy="0">Tên website</tspan>
+</text>
+<text x="80" y="1360" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#172B35">
+<tspan x="80" dy="0">Danh mục • Thương hiệu • Báo giá</tspan>
+</text>
+<text x="80" y="1396" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#52636B">
+<tspan x="80" dy="0">Hỗ trợ • Chính sách • Liên hệ</tspan>
+</text>
+</svg>

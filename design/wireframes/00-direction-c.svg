@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1020" viewBox="0 0 1440 1020">
+<title>00-direction-c</title>
+<rect x="0" y="0" width="1440" height="1020" rx="0" fill="#F6F2E9" stroke="none"/>
+<rect x="0" y="0" width="1440" height="64" rx="0" fill="#172B35" stroke="none"/>
+<text x="40" y="25" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="40" dy="0">HƯỚNG C · Trưng bày sản phẩm</tspan>
+</text>
+<text x="40" y="47" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#FFFFFF">
+<tspan x="40" dy="0">WIREFRAME • 1440 px • Dữ liệu giữ chỗ</tspan>
+</text>
+<rect x="0" y="64" width="1440" height="90" rx="0" fill="#FFFDFA" stroke="none"/>
+<text x="80" y="119" font-family="Segoe UI, sans-serif" font-size="25" font-weight="600" fill="#29251F">
+<tspan x="80" dy="0">Tên website</tspan>
+</text>
+<text x="640" y="116" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" fill="#29251F">
+<tspan x="640" dy="0">Khám phá     Thương hiệu     Tìm kiếm     Giỏ</tspan>
+</text>
+<text x="80" y="252" font-family="Segoe UI, sans-serif" font-size="45" font-weight="600" fill="#29251F">
+<tspan x="80" dy="0">Thiết bị phù hợp</tspan>
+<tspan x="80" dy="67">không gian làm việc.</tspan>
+</text>
+<text x="80" y="404" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" fill="#625A4F">
+<tspan x="80" dy="0">Khởi đầu từ nhu cầu sử dụng.</tspan>
+<tspan x="80" dy="30">Đi sâu tới model và thông số.</tspan>
+</text>
+<rect x="80" y="500" width="342" height="48" rx="8" fill="#9C421F" stroke="#9C421F"/>
+<text x="92" y="527.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="92" dy="0">Khám phá theo nhu cầu</tspan>
+</text>
+<rect x="694" y="190" width="666" height="432" rx="8" fill="#F6F2E9" stroke="#D5CCBD"/>
+<text x="706" y="396.0" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#625A4F">
+<tspan x="706" dy="0">Ảnh sản phẩm lớn / bối cảnh</tspan>
+<tspan x="706" dy="21">Doanh nghiệp cung cấp và cho phép sử dụng</tspan>
+</text>
+<rect x="80" y="678" width="780" height="192" rx="12" fill="#EEE2D1" stroke="#D5CCBD"/>
+<text x="104" y="726" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#29251F">
+<tspan x="104" dy="0">Dành cho không gian làm việc</tspan>
+</text>
+<text x="104" y="784" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#29251F">
+<tspan x="104" dy="0">Khối biên tập dẫn tới danh mục đã duyệt.</tspan>
+</text>
+<rect x="884" y="678" width="476" height="192" rx="12" fill="#FFFDFA" stroke="#D5CCBD"/>
+<text x="908" y="725" font-family="Segoe UI, sans-serif" font-size="25" font-weight="600" fill="#29251F">
+<tspan x="908" dy="0">Dành cho nâng cấp máy</tspan>
+</text>
+<text x="908" y="798" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" fill="#29251F">
+<tspan x="908" dy="0">Khám phá nhóm linh kiện →</tspan>
+</text>
+<text x="80" y="944" font-family="Segoe UI, sans-serif" font-size="20" font-weight="600" fill="#29251F">
+<tspan x="80" dy="0">Ưu tiên hình ảnh và khám phá · Cần ảnh chất lượng, công biên tập và lối tắt B2B</tspan>
+</text>
+</svg>

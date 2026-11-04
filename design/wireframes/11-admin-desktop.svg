@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1200" viewBox="0 0 1440 1200">
+<title>11-admin-desktop</title>
+<rect x="0" y="0" width="1440" height="1200" rx="0" fill="#F5F7F8" stroke="none"/>
+<rect x="0" y="0" width="1440" height="64" rx="0" fill="#172B35" stroke="none"/>
+<text x="40" y="25" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="40" dy="0">DES11 · Admin Dashboard</tspan>
+</text>
+<text x="40" y="47" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#FFFFFF">
+<tspan x="40" dy="0">WIREFRAME • 1440 px • Dữ liệu giữ chỗ</tspan>
+</text>
+<rect x="0" y="64" width="1440" height="64" rx="0" fill="#FFFFFF" stroke="none"/>
+<text x="32" y="100" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#172B35">
+<tspan x="32" dy="0">Tên website  /  Quản trị</tspan>
+</text>
+<text x="1240" y="100" font-family="Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#006B63">
+<tspan x="1240" dy="0">Tài khoản</tspan>
+</text>
+<rect x="0" y="128" width="224" height="1072" rx="0" fill="#FFFFFF" stroke="none"/>
+<rect x="223" y="128" width="1" height="1" rx="0" fill="#D9E1E5" stroke="none"/>
+<rect x="16" y="156" width="192" height="46" rx="8" fill="#E7F4F1" stroke="none"/>
+<text x="28" y="182" font-family="Segoe UI, sans-serif" font-size="16" font-weight="600" fill="#006B63">
+<tspan x="28" dy="0">Tổng quan</tspan>
+</text>
+<text x="28" y="248" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="28" dy="0">Sản phẩm</tspan>
+</text>
+<text x="28" y="314" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="28" dy="0">Danh mục / hãng</tspan>
+</text>
+<text x="28" y="380" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="28" dy="0">Đơn hàng</tspan>
+</text>
+<text x="28" y="446" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="28" dy="0">Yêu cầu báo giá</tspan>
+</text>
+<text x="28" y="512" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="28" dy="0">Kho / giá</tspan>
+</text>
+<text x="28" y="578" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="28" dy="0">Tiền / sau bán</tspan>
+</text>
+<text x="28" y="644" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="28" dy="0">Nội dung</tspan>
+</text>
+<text x="28" y="710" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="28" dy="0">Cấu hình / audit</tspan>
+</text>
+<text x="256" y="184" font-family="Segoe UI, sans-serif" font-size="32" font-weight="600" fill="#172B35">
+<tspan x="256" dy="0">Tổng quan vận hành</tspan>
+</text>
+<text x="256" y="226" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="256" dy="0">[Khoảng thời gian]    Cập nhật: [Thời điểm]</tspan>
+</text>
+<rect x="256" y="260" width="258" height="134" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="274" y="297" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#172B35">
+<tspan x="274" dy="0">Đơn cần xử lý</tspan>
+</text>
+<text x="274" y="360" font-family="Segoe UI, sans-serif" font-size="28" font-weight="600" fill="#172B35">
+<tspan x="274" dy="0">[Số liệu]</tspan>
+</text>
+<rect x="538" y="260" width="258" height="134" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="556" y="297" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#172B35">
+<tspan x="556" dy="0">RFQ cần phản hồi</tspan>
+</text>
+<text x="556" y="360" font-family="Segoe UI, sans-serif" font-size="28" font-weight="600" fill="#172B35">
+<tspan x="556" dy="0">[Số liệu]</tspan>
+</text>
+<rect x="820" y="260" width="258" height="134" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="838" y="297" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#172B35">
+<tspan x="838" dy="0">Tiền cần đối soát</tspan>
+</text>
+<text x="838" y="360" font-family="Segoe UI, sans-serif" font-size="28" font-weight="600" fill="#172B35">
+<tspan x="838" dy="0">[Số liệu]</tspan>
+</text>
+<rect x="1102" y="260" width="258" height="134" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="1120" y="297" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#172B35">
+<tspan x="1120" dy="0">Vấn đề tồn</tspan>
+</text>
+<text x="1120" y="360" font-family="Segoe UI, sans-serif" font-size="28" font-weight="600" fill="#172B35">
+<tspan x="1120" dy="0">[Số liệu]</tspan>
+</text>
+<rect x="256" y="426" width="1128" height="272" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="280" y="473" font-family="Segoe UI, sans-serif" font-size="25" font-weight="600" fill="#172B35">
+<tspan x="280" dy="0">Hàng chờ đơn</tspan>
+</text>
+<text x="280" y="522" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#172B35">
+<tspan x="280" dy="0">Mã đơn</tspan>
+</text>
+<text x="496" y="522" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#172B35">
+<tspan x="496" dy="0">Thời điểm</tspan>
+</text>
+<text x="712" y="522" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#172B35">
+<tspan x="712" dy="0">Đơn</tspan>
+</text>
+<text x="928" y="522" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#172B35">
+<tspan x="928" dy="0">Tiền</tspan>
+</text>
+<text x="1144" y="522" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#172B35">
+<tspan x="1144" dy="0">Thao tác</tspan>
+</text>
+<rect x="280" y="545" width="1080" height="1" rx="0" fill="#D9E1E5" stroke="none"/>
+<text x="280" y="579" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="280" dy="0">[Mã đơn]</tspan>
+</text>
+<text x="496" y="579" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="496" dy="0">[Thời điểm]</tspan>
+</text>
+<text x="712" y="579" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="712" dy="0">[Trạng thái]</tspan>
+</text>
+<text x="928" y="579" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="928" dy="0">[Trạng thái]</tspan>
+</text>
+<text x="1144" y="579" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="1144" dy="0">Mở chi tiết →</tspan>
+</text>
+<rect x="280" y="609" width="1080" height="1" rx="0" fill="#D9E1E5" stroke="none"/>
+<text x="280" y="643" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="280" dy="0">[Mã đơn]</tspan>
+</text>
+<text x="496" y="643" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="496" dy="0">[Thời điểm]</tspan>
+</text>
+<text x="712" y="643" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="712" dy="0">[Trạng thái]</tspan>
+</text>
+<text x="928" y="643" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="928" dy="0">[Trạng thái]</tspan>
+</text>
+<text x="1144" y="643" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#172B35">
+<tspan x="1144" dy="0">Mở chi tiết →</tspan>
+</text>
+<rect x="256" y="730" width="552" height="242" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="280" y="774" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#172B35">
+<tspan x="280" dy="0">Yêu cầu báo giá</tspan>
+</text>
+<text x="280" y="832" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="280" dy="0">[Mã yêu cầu] · [Trạng thái]</tspan>
+<tspan x="280" dy="24">[Người xử lý] · Mở yêu cầu →</tspan>
+</text>
+<text x="280" y="919" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#52636B">
+<tspan x="280" dy="0">Không ghi RFQ thành doanh thu.</tspan>
+</text>
+<rect x="832" y="730" width="552" height="242" rx="12" fill="#FFF5E6" stroke="#D9E1E5"/>
+<text x="856" y="774" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#172B35">
+<tspan x="856" dy="0">Vấn đề cần kiểm tra</tspan>
+</text>
+<text x="856" y="832" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#172B35">
+<tspan x="856" dy="0">[Cảnh báo có dữ liệu và quy tắc đã xác nhận]</tspan>
+</text>
+<text x="256" y="1030" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="256" dy="0">Chưa có dữ liệu ≠ 0. Nội dung hiển thị theo quyền; không dùng số mẫu như dữ liệu vận hành.</tspan>
+</text>
+</svg>

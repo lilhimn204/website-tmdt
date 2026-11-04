@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1110" viewBox="0 0 1440 1110">
+<title>12-states</title>
+<rect x="0" y="0" width="1440" height="1110" rx="0" fill="#F5F7F8" stroke="none"/>
+<rect x="0" y="0" width="1440" height="64" rx="0" fill="#172B35" stroke="none"/>
+<text x="40" y="25" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">
+<tspan x="40" dy="0">BỔ SUNG · Trạng thái và phản hồi</tspan>
+</text>
+<text x="40" y="47" font-family="Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#FFFFFF">
+<tspan x="40" dy="0">WIREFRAME • 1440 px • Dữ liệu giữ chỗ</tspan>
+</text>
+<rect x="80" y="110" width="628" height="258" rx="12" fill="#F5F7F8" stroke="#D9E1E5"/>
+<text x="104" y="156" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#172B35">
+<tspan x="104" dy="0">Đang tải</tspan>
+</text>
+<text x="104" y="208" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#172B35">
+<tspan x="104" dy="0">Khung giữ kích thước; không làm mất header.</tspan>
+</text>
+<rect x="104" y="261" width="520" height="12" rx="4" fill="#D9E1E5" stroke="none"/>
+<rect x="104" y="283" width="460" height="12" rx="4" fill="#D9E1E5" stroke="none"/>
+<rect x="104" y="305" width="400" height="12" rx="4" fill="#D9E1E5" stroke="none"/>
+<rect x="732" y="110" width="628" height="258" rx="12" fill="#FFFFFF" stroke="#D9E1E5"/>
+<text x="756" y="156" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#172B35">
+<tspan x="756" dy="0">Chưa có kết quả</tspan>
+</text>
+<text x="756" y="208" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#172B35">
+<tspan x="756" dy="0">Giữ từ khóa / bộ lọc. Cho sửa hoặc xóa bộ lọc.</tspan>
+</text>
+<rect x="756" y="290" width="270" height="48" rx="8" fill="#FFFFFF" stroke="#006B63"/>
+<text x="768" y="317.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#006B63">
+<tspan x="768" dy="0">Xóa bộ lọc</tspan>
+</text>
+<rect x="80" y="400" width="628" height="258" rx="12" fill="#FEF3F2" stroke="#D9E1E5"/>
+<text x="104" y="446" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#172B35">
+<tspan x="104" dy="0">Lỗi tại trường</tspan>
+</text>
+<text x="104" y="498" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#172B35">
+<tspan x="104" dy="0">Nhãn + lỗi cụ thể; giữ dữ liệu; summary dẫn tới field.</tspan>
+</text>
+<text x="104" y="600" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#B42318">
+<tspan x="104" dy="0">Vui lòng nhập số điện thoại hợp lệ.</tspan>
+</text>
+<rect x="732" y="400" width="628" height="258" rx="12" fill="#FFF5E6" stroke="#D9E1E5"/>
+<text x="756" y="446" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#172B35">
+<tspan x="756" dy="0">Giá hoặc tồn thay đổi</tspan>
+</text>
+<text x="756" y="498" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#172B35">
+<tspan x="756" dy="0">Hiện thay đổi. Rà soát lại trước khi gửi đơn.</tspan>
+</text>
+<rect x="756" y="580" width="300" height="48" rx="8" fill="#FFFFFF" stroke="#006B63"/>
+<text x="768" y="607.0" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#006B63">
+<tspan x="768" dy="0">Rà soát đơn hàng</tspan>
+</text>
+<rect x="80" y="690" width="628" height="258" rx="12" fill="#EFF6FF" stroke="#D9E1E5"/>
+<text x="104" y="736" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#172B35">
+<tspan x="104" dy="0">Chưa biết kết quả gửi</tspan>
+</text>
+<text x="104" y="788" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#172B35">
+<tspan x="104" dy="0">Đang kiểm tra lại cùng thao tác. Không tạo đơn mới ngay.</tspan>
+</text>
+<text x="104" y="890" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#1D4ED8">
+<tspan x="104" dy="0">Đang kiểm tra trạng thái…</tspan>
+</text>
+<rect x="732" y="690" width="628" height="258" rx="12" fill="#E7F4F1" stroke="#D9E1E5"/>
+<text x="756" y="736" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600" fill="#172B35">
+<tspan x="756" dy="0">Đã tiếp nhận yêu cầu</tspan>
+</text>
+<text x="756" y="788" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#172B35">
+<tspan x="756" dy="0">Mã thật sau xác nhận. Chưa phải đã thanh toán.</tspan>
+</text>
+<text x="756" y="890" font-family="Segoe UI, sans-serif" font-size="17" font-weight="600" fill="#006B63">
+<tspan x="756" dy="0">Mã yêu cầu: [Sau khi hệ thống xác nhận]</tspan>
+</text>
+<text x="80" y="1034" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" fill="#52636B">
+<tspan x="80" dy="0">Bản vẽ trạng thái mẫu. Hành vi bàn phím, mạng và giao dịch cần kiểm thử khi có frontend/backend.</tspan>
+</text>
+</svg>
