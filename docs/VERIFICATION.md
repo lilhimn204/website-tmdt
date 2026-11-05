@@ -2,6 +2,25 @@
 
 Ngày thực hiện: **04/11/2026**, Windows, thư mục `C:\Users\Minh\Documents\ChatGPT\Website TMDT`. Các kết quả “đạt” bên dưới có output thực tế từ terminal hoặc trạng thái trình duyệt, không suy ra từ việc chỉ tạo file.
 
+## Kiểm tra lại ngày 05/11/2026
+
+Đã rà soát toàn bộ yêu cầu PROMPT 06 trên dự án hiện có và chạy lại các kiểm tra bên dưới. Không thay đổi mã ứng dụng, không cài lại công cụ và không thêm chức năng bán hàng.
+
+| Kiểm tra thực tế | Kết quả ngày 05/11 |
+|---|---|
+| Node/npm/Git/VS Code | Vẫn là 24.15.0 / 11.12.1 / 2.53.0.windows.2 / 1.125.1 |
+| `npm.cmd run check` | Exit 0; typecheck, ESLint, **12/12 test Vitest**, build prerender và compile Pages Functions đều đạt |
+| `npm.cmd run smoke` | Exit 0; HTML/CSS, GET/HEAD health, POST 405, API lạ 404 và trang lạ 404 đạt tại 8788 |
+| Vite local tại 5173 | `/`, `/kiem-tra`, `/api/v1/health` đều trả 200; health trả database `not_configured` |
+| Audit toàn bộ | 12 moderate, 0 high, 0 critical; thuộc cây công cụ phát triển như phân tích bên dưới |
+| Audit production | 0 vulnerabilities tại thời điểm kiểm tra |
+| GitHub trước cập nhật biên bản | Local/remote `main` cùng SHA `71c80738566814d0c31e1e266ce097b73ee49e3f`, working tree sạch |
+| Rà soát tài liệu | Đủ cây thư mục, toàn bộ source/config, hướng dẫn Windows, giải thích lệnh/terminal, GitHub, build Pages, lỗi thường gặp và checklist |
+
+Bằng chứng mới: [check](../artifacts/check-2026-11-05.log), [smoke](../artifacts/smoke-2026-11-05.log), [HTTP qua Vite](../artifacts/vite-local-2026-11-05.json), [audit toàn bộ](../artifacts/audit-2026-11-05.json), [audit production](../artifacts/audit-production-2026-11-05.json). Lần này xác minh localhost bằng HTTP; ảnh/trạng thái trình duyệt ở phần lịch sử dưới đây được ghi nhận ngày 04/11, không coi là ảnh mới.
+
+Các kết quả từ lượt khởi tạo ngày 04/11 được giữ nguyên dưới đây để truy vết.
+
 ## Môi trường và kết quả
 
 | Kiểm tra | Kết quả thực tế |

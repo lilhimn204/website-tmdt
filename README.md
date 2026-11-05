@@ -4,6 +4,8 @@ Giai đoạn 06. React + Vite + TypeScript strict + Tailwind CSS + React Router,
 
 Các tệp mã nguồn đã được tạo đầy đủ trong thư mục này. Không chạy lại công cụ tạo template trên thư mục đang có tài liệu. Xem [danh sách tệp bàn giao](docs/FILES.md), [kết quả kiểm tra thực tế](docs/VERIFICATION.md) và [checklist nghiệm thu](docs/SETUP_CHECKLIST.md).
 
+Đã kiểm tra lại ngày **05/11/2026**: typecheck, lint, 12 test, production build, Functions compile và localhost đều đạt. Trên máy hiện tại, các thư viện đã được cài; bạn có thể mở `http://127.0.0.1:8788` khi server đang chạy. Hướng dẫn mục 2 dùng khi cài ở máy/thư mục mới; khi chỉ cần khởi động lại dự án đã cài, chạy `npm.cmd run preview` trong PowerShell tại gốc dự án như giải thích bên dưới.
+
 ## 1. Công cụ trên Windows
 
 Đã kiểm tra trên máy này: Node.js **24.15.0**, npm **11.12.1**, VS Code **1.125.1**, Git **2.53.0.windows.2**. Không cài lại hoặc nâng cấp phần mềm toàn máy trong lần khởi tạo này. GitHub CLI chưa có; hướng dẫn Git bên dưới không cần CLI đó.

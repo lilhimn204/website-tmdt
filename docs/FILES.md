@@ -55,11 +55,11 @@
 
 ## Gói bàn giao
 
-Gói ZIP dưới đây giữ bản bàn giao local trước khi kết nối GitHub. Mã ứng dụng không đổi trong lần kết nối; tài liệu trạng thái Git đã được cập nhật tại [repository hiện tại](https://github.com/lilhimn204/website-tmdt).
+**Bản bàn giao mới nhất ngày 05/11/2026:** [tải toàn bộ mã nguồn, tài liệu và bằng chứng kiểm tra](../artifacts/website-tmdt-stage06-2026-11-05.zip), kèm [SHA-256](../artifacts/website-tmdt-stage06-2026-11-05.sha256). Bản này chứa đủ 115 tệp đang quản lý bằng Git, gồm 48 tệp Giai đoạn 06 liệt kê ở trên và tài liệu/bản vẽ đã có, cùng bằng chứng kiểm tra local ngày 04/11 và 05/11. Không có node_modules, .git, build/cache hoặc tệp secret. Source và hướng dẫn cũng có tại [repository GitHub](https://github.com/lilhimn204/website-tmdt).
 
-[Gói ZIP đầy đủ](../artifacts/website-tmdt-stage06.zip) gồm các tệp ở trên, tài liệu/bản vẽ đã có được giữ nguyên và bằng chứng local (check.log, smoke.log, starter-api-success.jpg, audit.json, audit-production.json). Không có node_modules, .git, build, cache hoặc tệp secret. Sau giải nén, dùng hướng dẫn npm ci trong README để cài lại thư viện.
+[Gói ZIP ngày 04/11](../artifacts/website-tmdt-stage06.zip) và [SHA-256 cũ](../artifacts/website-tmdt-stage06.sha256) được giữ làm bản lưu trước khi kết nối GitHub. Dùng gói ngày 05/11 để nhận cả tài liệu trạng thái Git và kết quả kiểm tra mới nhất. Sau giải nén vào một thư mục mới, dùng hướng dẫn npm ci trong README để cài lại thư viện; không giải nén đè lên workspace đang có thay đổi riêng.
 
-[SHA-256 của gói ZIP](../artifacts/website-tmdt-stage06.sha256) giúp kiểm tra tệp tải về còn nguyên. Các tệp trong artifacts được bỏ qua trong Git; khi clone từ GitHub sẽ không có gói ZIP/log/ảnh local này.
+SHA-256 giúp kiểm tra tệp tải về còn nguyên. Các tệp trong artifacts được bỏ qua trong Git; khi clone từ GitHub sẽ không có gói ZIP/log/ảnh local này. Các liên kết bằng chứng local chỉ mở trên máy làm việc hoặc sau khi giải nén bản bàn giao, không phải tệp được upload lên repo.
 
 ## Những thay đổi không phải tệp source
 

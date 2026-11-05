@@ -2,6 +2,8 @@
 
 `[x]` = đã có tệp/đã kiểm tra tương ứng. `[ ]` = còn chờ hoặc thuộc bước tiếp theo. Bằng chứng chi tiết tại [VERIFICATION.md](VERIFICATION.md).
 
+Đã rà soát lại ngày **05/11/2026** theo PROMPT 06: bộ khung đáp ứng toàn bộ mục S06-01–S06-17. Typecheck, lint, 12 test, build, Functions compile và HTTP localhost đều được chạy lại thành công; các mục production bên dưới vẫn chưa nghiệm thu.
+
 ## Phạm vi khởi tạo
 
 - [x] S06-01: Kiểm tra Node.js, VS Code, Git trên máy; có hướng dẫn cài trên Windows và lỗi PATH/PowerShell.
