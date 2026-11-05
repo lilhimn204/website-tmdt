@@ -1,12 +1,12 @@
 # Website TMĐT
 
-Hiện tại: **module 07.1 — header, điều hướng và footer** trên bộ khung Giai đoạn 06. React + Vite + TypeScript strict + Tailwind CSS + React Router, cùng Cloudflare Pages Functions. Nội dung giữa trang vẫn là màn hình khởi tạo/kiểm tra API. Chưa triển khai module 07.2 hoặc chức năng bán hàng.
+Hiện tại: **module 07.2 — trang chủ**, dùng header, điều hướng và footer của 07.1 trên bộ khung Giai đoạn 06. React + Vite + TypeScript strict + Tailwind CSS + React Router, cùng Cloudflare Pages Functions. Trang chủ có banner, nhóm ngành, sản phẩm mẫu, thương hiệu tham khảo, hướng dẫn chọn và phần chính sách. Chưa triển khai 07.3 hoặc giao dịch bán hàng.
 
-Xem [bàn giao module 07.1](docs/MODULE_07_1.md): toàn bộ tệp tạo/sửa, hướng dẫn áp dụng, lệnh kiểm tra, kết quả và checklist. Menu danh mục là dữ liệu minh họa; tìm kiếm, giỏ hàng, báo giá và các trang chưa làm được ghi rõ chưa khả dụng. Không tạo URL giả hoặc giả lập nhận đơn.
+Xem [bàn giao module 07.2](docs/MODULE_07_2.md): toàn bộ tệp tạo/sửa, hướng dẫn áp dụng, lệnh kiểm tra, kết quả và checklist. [Bàn giao 07.1](docs/MODULE_07_1.md) giữ bằng chứng của lần trước. Danh mục và sản phẩm có nhãn minh họa; giá/tồn chưa công bố, tìm kiếm/giỏ hàng/báo giá chưa mở. CTA trang chủ dẫn tới nội dung có thật trên cùng trang, không dẫn vào trang chưa triển khai.
 
 Các tệp mã nguồn đã được tạo đầy đủ trong thư mục này. Không chạy lại công cụ tạo template trên thư mục đang có tài liệu. Xem [danh sách tệp bàn giao](docs/FILES.md), [kết quả kiểm tra thực tế](docs/VERIFICATION.md) và [checklist nghiệm thu](docs/SETUP_CHECKLIST.md).
 
-Giai đoạn 06 đã được kiểm tra lại ngày **05/11/2026**; bằng chứng lịch sử ở docs/VERIFICATION.md. Kết quả mới nhất của module 07.1 nằm trong docs/MODULE_07_1.md. Trên máy hiện tại, các thư viện đã được cài; bạn có thể mở `http://127.0.0.1:8788` khi server đang chạy. Hướng dẫn mục 2 dùng khi cài ở máy/thư mục mới; khi chỉ cần khởi động lại dự án đã cài, chạy `npm.cmd run preview` trong PowerShell tại gốc dự án như giải thích bên dưới.
+Ngày **05/11/2026**, module 07.2 đạt typecheck, lint, 34 test, production build, Functions compile, HTTP smoke và kiểm thử Edge của trang chủ/menu. Chi tiết ở docs/MODULE_07_2.md; bằng chứng Giai đoạn 06 giữ tại docs/VERIFICATION.md. Trên máy hiện tại, các thư viện đã được cài; bạn có thể mở `http://127.0.0.1:8788` khi server đang chạy. Khi cần khởi động lại, chạy `npm.cmd run preview` trong PowerShell tại gốc dự án như giải thích bên dưới.
 
 ## 1. Công cụ trên Windows
 
@@ -94,6 +94,7 @@ Chạy trong một PowerShell còn trống tại gốc dự án. Các script đ�
 | `npm.cmd run check` | Chạy lần lượt toàn bộ năm kiểm tra trên, dừng khi có lỗi |
 | `npm.cmd run smoke` | Gửi HTTP tới Pages đang chạy ở 8788: HTML có sẵn, CSS, API health, HEAD/405 và 404 thật |
 | `npm.cmd run test:navigation` | Kiểm tra menu bằng Edge headless qua Playwright trên localhost 8788; cần Pages đang chạy và Edge đã cài |
+| `npm.cmd run test:home` | Kiểm tra trang chủ tại 7 độ rộng màn hình, liên kết nội trang, focus và tính trung thực của dữ liệu mẫu; cần Pages và Edge |
 
 Để chạy `smoke`, giữ `pages:dev` ở terminal A và chạy lệnh trong terminal B/C. Smoke chỉ cho phép localhost. Bộ test hiện tại kiểm tra bộ khung, không chứng minh giao dịch bán hàng hay bảo mật production.
 

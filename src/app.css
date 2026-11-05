@@ -23,6 +23,9 @@
 
 @layer components {
   .storefront-container { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .home-section { @apply scroll-mt-6; }
+  .home-heading { @apply scroll-mt-6 text-2xl leading-snug font-semibold tracking-tight text-ink sm:text-[1.75rem]; }
+  .home-intro { @apply mt-3 mb-6 max-w-3xl text-sm leading-7 text-muted sm:text-base; }
   .site-link { @apply inline-flex items-center text-muted; }
   a.site-link:hover, a.site-link[aria-current="page"] { @apply text-brand underline decoration-2 underline-offset-8; }
   .site-link.is-unavailable { cursor: not-allowed; }

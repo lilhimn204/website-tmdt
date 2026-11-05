@@ -19,8 +19,8 @@ try {
   await mkdir('artifacts', { recursive: true });
   const response = await page.goto(base.href);
   assert.equal(response?.status(), 200);
-  // This verifies the existing page body is still present, not module 07.2.
-  await page.getByRole('heading', { name: 'Bắt đầu từ một bộ khung rõ ràng.' }).waitFor();
+  // The storefront shell must continue working around the current home page.
+  await page.getByRole('heading', { level: 1 }).waitFor();
   await page.waitForFunction(() => typeof document.querySelector('button[aria-label="Mở menu"]')?.onclick === 'function');
   for (const width of [1440, 1024, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
@@ -45,7 +45,7 @@ try {
   await summary.focus();
   await page.keyboard.press('Enter');
   await panel.waitFor({ state: 'visible' });
-  await page.screenshot({ path: 'artifacts/module-07-1-desktop-menu.png', fullPage: true });
+  await page.screenshot({ path: 'artifacts/navigation-current-desktop-menu.png', fullPage: true });
   await page.keyboard.press('Escape');
   await panel.waitFor({ state: 'hidden' });
   assert.equal(await summary.evaluate((element) => element === document.activeElement), true);
@@ -60,7 +60,7 @@ try {
   mark('Desktop disclosure: keyboard open, Escape, outside click and focus leave close it.');
   assert.equal(await page.getByLabel('Tìm sản phẩm', { exact: true }).isDisabled(), true);
   assert.equal(await page.locator('[aria-disabled="true"][href]').count(), 0);
-  await page.screenshot({ path: 'artifacts/module-07-1-desktop.png', fullPage: true });
+  await page.screenshot({ path: 'artifacts/navigation-current-desktop.png', fullPage: true });
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base.href);
@@ -85,7 +85,7 @@ try {
   await dialog.getByRole('button', { name: 'Linh kiện & phụ kiện', exact: true }).click();
   await dialog.getByRole('heading', { name: 'Linh kiện & phụ kiện', exact: true }).waitFor();
   assert.equal(await dialog.getByRole('link', { name: 'RAM', exact: true }).getAttribute('aria-disabled'), 'true');
-  await page.screenshot({ path: 'artifacts/module-07-1-mobile-menu.png' });
+  await page.screenshot({ path: 'artifacts/navigation-current-mobile-menu.png' });
   await dialog.getByRole('button', { name: 'Quay lại', exact: true }).click();
   await dialog.getByRole('heading', { name: 'Danh mục', exact: true }).waitFor();
   await dialog.getByRole('button', { name: 'Quay lại', exact: true }).click();
@@ -115,14 +115,14 @@ try {
   mark('Mobile drawer closes with close button, home link, backdrop and desktop resize.');
 
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.screenshot({ path: 'artifacts/module-07-1-mobile.png', fullPage: true });
+  await page.screenshot({ path: 'artifacts/navigation-current-mobile.png', fullPage: true });
   await page.goto(new URL('/kiem-tra', base).href);
   await page.getByRole('button', { name: 'Kiểm tra kết nối' }).waitFor();
   assert.equal(await page.getByRole('banner').count(), 1);
   assert.equal(await page.getByRole('contentinfo').count(), 1);
   assert.deepEqual(errors, []);
   mark('Shared shell on /kiem-tra; no browser console or page errors.');
-  await writeFile('artifacts/module-07-1-browser.json', JSON.stringify({ date: new Date().toISOString(), browser: browser.version(), channel, base: base.href, checks, errors }, null, 2));
+  await writeFile('artifacts/navigation-current-browser.json', JSON.stringify({ date: new Date().toISOString(), browser: browser.version(), channel, base: base.href, checks, errors }, null, 2));
 } finally {
   await browser.close();
 }

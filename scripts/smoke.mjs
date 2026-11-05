@@ -8,7 +8,7 @@ async function request(path, init = {}) {
   return fetch(new URL(path, base), { ...init, signal: AbortSignal.timeout(10_000) });
 }
 
-for (const [path, heading] of [['/', 'Bắt đầu từ một bộ khung rõ ràng.'], ['/kiem-tra', 'Frontend đã gọi được API chưa?']]) {
+for (const [path, heading] of [['/', 'Chọn đúng thiết bị.'], ['/kiem-tra', 'Frontend đã gọi được API chưa?']]) {
   const response = await request(path);
   assert.equal(response.status, 200, path);
   const html = await response.text();
