@@ -1,4 +1,6 @@
 import { previewNavigation, type CategoryGroup } from './navigation-data';
+import { catalogCategories, categoryIconId, findItem, productHref, specDefinitions } from './catalog-data';
+import { saleIssue, specText } from './catalog-model';
 
 export type HomeListState<T> =
   | { status: 'ready'; items: readonly T[] }
@@ -18,6 +20,9 @@ export interface PreviewProduct {
   sku: string;
   category: string;
   categoryId: string;
+  href: string;
+  price: number | null;
+  availability: string;
   specifications: readonly { label: string; value: string | null }[];
 }
 
@@ -53,14 +58,18 @@ export const homeCategories: readonly HomeCategory[] = previewNavigation.status 
     return copy ? [{ ...group, ...copy }] : [];
   }) : [];
 
-// Fictitious identifiers and illustrative attributes only. No price, inventory,
-// real brand affiliation or warranty is invented for these preview cards.
-export const previewProducts: readonly PreviewProduct[] = [
-  { id: 'ups', name: 'Bộ lưu điện UPS Online', model: 'DEMO-UPS-01', sku: 'MAU-UPS-001', category: 'UPS & thiết bị nguồn', categoryId: 'power', specifications: [{ label: 'Công nghệ', value: 'Online (mẫu)' }, { label: 'Công suất', value: null }] },
-  { id: 'printer', name: 'Máy in laser đơn năng', model: 'DEMO-PRINT-01', sku: 'MAU-PRINT-001', category: 'Máy in & vật tư', categoryId: 'printing', specifications: [{ label: 'Kiểu in', value: 'Đơn sắc (mẫu)' }, { label: 'Hiệu suất', value: null }] },
-  { id: 'ssd', name: 'Ổ lưu trữ SSD NVMe', model: 'DEMO-SSD-01', sku: 'MAU-SSD-001', category: 'Linh kiện & phụ kiện', categoryId: 'components', specifications: [{ label: 'Giao tiếp', value: 'NVMe (mẫu)' }, { label: 'Dung lượng', value: null }] },
-  { id: 'switch', name: 'Switch mạng công nghiệp', model: 'DEMO-NET-01', sku: 'MAU-NET-001', category: 'Mạng & công nghiệp', categoryId: 'network', specifications: [{ label: 'Nhóm thiết bị', value: 'Switch (mẫu)' }, { label: 'Cổng / PoE', value: null }] },
-];
+// Homepage and catalog use the same synthetic fixtures. These are not prices,
+// inventory or specifications of real products sold by the business.
+export const previewProducts: readonly PreviewProduct[] = ['DEMO-U1000-T', 'DEMO-P100', 'DEMO-SN-512', 'DEMO-N8'].flatMap((sku) => {
+  const item = findItem(sku);
+  if (!item) return [];
+  return [{ id: sku, name: item.product.name, model: item.product.model, sku,
+    category: catalogCategories.find((category) => category.slug === item.product.category)?.label ?? '',
+    categoryId: categoryIconId(item.product.category), href: productHref(item), price: item.variant.price,
+    availability: saleIssue(item) ?? 'Có thể xem và thử thêm giỏ',
+    specifications: specDefinitions[item.product.family].slice(0, 2).map((definition) => ({ label: definition.label, value: specText(item.variant.specs[definition.key], definition) })),
+  }];
+});
 
 // Names from PRODUCT_CATALOG_PLAN.md; text only, no copied logos or claims
 // of partnership/distribution. They do not identify the preview products above.

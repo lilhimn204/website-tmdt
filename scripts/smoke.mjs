@@ -8,7 +8,12 @@ async function request(path, init = {}) {
   return fetch(new URL(path, base), { ...init, signal: AbortSignal.timeout(10_000) });
 }
 
-for (const [path, heading] of [['/', 'Chọn đúng thiết bị.'], ['/kiem-tra', 'Frontend đã gọi được API chưa?']]) {
+for (const [path, heading] of [
+  ['/', 'Chọn đúng thiết bị.'], ['/kiem-tra', 'Frontend đã gọi được API chưa?'],
+  ['/san-pham/', 'Tất cả sản phẩm'], ['/danh-muc/ram/', 'RAM'],
+  ['/san-pham/ups-demo-1000/', 'UPS Online mẫu 1000'], ['/tim-kiem/', 'Tìm kiếm sản phẩm'],
+  ['/so-sanh/', 'So sánh sản phẩm'], ['/gio-hang/', 'Giỏ hàng thử nghiệm'],
+]) {
   const response = await request(path);
   assert.equal(response.status, 200, path);
   const html = await response.text();
@@ -43,5 +48,6 @@ assert.equal((await missingApi.json()).error.code, 'NOT_FOUND');
 const missingPage = await request('/duong-dan-khong-ton-tai');
 assert.equal(missingPage.status, 404);
 assert.ok((await missingPage.text()).includes('Không tìm thấy trang'));
+for (const path of ['/san-pham/not-a-product/', '/danh-muc/not-a-category/']) assert.equal((await request(path)).status, 404, path);
 console.log('PASS real 404: API and page');
 console.log('All local Pages smoke checks passed.');

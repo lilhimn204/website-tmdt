@@ -14,7 +14,7 @@ export function StorefrontHeader({ name, state, cartCount = null }: StorefrontHe
   return (
     <header className="relative z-20 border-b border-line bg-surface">
       <div className="bg-brand-soft text-brand">
-        <p className="storefront-container py-2 text-xs leading-5 sm:text-sm"><strong className="font-semibold">Bản xem trước giao diện.</strong> Danh mục minh họa; các trang mua hàng chưa mở.</p>
+        <p className="storefront-container py-2 text-xs leading-5 sm:text-sm"><strong className="font-semibold">Bản xem trước giao diện.</strong> Dữ liệu và giá DEMO; giỏ hàng thử nghiệm, chưa nhận đơn.</p>
       </div>
       <div className="storefront-container flex flex-wrap items-center gap-x-3 gap-y-4 py-4 lg:gap-x-8 lg:py-6">
         <MobileNavigation state={state} />

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import type { Route } from './+types/root';
 import { AppShell } from './components/app-shell';
+import { PreviewProvider } from './components/preview-provider';
 import './app.css';
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -25,7 +26,7 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
-  return <AppShell><Outlet /></AppShell>;
+  return <PreviewProvider><AppShell><Outlet /></AppShell></PreviewProvider>;
 }
 
 export function HydrateFallback() {

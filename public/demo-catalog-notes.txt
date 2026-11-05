@@ -1,0 +1,7 @@
+BỘ DỮ LIỆU KIỂM THỬ GIAO DIỆN — MODULE 07.3–07.6
+
+Đây không phải datasheet của nhà sản xuất.
+Toàn bộ model/SKU DEMO, giá, tồn kho, bảo hành và thông số là dữ liệu giả định.
+Các hình minh họa không mô tả kết cấu, kích thước hoặc cổng của thiết bị thật.
+Không dùng tài liệu này để mua hàng, lắp đặt, tính runtime hoặc xác nhận tương thích.
+Giỏ thử nghiệm không tạo đơn, không giữ hàng, không tiếp nhận thanh toán.

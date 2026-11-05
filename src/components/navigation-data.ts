@@ -16,12 +16,12 @@ export type NavigationState =
 
 export const destinations = {
   home: { label: 'Trang chủ', to: '/', available: true },
-  categories: { label: 'Danh mục', to: '/danh-muc/', available: false },
-  products: { label: 'Tất cả sản phẩm', to: '/san-pham/', available: false },
+  categories: { label: 'Danh mục', to: '/danh-muc/', available: true },
+  products: { label: 'Tất cả sản phẩm', to: '/san-pham/', available: true },
   brands: { label: 'Thương hiệu', to: '/thuong-hieu/', available: false },
   quote: { label: 'Yêu cầu báo giá', to: '/bao-gia/', available: false },
   support: { label: 'Hỗ trợ', to: '/ho-tro/', available: false },
-  cart: { label: 'Giỏ hàng', to: '/gio-hang/', available: false },
+  cart: { label: 'Giỏ hàng', to: '/gio-hang/', available: true },
   about: { label: 'Giới thiệu', to: '/gioi-thieu/', available: false },
   contact: { label: 'Liên hệ', to: '/lien-he/', available: false },
   guide: { label: 'Hướng dẫn sử dụng', to: '/ho-tro/huong-dan-su-dung/', available: false },
@@ -37,7 +37,7 @@ export const policyLinks: readonly NavigationItem[] = [
 ];
 
 function category(label: string, slug: string): NavigationItem {
-  return { label, to: `/danh-muc/${slug}/`, available: false };
+  return { label, to: `/danh-muc/${slug}/`, available: true };
 }
 
 // Preview taxonomy from SITEMAP, not a published catalog or stock declaration.

@@ -55,10 +55,10 @@ try {
   await panel.waitFor({ state: 'hidden' });
   await summary.click();
   await panel.waitFor({ state: 'visible' });
-  await page.keyboard.press('Tab');
+  await page.getByRole('navigation', { name: 'Điều hướng chính', exact: true }).getByRole('link', { name: 'Trang chủ', exact: true }).focus();
   await panel.waitFor({ state: 'hidden' });
   mark('Desktop disclosure: keyboard open, Escape, outside click and focus leave close it.');
-  assert.equal(await page.getByLabel('Tìm sản phẩm', { exact: true }).isDisabled(), true);
+  assert.equal(await page.getByLabel('Tìm sản phẩm', { exact: true }).isDisabled(), false);
   assert.equal(await page.locator('[aria-disabled="true"][href]').count(), 0);
   await page.screenshot({ path: 'artifacts/navigation-current-desktop.png', fullPage: true });
 
@@ -84,7 +84,7 @@ try {
   await dialog.getByRole('button', { name: 'Danh mục', exact: true }).click();
   await dialog.getByRole('button', { name: 'Linh kiện & phụ kiện', exact: true }).click();
   await dialog.getByRole('heading', { name: 'Linh kiện & phụ kiện', exact: true }).waitFor();
-  assert.equal(await dialog.getByRole('link', { name: 'RAM', exact: true }).getAttribute('aria-disabled'), 'true');
+  assert.equal(await dialog.getByRole('link', { name: 'RAM', exact: true }).getAttribute('href'), '/danh-muc/ram/');
   await page.screenshot({ path: 'artifacts/navigation-current-mobile-menu.png' });
   await dialog.getByRole('button', { name: 'Quay lại', exact: true }).click();
   await dialog.getByRole('heading', { name: 'Danh mục', exact: true }).waitFor();

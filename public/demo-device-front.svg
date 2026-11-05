@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Sơ đồ minh họa thiết bị, mặt trước">
+  <rect width="640" height="480" fill="#F5F7F8"/>
+  <g stroke="#006B63" stroke-width="4" fill="#E7F4F1">
+    <rect x="230" y="65" width="180" height="280" rx="14"/>
+    <rect x="262" y="100" width="116" height="62" rx="4" fill="#fff"/>
+    <circle cx="320" cy="200" r="13" fill="#fff"/>
+    <path d="M265 245h110m-110 20h110m-110 20h110m-110 20h110"/>
+  </g>
+  <text x="320" y="393" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="22" fill="#172B35">Mặt trước · Minh họa</text>
+  <text x="320" y="430" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="17" fill="#52636B">Không phải ảnh sản phẩm thật</text>
+</svg>

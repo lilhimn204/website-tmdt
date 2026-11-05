@@ -9,6 +9,7 @@ import { HomeCategories } from '../src/components/home-categories';
 import { HomeFeaturedProducts } from '../src/components/home-featured-products';
 import { HomeBrands } from '../src/components/home-brands';
 import { homeCategories, previewProducts, referenceBrands } from '../src/components/home-data';
+import { findItem, productHref } from '../src/components/catalog-data';
 
 describe('Home page — module 07.2', () => {
   it('has one h1 and all requested sections without technical starter copy', () => {
@@ -22,13 +23,13 @@ describe('Home page — module 07.2', () => {
     expect(meta()[0]?.title).toContain('Thiết bị công nghệ');
   });
 
-  it('gives each working home action a real in-page target and never links to missing sales routes', () => {
+  it('connects home actions to implemented categories and on-page preparation content', () => {
     const { container } = render(<MemoryRouter><Home /></MemoryRouter>);
     const links = [...container.querySelectorAll<HTMLAnchorElement>('a[href]')];
-    expect(links).toHaveLength(6);
+    expect(links).toHaveLength(10);
     for (const link of links) {
       const href = link.getAttribute('href') ?? '';
-      expect(href.startsWith('#')).toBe(true);
+      if (!href.startsWith('#')) { expect(href).toMatch(/^\/(danh-muc|san-pham)\/[a-z0-9-]+\/(\?sku=DEMO-[A-Z0-9-]+)?$/); continue; }
       const target = document.getElementById(href.slice(1));
       expect(target).not.toBeNull();
       expect(target?.getAttribute('tabindex')).toBe('-1');
@@ -37,19 +38,22 @@ describe('Home page — module 07.2', () => {
     expect(screen.getByRole('link', { name: 'Chuẩn bị yêu cầu' }).getAttribute('href')).toBe('#nhu-cau-doanh-nghiep');
   });
 
-  it('labels every preview product and keeps unknown values distinct from zero, out of stock or unsupported', () => {
-    render(<HomeFeaturedProducts state={{ status: 'ready', items: previewProducts }} />);
+  it('labels every preview product and links to the same SKU used by the catalog', () => {
+    render(<MemoryRouter><HomeFeaturedProducts state={{ status: 'ready', items: previewProducts }} /></MemoryRouter>);
     const cards = screen.getAllByRole('article');
     expect(cards).toHaveLength(4);
     for (const card of cards) {
       const scope = within(card);
-      expect(scope.getByText('Mẫu giao diện')).toBeTruthy();
-      expect(scope.getByText('Giá chưa công bố')).toBeTruthy();
-      expect(scope.getByText('Tồn kho chưa xác nhận')).toBeTruthy();
-      expect(scope.getByText('Chưa xác minh')).toBeTruthy();
+      expect(scope.getByText('Mẫu DEMO')).toBeTruthy();
+      expect(scope.getByText('Giá kiểm thử · Chưa bán hàng')).toBeTruthy();
       expect(scope.getByText('Chưa có ảnh')).toBeTruthy();
       expect(scope.queryByRole('button')).toBeNull();
-      expect(card.textContent).not.toMatch(/0\s*₫|hết hàng|không hỗ trợ|đã thêm/i);
+      const fixture = previewProducts.find((product) => product.name === scope.getByRole('link').textContent);
+      expect(fixture).toBeTruthy();
+      const item = findItem(fixture!.sku);
+      expect(item).toBeTruthy();
+      expect(scope.getByRole('link').getAttribute('href')).toBe(productHref(item!));
+      expect(fixture!.price).toBe(item!.variant.price);
     }
   });
 
@@ -91,12 +95,12 @@ describe('Home page — module 07.2', () => {
   it('isolates a product failure and delegates retry without faking recovery', async () => {
     const retry = vi.fn();
     const user = userEvent.setup();
-    render(<><HomeCategories state={{ status: 'ready', items: homeCategories }} /><HomeFeaturedProducts state={{ status: 'error', onRetry: retry }} /><HomeBrands state={{ status: 'ready', items: referenceBrands }} /></>);
+    render(<MemoryRouter><HomeCategories state={{ status: 'ready', items: homeCategories }} /><HomeFeaturedProducts state={{ status: 'error', onRetry: retry }} /><HomeBrands state={{ status: 'ready', items: referenceBrands }} /></MemoryRouter>);
     expect(screen.getByRole('alert').textContent).toBe('Không tải được sản phẩm nổi bật.');
     await user.click(screen.getByRole('button', { name: 'Thử lại' }));
     expect(retry).toHaveBeenCalledOnce();
     expect(screen.getByRole('alert')).toBeTruthy();
-    expect(screen.getByRole('link', { name: /UPS.*Gợi ý chọn/ })).toBeTruthy();
+    expect(screen.getByRole('link', { name: /UPS.*Xem danh mục/ })).toBeTruthy();
     expect(screen.getByText('PROLiNK')).toBeTruthy();
   });
 

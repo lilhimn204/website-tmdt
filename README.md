@@ -1,12 +1,12 @@
 # Website TMĐT
 
-Hiện tại: **module 07.2 — trang chủ**, dùng header, điều hướng và footer của 07.1 trên bộ khung Giai đoạn 06. React + Vite + TypeScript strict + Tailwind CSS + React Router, cùng Cloudflare Pages Functions. Trang chủ có banner, nhóm ngành, sản phẩm mẫu, thương hiệu tham khảo, hướng dẫn chọn và phần chính sách. Chưa triển khai 07.3 hoặc giao dịch bán hàng.
+Hiện tại: **đã triển khai frontend 07.3–07.6** trên trang chủ và điều hướng 07.1–07.2: danh mục/tìm kiếm/lọc, chi tiết và biến thể, so sánh, giỏ hàng thử nghiệm. Giữ React + Vite + TypeScript strict + Tailwind CSS + React Router, cùng Cloudflare Pages Functions. Chưa triển khai checkout 07.7 hoặc giao dịch bán hàng.
 
-Xem [bàn giao module 07.2](docs/MODULE_07_2.md): toàn bộ tệp tạo/sửa, hướng dẫn áp dụng, lệnh kiểm tra, kết quả và checklist. [Bàn giao 07.1](docs/MODULE_07_1.md) giữ bằng chứng của lần trước. Danh mục và sản phẩm có nhãn minh họa; giá/tồn chưa công bố, tìm kiếm/giỏ hàng/báo giá chưa mở. CTA trang chủ dẫn tới nội dung có thật trên cùng trang, không dẫn vào trang chưa triển khai.
+Xem [bàn giao 07.3–07.6](docs/MODULE_07_3_06.md): toàn bộ tệp tạo/sửa, hướng dẫn từng module, lệnh kiểm tra, kết quả và checklist. [Bàn giao 07.1](docs/MODULE_07_1.md) và [07.2](docs/MODULE_07_2.md) giữ lịch sử. Bộ DEMO có 15 sản phẩm/18 SKU giả định, bao gồm giá/tồn/bảo hành kiểm thử được ghi nhãn rõ. Không phải dữ liệu kinh doanh thực; thêm giỏ không giữ hàng hoặc tạo đơn. Trang thương hiệu, báo giá và chính sách còn chưa mở.
 
 Các tệp mã nguồn đã được tạo đầy đủ trong thư mục này. Không chạy lại công cụ tạo template trên thư mục đang có tài liệu. Xem [danh sách tệp bàn giao](docs/FILES.md), [kết quả kiểm tra thực tế](docs/VERIFICATION.md) và [checklist nghiệm thu](docs/SETUP_CHECKLIST.md).
 
-Ngày **05/11/2026**, module 07.2 đạt typecheck, lint, 34 test, production build, Functions compile, HTTP smoke và kiểm thử Edge của trang chủ/menu. Chi tiết ở docs/MODULE_07_2.md; bằng chứng Giai đoạn 06 giữ tại docs/VERIFICATION.md. Trên máy hiện tại, các thư viện đã được cài; bạn có thể mở `http://127.0.0.1:8788` khi server đang chạy. Khi cần khởi động lại, chạy `npm.cmd run preview` trong PowerShell tại gốc dự án như giải thích bên dưới.
+Ngày **05/11/2026**, bản 07.3–07.6 đạt typecheck, lint, 62 test, production build 42 URL, Functions compile, HTTP smoke và kiểm thử Edge của catalog/chi tiết/so sánh/giỏ/trang chủ/menu. Chi tiết ở docs/MODULE_07_3_06.md; bằng chứng Giai đoạn 06 giữ tại docs/VERIFICATION.md. Trên máy hiện tại, các thư viện đã được cài; mở [danh mục DEMO](http://127.0.0.1:8788/san-pham/) khi server đang chạy. Khi cần khởi động lại, chạy `npm.cmd run preview` trong PowerShell tại gốc dự án như giải thích bên dưới.
 
 ## 1. Công cụ trên Windows
 
@@ -50,7 +50,7 @@ npm.cmd run check
 npm.cmd run pages:dev
 ```
 
-Chỉ chạy dòng sau khi dòng trước thành công. Mở **http://127.0.0.1:8788** trong trình duyệt → **Kiểm tra API** → **Kiểm tra kết nối**. Thông báo thành công chỉ xác nhận API health, không xác nhận Supabase hoạt động.
+Chỉ chạy dòng sau khi dòng trước thành công. Mở **http://127.0.0.1:8788** để xem trang chủ, hoặc **http://127.0.0.1:8788/kiem-tra** → **Kiểm tra kết nối** để thử API health. Thông báo thành công tại trang kiểm tra chỉ xác nhận API health, không xác nhận Supabase hoạt động.
 
 Giữ terminal A mở khi dùng website. Nhấn **Ctrl+C** ở terminal đó để dừng. Không cần tài khoản Cloudflare, Supabase hoặc nhập secret để chạy các màn hình hiện tại.
 
@@ -94,17 +94,24 @@ Chạy trong một PowerShell còn trống tại gốc dự án. Các script đ�
 | `npm.cmd run check` | Chạy lần lượt toàn bộ năm kiểm tra trên, dừng khi có lỗi |
 | `npm.cmd run smoke` | Gửi HTTP tới Pages đang chạy ở 8788: HTML có sẵn, CSS, API health, HEAD/405 và 404 thật |
 | `npm.cmd run test:navigation` | Kiểm tra menu bằng Edge headless qua Playwright trên localhost 8788; cần Pages đang chạy và Edge đã cài |
-| `npm.cmd run test:home` | Kiểm tra trang chủ tại 7 độ rộng màn hình, liên kết nội trang, focus và tính trung thực của dữ liệu mẫu; cần Pages và Edge |
+| `npm.cmd run test:home` | Kiểm tra trang chủ tại 7 độ rộng, liên kết danh mục/SKU/nội trang và nhãn DEMO; cần Pages và Edge |
+| `npm.cmd run test:commerce` | Kiểm tra lọc, SKU, gallery, giỏ, so sánh, URL sai và bàn phím/mobile; cần Pages và Edge |
 
-Để chạy `smoke`, giữ `pages:dev` ở terminal A và chạy lệnh trong terminal B/C. Smoke chỉ cho phép localhost. Bộ test hiện tại kiểm tra bộ khung, không chứng minh giao dịch bán hàng hay bảo mật production.
+Để chạy `smoke` và các lệnh browser, giữ `pages:dev` ở terminal A và chạy lệnh trong terminal B/C. Các script chỉ cho phép localhost. Bộ test hiện tại kiểm tra frontend DEMO và bộ khung, không chứng minh giao dịch bán hàng hay bảo mật production.
 
 ## 5. Cấu trúc thư mục
 
 ```text
 Website TMDT/
 ├── src/                         Frontend; React Router dùng src làm appDirectory
-│   ├── components/app-shell.tsx Khung điều hướng của trang khởi tạo
+│   ├── components/             Khung điều hướng, trang chủ, catalog/PDP/compare/cart và store DEMO
 │   ├── routes/home.tsx          Trang /, HTML được prerender
+│   ├── routes/catalog.tsx       Danh mục và danh mục con
+│   ├── routes/products.tsx      Tất cả SKU DEMO
+│   ├── routes/search.tsx        Tìm kiếm theo URL
+│   ├── routes/product.tsx       Chi tiết theo slug và ?sku=
+│   ├── routes/compare.tsx       So sánh tối đa 3 SKU cùng loại
+│   ├── routes/cart.tsx          Giỏ thử nghiệm; chưa đặt hàng
 │   ├── routes/system-check.tsx  Trang /kiem-tra, nút gọi API thật
 │   ├── app.css                  Tailwind 4 và nền tảng CSS
 │   ├── root.tsx                 Tài liệu HTML, layout và error boundary

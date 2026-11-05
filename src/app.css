@@ -26,6 +26,9 @@
   .home-section { @apply scroll-mt-6; }
   .home-heading { @apply scroll-mt-6 text-2xl leading-snug font-semibold tracking-tight text-ink sm:text-[1.75rem]; }
   .home-intro { @apply mt-3 mb-6 max-w-3xl text-sm leading-7 text-muted sm:text-base; }
+  .primary-button { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white hover:bg-brand-hover disabled:cursor-not-allowed disabled:bg-line disabled:text-muted; }
+  .secondary-button { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-control-border bg-surface px-4 py-2 text-sm font-semibold text-ink hover:bg-brand-soft disabled:cursor-not-allowed disabled:text-muted; }
+  .field-input { @apply min-h-12 w-full min-w-0 rounded-lg border border-control-border bg-surface px-3 py-2 text-base text-ink; }
   .site-link { @apply inline-flex items-center text-muted; }
   a.site-link:hover, a.site-link[aria-current="page"] { @apply text-brand underline decoration-2 underline-offset-8; }
   .site-link.is-unavailable { cursor: not-allowed; }

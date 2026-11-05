@@ -13,13 +13,14 @@ import { previewNavigation } from '../src/components/navigation-data';
 import { SearchForm } from '../src/components/search-form';
 import { SiteLink } from '../src/components/site-link';
 import { StorefrontHeader } from '../src/components/storefront-header';
+import { PreviewProvider } from '../src/components/preview-provider';
 
 function LocationProbe() {
   return <output aria-label="Đường dẫn hiện tại">{useLocation().pathname}</output>;
 }
 
 function inRouter(children: ReactNode) {
-  return render(<MemoryRouter>{children}<LocationProbe /></MemoryRouter>);
+  return render(<PreviewProvider><MemoryRouter>{children}<LocationProbe /></MemoryRouter></PreviewProvider>);
 }
 
 describe('Storefront shell — module 07.1', () => {
@@ -67,15 +68,15 @@ describe('Storefront shell — module 07.1', () => {
     expect(screen.getByRole('link', { name: /^Giỏ hàng/i }).textContent).toContain('5');
   });
 
-  it('labels the disabled preview search and explains why it is unavailable', () => {
+  it('labels the working search and explains its DEMO data scope', () => {
     inRouter(<SearchForm />);
     const input = screen.getByLabelText<HTMLInputElement>('Tìm sản phẩm');
-    expect(input.disabled).toBe(true);
-    expect(screen.getByRole<HTMLButtonElement>('button', { name: /tìm/i }).disabled).toBe(true);
+    expect(input.disabled).toBe(false);
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: /tìm/i }).disabled).toBe(false);
     const descriptionId = input.getAttribute('aria-describedby');
     expect(descriptionId).toBeTruthy();
     const descriptions = descriptionId?.split(/\s+/).map((id) => document.getElementById(id)?.textContent).join(' ');
-    expect(descriptions).toMatch(/chưa|xem trước|sẽ mở/i);
+    expect(descriptions).toMatch(/DEMO/);
   });
 
   it('announces the loading state without presenting it as an empty catalog', () => {
@@ -124,7 +125,7 @@ describe('Storefront shell — module 07.1', () => {
     const dialog = screen.getByRole('dialog', { name: 'Danh mục và điều hướng' });
     await user.click(within(dialog).getByRole('button', { name: 'Danh mục' }));
     await user.click(within(dialog).getByRole('button', { name: 'UPS & thiết bị nguồn' }));
-    expect(within(dialog).getByRole('link', { name: 'UPS Online một pha' }).getAttribute('aria-disabled')).toBe('true');
+    expect(within(dialog).getByRole('link', { name: 'UPS Online một pha' }).getAttribute('href')).toBe('/danh-muc/ups-online-mot-pha/');
     await user.click(within(dialog).getByRole('button', { name: 'Quay lại' }));
     expect(within(dialog).getByRole('button', { name: 'Máy in & vật tư' })).toBeTruthy();
     await user.click(within(dialog).getByRole('button', { name: 'Quay lại' }));

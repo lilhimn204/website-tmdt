@@ -83,7 +83,7 @@ export function MobileNavigation({ state }: { state: NavigationState }) {
               </>)}
             </>}
           </nav>
-          <p className="shrink-0 border-t border-line px-4 py-4 text-sm leading-6 text-muted">Các trang sản phẩm, mua hàng và hỗ trợ chưa mở trong bản xem trước.</p>
+          <p className="shrink-0 border-t border-line px-4 py-4 text-sm leading-6 text-muted">Catalog và giỏ dùng dữ liệu DEMO. Đặt hàng, báo giá và hỗ trợ chưa mở.</p>
         </div>
       </dialog>
     </>

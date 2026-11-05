@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Sơ đồ minh họa thiết bị, mặt sau">
+  <rect width="640" height="480" fill="#F5F7F8"/>
+  <g stroke="#006B63" stroke-width="4" fill="#E7F4F1">
+    <rect x="230" y="65" width="180" height="280" rx="14"/>
+    <circle cx="320" cy="132" r="38" fill="#fff"/>
+    <path d="M282 132h76m-38-38v76"/>
+    <rect x="266" y="207" width="42" height="45" rx="4" fill="#fff"/>
+    <rect x="332" y="207" width="42" height="45" rx="4" fill="#fff"/>
+    <rect x="296" y="284" width="48" height="25" rx="4" fill="#fff"/>
+  </g>
+  <text x="320" y="393" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="22" fill="#172B35">Mặt sau · Minh họa</text>
+  <text x="320" y="430" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="17" fill="#52636B">Không thể suy thông số từ hình này</text>
+</svg>
