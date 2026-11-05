@@ -1,5 +1,10 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["vite.config.ts", "vitest.config.ts", "react-router.config.ts", "tests/**/*.ts"],
-  "compilerOptions": { "lib": ["ES2022", "DOM"], "types": ["node"] }
+  "include": ["vite.config.ts", "vitest.config.ts", "react-router.config.ts", "tests/**/*.ts", "tests/**/*.tsx", "src/vite-env.d.ts"],
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "vite/client"],
+    "jsx": "react-jsx",
+    "rootDirs": [".", "./.react-router/types"]
+  }
 }

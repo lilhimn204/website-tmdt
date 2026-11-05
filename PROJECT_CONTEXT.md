@@ -18,7 +18,7 @@ Spec Kit: yêu cầu có mã, tách giả định, nguồn, câu hỏi mở, ti�
 
 ## Giai đoạn hiện tại
 
-Giai đoạn 06 — Khởi tạo dự án theo PROMPT 06. Người dùng cho phép tạo bộ khung React/Vite/TypeScript/Tailwind/React Router và Pages Functions, cài dependencies, kiểm thử local, hướng dẫn Windows/GitHub/Cloudflare. **Chỉ khởi tạo, chưa làm chức năng bán hàng.** Kết quả kiểm tra thực tế và việc còn chờ ghi tại docs/VERIFICATION.md và docs/SETUP_CHECKLIST.md.
+Giai đoạn 07, **chỉ module 07.1 — Header, navigation, footer**, theo PROMPT 07 và yêu cầu tiếp tục của người dùng. Dùng cấu trúc hiện tại, DESIGN/SITEMAP/PRD; không tự triển khai 07.2. Tệp, mã nguồn, hướng dẫn và bằng chứng nghiệm thu ghi ở [docs/MODULE_07_1.md](docs/MODULE_07_1.md). Giai đoạn 06 giữ làm nền; kết quả lịch sử ở docs/VERIFICATION.md và docs/SETUP_CHECKLIST.md.
 
 Giai đoạn 01: đã nghiên cứu nguồn, lập phân tích nghiệp vụ/catalog và checklist. PROMPT 02 ngày 04/11/2026 xác nhận tài liệu Giai đoạn 01 đã phê duyệt để làm đầu vào. Các dữ liệu trước đây ghi Chưa xác minh và câu hỏi Q01–Q15 vẫn chưa có câu trả lời cụ thể; phê duyệt phân tích không chứng minh quyền bán, giá, tồn hoặc chính sách có hiệu lực.
 
@@ -88,4 +88,4 @@ Giai đoạn 06 đã hoàn tất bộ khung local và kết nối GitHub. Ngày 
 
 Ngày 05/11/2026 đã rà soát lại PROMPT 06, chạy lại typecheck/lint/12 test/build/Functions compile và HTTP localhost 8788/5173 thành công. Không thay đổi mã ứng dụng. Audit còn 12 moderate ở công cụ phát triển; production audit bằng 0. Bàn giao ZIP mới có tài liệu Git và bằng chứng kiểm tra cập nhật; xem docs/FILES.md và docs/VERIFICATION.md.
 
-Chờ yêu cầu giai đoạn tiếp theo; không tự bắt đầu catalog/checkout/admin, dựng database hoặc deploy. Hướng thiết kế A/B/C và các quyết định kinh doanh chưa được đóng bằng việc khởi tạo project. Nếu thay đổi phạm vi, cập nhật PRD, PRODUCT_BACKLOG, USER_STORIES, SITEMAP và DESIGN cùng nhau. Không biến dữ liệu/quy tắc còn mở thành thông tin đã xác minh.
+PROMPT 07 đã cho phép module 07.1. Header desktop dùng disclosure danh mục; mobile dùng dialog/drilldown, Escape, vòng Tab và trả focus. Footer có nhóm giới thiệu/hỗ trợ/chính sách. Đường dẫn tương lai lấy từ sitemap nhưng chưa bật; search disabled có lý do, cart count chưa biết không hiển thị 0. Danh mục có nhãn minh họa. Hướng A là cơ sở triển khai trong phạm vi này, chưa tự đóng các quyết định nhận diện/kinh doanh còn mở. Toàn bộ module 07.2–07.10 chờ yêu cầu; không tự dựng database hoặc deploy. Không biến dữ liệu/quy tắc còn mở thành thông tin đã xác minh.

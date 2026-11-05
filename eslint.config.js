@@ -10,8 +10,12 @@ export default defineConfig([
   js.configs.recommended,
   tseslint.configs.recommended,
   {
-    files: ['*.js', '*.ts', 'scripts/**/*.mjs', 'tests/**/*.ts'],
+    files: ['*.js', '*.ts', 'scripts/**/*.mjs', 'tests/**/*.{ts,tsx}'],
     languageOptions: { globals: globals.node },
+  },
+  {
+    files: ['tests/**/*.tsx', 'tests/ui-setup.ts', 'scripts/check-navigation.mjs'],
+    languageOptions: { globals: globals.browser },
   },
   {
     files: ['src/**/*.{ts,tsx}'],

@@ -2,11 +2,57 @@
 
 @theme {
   --font-sans: "Segoe UI", system-ui, sans-serif;
+  --color-canvas: #F5F7F8;
+  --color-surface: #FFFFFF;
+  --color-ink: #172B35;
+  --color-muted: #52636B;
+  --color-line: #D9E1E5;
+  --color-control-border: #75858D;
+  --color-brand: #006B63;
+  --color-brand-hover: #00554F;
+  --color-brand-soft: #E7F4F1;
+  --color-danger: #B42318;
 }
 
 @layer base {
-  html { color-scheme: light; }
-  body { @apply m-0 bg-slate-50 font-sans text-slate-900 antialiased; }
+  html { color-scheme: light; scrollbar-gutter: stable; }
+  body { @apply m-0 bg-canvas font-sans text-ink antialiased; }
   button:not(:disabled), a { -webkit-tap-highlight-color: transparent; }
-  :focus-visible { @apply outline-2 outline-offset-4 outline-teal-700; }
+  :focus-visible { @apply outline-2 outline-offset-4 outline-brand; }
+}
+
+@layer components {
+  .storefront-container { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .site-link { @apply inline-flex items-center text-muted; }
+  a.site-link:hover, a.site-link[aria-current="page"] { @apply text-brand underline decoration-2 underline-offset-8; }
+  .site-link.is-unavailable { cursor: not-allowed; }
+  .icon-control { @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg text-ink hover:bg-brand-soft hover:text-brand; }
+  .mobile-nav-row { @apply flex min-h-12 items-center rounded-lg px-3 py-3 text-base leading-6 text-ink; }
+  button.mobile-nav-row:hover, a.mobile-nav-row:hover { @apply bg-brand-soft text-brand; }
+  .skip-link { @apply sr-only; }
+  .skip-link:focus { @apply not-sr-only fixed top-3 left-4 z-50 rounded-lg bg-surface px-5 py-3 font-semibold text-brand shadow-lg; }
+  .category-disclosure > summary::-webkit-details-marker { display: none; }
+  .category-disclosure[open] .category-caret { transform: rotate(180deg); }
+  .category-caret { transition: transform 160ms ease; }
+  .mobile-menu {
+    position: fixed;
+    inset: 0 auto 0 0;
+    margin: 0;
+    width: min(100%, 24rem);
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    padding: 0;
+    border: 0;
+    color: var(--color-ink);
+    background: var(--color-surface);
+  }
+  .mobile-menu::backdrop { background: rgb(23 43 53 / 45%); }
+  .mobile-menu[open] { animation: menu-enter 180ms ease-out; }
+}
+
+@keyframes menu-enter { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu[open] { animation: none; }
+  .category-caret { transition: none; }
 }

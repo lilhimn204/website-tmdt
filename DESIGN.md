@@ -2,7 +2,7 @@
 
 Phiên bản 0.1 · Giai đoạn 04 · 04/11/2026 · **Đề xuất để phê duyệt thiết kế**.
 
-Website mới độc lập với XTREND. Chưa có frontend, prototype tương tác, cài đặt thư viện hoặc triển khai. Các wireframe là bản vẽ tĩnh có chú thích; chưa phải ảnh giao diện hoàn thiện.
+Website mới độc lập với XTREND. Tại mốc Giai đoạn 04, bộ này chỉ có wireframe tĩnh có chú thích. Cập nhật 05/11/2026: PROMPT 07 cho phép triển khai riêng module 07.1 trên bộ khung hiện tại. Header/navigation/footer dùng token hướng A làm cơ sở; xem [bàn giao 07.1](docs/MODULE_07_1.md). Đây chưa phải phê duyệt toàn bộ nhận diện, dữ liệu kinh doanh hoặc những module tiếp theo.
 
 ## 1. Cách đọc bộ thiết kế
 
