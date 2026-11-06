@@ -1,12 +1,12 @@
 # Website TMĐT
 
-Hiện tại: **đã triển khai frontend 07.3–07.6** trên trang chủ và điều hướng 07.1–07.2: danh mục/tìm kiếm/lọc, chi tiết và biến thể, so sánh, giỏ hàng thử nghiệm. Giữ React + Vite + TypeScript strict + Tailwind CSS + React Router, cùng Cloudflare Pages Functions. Chưa triển khai checkout 07.7 hoặc giao dịch bán hàng.
+Hiện tại: **đã hoàn thành frontend Giai đoạn 07 ở chế độ DEMO, gồm 07.1–07.10**. Có điều hướng/trang chủ, danh mục/tìm/lọc, chi tiết, so sánh, giỏ, checkout rà soát, form báo giá B2B và các trang thông tin. Giữ React + Vite + TypeScript strict + Tailwind CSS + React Router, cùng Cloudflare Pages Functions. **Chưa tiếp nhận đơn hoặc báo giá thật**: chưa có API giao dịch, dữ liệu doanh nghiệp và chính sách được phê duyệt.
 
-Xem [bàn giao 07.3–07.6](docs/MODULE_07_3_06.md): toàn bộ tệp tạo/sửa, hướng dẫn từng module, lệnh kiểm tra, kết quả và checklist. [Bàn giao 07.1](docs/MODULE_07_1.md) và [07.2](docs/MODULE_07_2.md) giữ lịch sử. Bộ DEMO có 15 sản phẩm/18 SKU giả định, bao gồm giá/tồn/bảo hành kiểm thử được ghi nhãn rõ. Không phải dữ liệu kinh doanh thực; thêm giỏ không giữ hàng hoặc tạo đơn. Trang thương hiệu, báo giá và chính sách còn chưa mở.
+Xem [bàn giao 07.7–07.10](docs/MODULE_07_7_10.md): toàn bộ tệp tạo/sửa, hướng dẫn từng module, test và checklist. Tài liệu [07.3–07.6](docs/MODULE_07_3_06.md), [07.1](docs/MODULE_07_1.md) và [07.2](docs/MODULE_07_2.md) giữ lịch sử. Bộ DEMO có 15 sản phẩm/18 SKU, nhãn A/B, giá/tồn/bảo hành giả định được ghi rõ. Form chỉ kiểm tra/rà soát tại trang, không gửi hoặc lưu thông tin người nhập. Trang chính sách/liên hệ hiển thị trạng thái chưa công bố; không có thông tin doanh nghiệp hoặc cam kết tự tạo.
 
 Các tệp mã nguồn đã được tạo đầy đủ trong thư mục này. Không chạy lại công cụ tạo template trên thư mục đang có tài liệu. Xem [danh sách tệp bàn giao](docs/FILES.md), [kết quả kiểm tra thực tế](docs/VERIFICATION.md) và [checklist nghiệm thu](docs/SETUP_CHECKLIST.md).
 
-Ngày **05/11/2026**, bản 07.3–07.6 đạt typecheck, lint, 62 test, production build 42 URL, Functions compile, HTTP smoke và kiểm thử Edge của catalog/chi tiết/so sánh/giỏ/trang chủ/menu. Chi tiết ở docs/MODULE_07_3_06.md; bằng chứng Giai đoạn 06 giữ tại docs/VERIFICATION.md. Trên máy hiện tại, các thư viện đã được cài; mở [danh mục DEMO](http://127.0.0.1:8788/san-pham/) khi server đang chạy. Khi cần khởi động lại, chạy `npm.cmd run preview` trong PowerShell tại gốc dự án như giải thích bên dưới.
+Ngày **05/11/2026**, bản hiện tại đạt typecheck, lint, **82 test**, production build **61 URL**, Functions compile, HTTP smoke và các bộ kiểm thử Edge. Chi tiết ở docs/MODULE_07_7_10.md; bằng chứng Giai đoạn 06 giữ tại docs/VERIFICATION.md. Máy hiện tại đã cài thư viện: mở [trang chủ](http://127.0.0.1:8788/), [form báo giá](http://127.0.0.1:8788/bao-gia/) hoặc thêm SKU vào giỏ để thử checkout. Khi cần khởi động lại, chạy `npm.cmd run preview` trong PowerShell tại gốc dự án như giải thích bên dưới.
 
 ## 1. Công cụ trên Windows
 
@@ -96,6 +96,7 @@ Chạy trong một PowerShell còn trống tại gốc dự án. Các script đ�
 | `npm.cmd run test:navigation` | Kiểm tra menu bằng Edge headless qua Playwright trên localhost 8788; cần Pages đang chạy và Edge đã cài |
 | `npm.cmd run test:home` | Kiểm tra trang chủ tại 7 độ rộng, liên kết danh mục/SKU/nội trang và nhãn DEMO; cần Pages và Edge |
 | `npm.cmd run test:commerce` | Kiểm tra lọc, SKU, gallery, giỏ, so sánh, URL sai và bàn phím/mobile; cần Pages và Edge |
+| `npm.cmd run test:requests` | Kiểm tra checkout/RFQ, lỗi/focus, không lưu thông tin form, chính sách, nhãn hàng, responsive và URL xác nhận không hợp lệ; cần Pages và Edge |
 
 Để chạy `smoke` và các lệnh browser, giữ `pages:dev` ở terminal A và chạy lệnh trong terminal B/C. Các script chỉ cho phép localhost. Bộ test hiện tại kiểm tra frontend DEMO và bộ khung, không chứng minh giao dịch bán hàng hay bảo mật production.
 
@@ -111,7 +112,12 @@ Website TMDT/
 │   ├── routes/search.tsx        Tìm kiếm theo URL
 │   ├── routes/product.tsx       Chi tiết theo slug và ?sku=
 │   ├── routes/compare.tsx       So sánh tối đa 3 SKU cùng loại
-│   ├── routes/cart.tsx          Giỏ thử nghiệm; chưa đặt hàng
+│   ├── routes/cart.tsx          Giỏ thử nghiệm, dẫn tới bước rà soát
+│   ├── routes/checkout.tsx      Form và rà soát; chưa gửi đơn
+│   ├── routes/quote.tsx         Form B2B; chưa gửi yêu cầu
+│   ├── routes/brands.tsx        Hai nhãn DEMO, giữ phạm vi hãng khi lọc
+│   ├── routes/policies.tsx      Index và sáu trang trạng thái chính sách
+│   ├── routes/support.tsx       Hỗ trợ; guide/contact/about dùng template thông tin
 │   ├── routes/system-check.tsx  Trang /kiem-tra, nút gọi API thật
 │   ├── app.css                  Tailwind 4 và nền tảng CSS
 │   ├── root.tsx                 Tài liệu HTML, layout và error boundary

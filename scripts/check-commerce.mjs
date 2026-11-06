@@ -78,12 +78,12 @@ try {
   await page.reload();
   await page.getByLabel('Số lượng DEMO-U1000-R', { exact: true }).waitFor();
   assert.equal(await page.getByLabel('Số lượng DEMO-U1000-R', { exact: true }).inputValue(), '2');
-  assert.equal(await page.getByRole('button', { name: 'Đặt hàng chưa mở' }).isDisabled(), true);
+  assert.equal(await page.getByRole('link', { name: 'Tiếp tục đặt hàng thử' }).getAttribute('href'), '/dat-hang/');
   for (const width of [1440, 1024, 768, 390, 320]) await noOverflow(width);
   await page.screenshot({ path: 'artifacts/module-07-3-06-cart-mobile.png', fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.screenshot({ path: 'artifacts/module-07-3-06-cart.png', fullPage: true });
-  mark('07.6: quantity/total, overstock rejection, minimal persistence, reload, mobile layout and blocked checkout.');
+  mark('07.6: quantity/total, overstock rejection, minimal persistence, reload, mobile layout and checkout draft link.');
 
   await go('/san-pham/ups-demo-1000/?sku=DEMO-P100');
   await page.getByRole('alert').filter({ hasText: 'SKU trong URL không hợp lệ' }).waitFor();

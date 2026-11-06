@@ -78,12 +78,12 @@ export function MobileNavigation({ state }: { state: NavigationState }) {
                 <SiteLink item={{ ...selectedGroup, label: 'Xem tất cả' }} className="mb-3 min-h-12 font-semibold" onNavigate={closeMenu} />
                 <ul className="space-y-1">{selectedGroup.children.map((item) => <li key={item.to}><SiteLink item={item} className="mobile-nav-row" onNavigate={closeMenu} /></li>)}</ul>
               </> : state.groups.length > 0 && <>
-                <SiteLink item={{ ...destinations.categories, label: 'Xem tất cả danh mục' }} className="mb-3 min-h-12 font-semibold" />
+                <SiteLink item={{ ...destinations.categories, label: 'Xem tất cả danh mục' }} className="mb-3 min-h-12 font-semibold" onNavigate={closeMenu} />
                 <ul className="space-y-1">{state.groups.map((group) => <li key={group.id}><button type="button" className="mobile-nav-row w-full justify-between gap-4" onClick={() => setLevel(group.id)}>{group.label}<CaretRightIcon size={18} className="shrink-0" aria-hidden="true" /></button></li>)}</ul>
               </>)}
             </>}
           </nav>
-          <p className="shrink-0 border-t border-line px-4 py-4 text-sm leading-6 text-muted">Catalog và giỏ dùng dữ liệu DEMO. Đặt hàng, báo giá và hỗ trợ chưa mở.</p>
+          <p className="shrink-0 border-t border-line px-4 py-4 text-sm leading-6 text-muted">Giao diện dùng dữ liệu DEMO. Form đặt hàng và báo giá chỉ giúp rà soát, chưa gửi giao dịch.</p>
         </div>
       </dialog>
     </>

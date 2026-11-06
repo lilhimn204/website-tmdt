@@ -4,6 +4,7 @@ import { StorefrontFooter } from './storefront-footer';
 import { previewNavigation, type NavigationState } from './navigation-data';
 import { usePreview } from './preview-context';
 import { CompareTray } from './catalog-ui';
+import { RouteFocus } from './route-focus';
 
 interface AppShellProps { children: ReactNode; navigationState?: NavigationState; cartCount?: number | null }
 
@@ -12,6 +13,7 @@ export function AppShell({ children, navigationState = previewNavigation, cartCo
   const store = usePreview();
   return (
     <div className="flex min-h-dvh flex-col">
+      <RouteFocus />
       <a href="#noi-dung" className="skip-link">Đến nội dung chính</a>
       <StorefrontHeader name={appName} state={navigationState} cartCount={cartCount ?? (store.ready ? store.cart.reduce((count, line) => count + line.quantity, 0) : null)} />
       <p role="status" aria-live="polite" aria-atomic="true" className={`storefront-container w-full text-sm leading-6 text-brand ${store.notice ? 'pt-4' : 'sr-only'}`}>{store.notice}</p>

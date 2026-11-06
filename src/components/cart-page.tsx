@@ -42,8 +42,9 @@ export function CartPage() {
         <p className="mt-3 text-sm leading-7 text-muted">{store.cart.length} dòng SKU. Giá được đọc lại từ bộ DEMO hiện tại, không lấy từ bộ nhớ giỏ.</p>
         <p className="mt-3 text-sm leading-7 text-muted">Thuế và phí giao hàng thực chưa xác định. Đây không phải tổng tiền để thanh toán.</p>
         {result.subtotal === null && <p className="mt-3 text-sm text-danger">Sửa hoặc xóa các dòng cần xử lý trước khi tiếp tục thử.</p>}
-        <button type="button" disabled className="primary-button mt-5 w-full" aria-describedby="checkout-not-ready">Đặt hàng chưa mở</button>
-        <p id="checkout-not-ready" className="mt-3 text-xs leading-6 text-muted">Chưa kết nối API, không giữ hàng hoặc tạo đơn. Báo giá số lượng cũng chưa mở.</p>
+        {result.subtotal !== null ? <Link to="/dat-hang/" className="primary-button mt-5 w-full">Tiếp tục đặt hàng thử</Link> : <button type="button" disabled className="primary-button mt-5 w-full">Sửa giỏ trước khi tiếp tục</button>}
+        <p className="mt-3 text-xs leading-6 text-muted">Bước tiếp theo chỉ giúp rà soát thông tin. Chưa tiếp nhận đơn hoặc giữ hàng.</p>
+        <Link to="/bao-gia/" className="mt-3 inline-flex min-h-12 items-center text-sm font-semibold text-brand underline">Cần báo giá theo số lượng?</Link>
         <Link to="/san-pham/" className="secondary-button mt-4 w-full">Tiếp tục chọn sản phẩm</Link>
       </aside>
     </div>}

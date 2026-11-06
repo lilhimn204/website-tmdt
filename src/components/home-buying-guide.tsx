@@ -2,6 +2,7 @@ import { homeCategories } from './home-data';
 import { CategoryIcon } from './category-icon';
 import { SiteLink } from './site-link';
 import { destinations, policyLinks } from './navigation-data';
+import { Link } from 'react-router';
 
 export function HomeBuyingGuide() {
   return <>
@@ -21,6 +22,7 @@ export function HomeBuyingGuide() {
         <h2 id="nhu-cau-doanh-nghiep" tabIndex={-1} className="home-heading">Chuẩn bị nhu cầu doanh nghiệp</h2>
         <p className="mt-3 max-w-lg leading-7 text-muted">Một danh sách rõ ràng giúp trao đổi đúng thiết bị, đúng số lượng và điều kiện triển khai.</p>
         <p className="mt-4 text-sm leading-6 text-muted">Kênh tiếp nhận báo giá chưa mở. Nội dung này là hướng dẫn chuẩn bị; chưa gửi hoặc lưu thông tin của bạn.</p>
+        <Link to="/bao-gia/" className="primary-button mt-5">Mở form báo giá thử nghiệm</Link>
       </div>
       <ol className="divide-y divide-line text-sm leading-6">
         {['Model hoặc nhu cầu sử dụng, số lượng từng loại.', 'Địa điểm triển khai và thời điểm cần hàng.', 'Yêu cầu hóa đơn, thông tin liên hệ và điều kiện kỹ thuật.'].map((text, index) => <li key={text} className="flex gap-4 py-3 first:pt-0 last:pb-0"><span className="font-semibold text-brand">0{index + 1}</span><span>{text}</span></li>)}

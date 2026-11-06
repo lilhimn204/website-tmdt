@@ -14,7 +14,7 @@ export default defineConfig([
     languageOptions: { globals: globals.node },
   },
   {
-    files: ['tests/**/*.tsx', 'tests/ui-setup.ts', 'scripts/check-navigation.mjs', 'scripts/check-home.mjs', 'scripts/check-commerce.mjs'],
+    files: ['tests/**/*.tsx', 'tests/ui-setup.ts', 'scripts/check-*.mjs'],
     languageOptions: { globals: globals.browser },
   },
   {

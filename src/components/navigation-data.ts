@@ -18,22 +18,22 @@ export const destinations = {
   home: { label: 'Trang chủ', to: '/', available: true },
   categories: { label: 'Danh mục', to: '/danh-muc/', available: true },
   products: { label: 'Tất cả sản phẩm', to: '/san-pham/', available: true },
-  brands: { label: 'Thương hiệu', to: '/thuong-hieu/', available: false },
-  quote: { label: 'Yêu cầu báo giá', to: '/bao-gia/', available: false },
-  support: { label: 'Hỗ trợ', to: '/ho-tro/', available: false },
+  brands: { label: 'Thương hiệu', to: '/thuong-hieu/', available: true },
+  quote: { label: 'Yêu cầu báo giá', to: '/bao-gia/', available: true },
+  support: { label: 'Hỗ trợ', to: '/ho-tro/', available: true },
   cart: { label: 'Giỏ hàng', to: '/gio-hang/', available: true },
-  about: { label: 'Giới thiệu', to: '/gioi-thieu/', available: false },
-  contact: { label: 'Liên hệ', to: '/lien-he/', available: false },
-  guide: { label: 'Hướng dẫn sử dụng', to: '/ho-tro/huong-dan-su-dung/', available: false },
+  about: { label: 'Giới thiệu', to: '/gioi-thieu/', available: true },
+  contact: { label: 'Liên hệ', to: '/lien-he/', available: true },
+  guide: { label: 'Hướng dẫn sử dụng', to: '/ho-tro/huong-dan-su-dung/', available: true },
 } satisfies Record<string, NavigationItem>;
 
 export const policyLinks: readonly NavigationItem[] = [
-  { label: 'Bảo hành', to: '/chinh-sach/bao-hanh/', available: false },
-  { label: 'Kiểm hàng & đổi trả', to: '/chinh-sach/doi-tra/', available: false },
-  { label: 'Giao hàng', to: '/chinh-sach/van-chuyen/', available: false },
-  { label: 'Thanh toán', to: '/chinh-sach/thanh-toan/', available: false },
-  { label: 'Bảo vệ thông tin', to: '/chinh-sach/bao-mat/', available: false },
-  { label: 'Điều kiện giao dịch', to: '/chinh-sach/dieu-kien-giao-dich/', available: false },
+  { label: 'Bảo hành', to: '/chinh-sach/bao-hanh/', available: true },
+  { label: 'Kiểm hàng & đổi trả', to: '/chinh-sach/doi-tra/', available: true },
+  { label: 'Giao hàng', to: '/chinh-sach/van-chuyen/', available: true },
+  { label: 'Thanh toán', to: '/chinh-sach/thanh-toan/', available: true },
+  { label: 'Bảo vệ thông tin', to: '/chinh-sach/bao-mat/', available: true },
+  { label: 'Điều kiện giao dịch', to: '/chinh-sach/dieu-kien-giao-dich/', available: true },
 ];
 
 function category(label: string, slug: string): NavigationItem {

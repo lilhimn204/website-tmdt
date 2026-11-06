@@ -16,6 +16,7 @@ export interface DemoProduct {
   related: readonly string[]; variants: readonly DemoVariant[];
 }
 export interface CatalogItem { product: DemoProduct; variant: DemoVariant }
+export const demoBrands = [{ slug: 'nhan-mau-a', name: 'Nhãn mẫu A' }, { slug: 'nhan-mau-b', name: 'Nhãn mẫu B' }] as const;
 
 export const specDefinitions: Record<Family, readonly SpecDefinition[]> = {
   ups: [

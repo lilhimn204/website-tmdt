@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT
 
-Cập nhật: 05/11/2026, Asia/Bangkok.
+Cập nhật: 06/11/2026, Asia/Bangkok.
 
 ## Mục tiêu và ràng buộc đã nhận
 
@@ -18,7 +18,7 @@ Spec Kit: yêu cầu có mã, tách giả định, nguồn, câu hỏi mở, ti�
 
 ## Giai đoạn hiện tại
 
-Giai đoạn 07, **module 07.3–07.6 — danh mục, chi tiết, so sánh và giỏ thử nghiệm**. Người dùng đã yêu cầu rõ “tiếp tục công việc từ 7.03 đến 7..06”; các lần “tiếp tục” sau đó tiếp nối phạm vi này, thay giới hạn từng module của prompt ban đầu. Giữ cấu trúc hiện tại, DESIGN/SITEMAP/PRD. Mã nguồn, hướng dẫn và nghiệm thu ở [docs/MODULE_07_3_06.md](docs/MODULE_07_3_06.md); tài liệu 07.1/07.2 giữ làm lịch sử. Không tự triển khai 07.7, database hoặc deploy.
+Giai đoạn 07, **hoàn thành phần frontend 07.7–07.10 ở chế độ DEMO**, tiếp nối 07.1–07.6. Người dùng yêu cầu “thực hiện nốt các task còn lại”, cho phép hoàn tất checkout, form báo giá, nội dung và responsive/accessibility của PROMPT 07 trong cùng lần. Giữ cấu trúc, DESIGN/SITEMAP/PRD. Hướng dẫn và nghiệm thu hiện tại ở [docs/MODULE_07_7_10.md](docs/MODULE_07_7_10.md). Các tài liệu module trước giữ lịch sử. Phạm vi không bao gồm backend giao dịch, database, admin hoặc deploy production.
 
 Giai đoạn 01: đã nghiên cứu nguồn, lập phân tích nghiệp vụ/catalog và checklist. PROMPT 02 ngày 04/11/2026 xác nhận tài liệu Giai đoạn 01 đã phê duyệt để làm đầu vào. Các dữ liệu trước đây ghi Chưa xác minh và câu hỏi Q01–Q15 vẫn chưa có câu trả lời cụ thể; phê duyệt phân tích không chứng minh quyền bán, giá, tồn hoặc chính sách có hiệu lực.
 
@@ -92,4 +92,8 @@ Module 07.1 đã push commit d8d829d. Module 07.2 đã push fe07948: banner B2C/
 
 Module 07.3–07.6 dùng 15 sản phẩm/18 SKU hoàn toàn giả định, nhãn hàng A/B không liên hệ hãng thật. Giá/tồn/thông số/bảo hành chỉ là fixture có nhãn DEMO, không phải dữ liệu doanh nghiệp. Homepage dùng chung fixture và mở đúng SKU. Có schema thuộc tính theo nhóm, URL lọc/tìm/sắp xếp/phân trang, PDP kiểm tra biến thể, so sánh tối đa 3 cùng family và phân biệt thiếu/false/0/không áp dụng. Giỏ chỉ lưu SKU/số lượng; đọc lại giá hiện tại, chặn EOL/thiếu dữ liệu/quote-only/vượt tồn; chưa giữ hàng/tạo đơn. Ảnh SVG là sơ đồ minh họa có nhãn, tài liệu TXT là ghi chú DEMO; related là danh sách khai báo thủ công, không suy tương thích.
 
-Đạt 62 test, typecheck/lint, build 42 URL, Functions compile, HTTP smoke và Edge browser checks; đã kiểm tra ảnh desktop/mobile, focus/filter dialog và bảng cuộn. Source vẫn ở components/routes/public/tests/scripts; không thêm dependency, API hoặc Supabase. Chi tiết giới hạn và checklist theo từng module ở docs/MODULE_07_3_06.md. Tiếp theo chỉ làm 07.7 khi người dùng yêu cầu; không tự coi các quyết định kinh doanh còn mở là đã được chốt.
+Mốc 07.3–07.6 đạt 62 test, typecheck/lint, build 42 URL, Functions compile, HTTP smoke và Edge; đã push commit 96033ba. Bằng chứng lịch sử ở docs/MODULE_07_3_06.md.
+
+Mốc 07.7–07.10: checkout thu thập thông tin thử, hóa đơn tùy chọn, COD/chuyển khoản và rà soát đầy đủ; RFQ hỗ trợ SKU/số lượng hoặc nhu cầu không có model, điện thoại hoặc email. Không có POST, mã thành công giả, chuyển tiền, giữ hàng hoặc lưu thông tin form vào bộ nhớ trình duyệt. Chỉ cart SKU/quantity được lưu như trước; form mất khi rời/reload. Nút gửi cuối khóa với lý do rõ vì chưa có API/điều kiện bán. Receipt/tracking URL chỉ có trạng thái chưa được xác minh, không echo query hoặc tra đơn công khai.
+
+Thêm support/guide/about/contact, index và sáu trang trạng thái chính sách; không công bố văn bản pháp lý, ngày hiệu lực, số liên hệ hoặc SLA giả. Mở nhãn DEMO A/B, giữ phạm vi nhãn khi lọc; nối mọi đích nav hiện có. Route focus, lỗi form có summary/anchor, field labels, review focus, mobile 320–1440 và text resize được kiểm tra. Đạt 82 test, build 61 URL, check/smoke/browser; chưa chứng nhận WCAG hoặc production. Không thêm dependency, secret, API/database hay đổi cấu trúc. Bước tiếp theo cần yêu cầu backend/API và dữ liệu doanh nghiệp; số SKU/tải, TTL COD/chuyển khoản, RPO/RTO và chính sách vẫn chưa chốt.

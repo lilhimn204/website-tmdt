@@ -2,16 +2,16 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { catalogCategories, catalogItems, specDefinitions } from './catalog-data';
 import { paramsFromForm, specText } from './catalog-model';
 
-interface FilterProps { params: URLSearchParams; routeCategory?: string; onApply: (params: URLSearchParams) => void }
+interface FilterProps { params: URLSearchParams; routeCategory?: string; fixedBrand?: string; onApply: (params: URLSearchParams) => void }
 
-function FilterForm({ params, routeCategory, onApply, prefix }: FilterProps & { prefix: string }) {
+function FilterForm({ params, routeCategory, fixedBrand, onApply, prefix }: FilterProps & { prefix: string }) {
   const initialCategory = params.get('danh-muc') || routeCategory || '';
   const [chosen, setChosen] = useState(initialCategory);
   const [changed, setChanged] = useState(false);
   const category = catalogCategories.find((entry) => entry.slug === chosen);
   const definitions = category?.family ? specDefinitions[category.family] : [];
   const items = catalogItems();
-  const brands = [...new Set(items.map((entry) => entry.product.brand))];
+  const brands = fixedBrand ? [fixedBrand] : [...new Set(items.map((entry) => entry.product.brand))];
   const scope = catalogCategories.filter((entry) => !routeCategory || entry.slug === routeCategory || entry.parent === routeCategory);
   const filterParams = changed ? new URLSearchParams() : params;
   function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); onApply(paramsFromForm(event.currentTarget)); }
@@ -24,7 +24,7 @@ function FilterForm({ params, routeCategory, onApply, prefix }: FilterProps & { 
       </select>
     </div>
     {changed && <p role="status" className="text-xs leading-6 text-muted">Đã đổi loại thiết bị. Các lựa chọn thông số cũ được bỏ; hãy chọn bộ lọc mới rồi áp dụng.</p>}
-    <fieldset><legend className="mb-2 text-sm font-semibold">Nhãn hàng kiểm thử</legend>{brands.map((brand) => <label key={brand} className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" name="thuong-hieu" value={brand} defaultChecked={params.getAll('thuong-hieu').includes(brand)} className="h-4 w-4 accent-brand" />{brand}</label>)}</fieldset>
+    {fixedBrand ? <p className="text-sm text-muted">Đang xem: <strong>{fixedBrand}</strong>. Bộ lọc giữ phạm vi nhãn này.</p> : <fieldset><legend className="mb-2 text-sm font-semibold">Nhãn hàng kiểm thử</legend>{brands.map((brand) => <label key={brand} className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" name="thuong-hieu" value={brand} defaultChecked={params.getAll('thuong-hieu').includes(brand)} className="h-4 w-4 accent-brand" />{brand}</label>)}</fieldset>}
     {!category?.family && <p className="text-xs leading-6 text-muted">Chọn một loại cụ thể để lọc thông số riêng. Danh mục hỗn hợp chỉ có bộ lọc chung.</p>}
     {definitions.filter((definition) => definition.filter).map((definition) => <fieldset key={`${chosen}-${definition.key}`}>
       <legend className="mb-2 text-sm font-semibold">{definition.label}{definition.unit ? ` (${definition.unit})` : ''}</legend>

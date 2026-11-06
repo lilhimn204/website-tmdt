@@ -20,6 +20,7 @@
     "test:navigation": "node scripts/check-navigation.mjs",
     "test:home": "node scripts/check-home.mjs",
     "test:commerce": "node scripts/check-commerce.mjs",
+    "test:requests": "node scripts/check-requests.mjs",
     "check": "npm run typecheck && npm run lint && npm test && npm run build && npm run pages:check",
     "smoke": "node scripts/smoke.mjs"
   },

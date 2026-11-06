@@ -1,0 +1,5 @@
+import { Link } from 'react-router';
+export function ReceiptPage({ kind }: { kind: 'order' | 'quote' | 'tracking' }) {
+  const title = kind === 'quote' ? 'Chưa có xác nhận tiếp nhận yêu cầu' : kind === 'tracking' ? 'Chưa thể xem trạng thái đơn hàng' : 'Chưa có xác nhận tiếp nhận đơn';
+  return <section className="mx-auto max-w-2xl rounded-xl border border-line bg-surface p-6 sm:p-8"><h1 className="text-3xl leading-tight font-semibold">{title}</h1><p role="status" className="mt-5 leading-8 text-muted">Chưa có kết quả tiếp nhận đã xác minh. Mở đường dẫn này hoặc thêm mã vào URL không tạo đơn, tạo yêu cầu hay cấp quyền xem dữ liệu.</p><p className="mt-4 text-sm leading-7 text-muted">Bản thử hiện chưa gửi giao dịch. Trang không hiển thị mã hoặc thông tin cá nhân từ URL và không cho tra cứu đơn bằng mã hay số điện thoại công khai.</p><div className="mt-6 flex flex-wrap gap-3"><Link to={kind === 'quote' ? '/bao-gia/' : '/gio-hang/'} className="primary-button">{kind === 'quote' ? 'Về form báo giá' : 'Về giỏ hàng'}</Link><Link to="/lien-he/" className="secondary-button">Thông tin liên hệ</Link></div></section>;
+}

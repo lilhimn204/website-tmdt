@@ -26,10 +26,10 @@ describe('Home page — module 07.2', () => {
   it('connects home actions to implemented categories and on-page preparation content', () => {
     const { container } = render(<MemoryRouter><Home /></MemoryRouter>);
     const links = [...container.querySelectorAll<HTMLAnchorElement>('a[href]')];
-    expect(links).toHaveLength(10);
+    expect(links).toHaveLength(16);
     for (const link of links) {
       const href = link.getAttribute('href') ?? '';
-      if (!href.startsWith('#')) { expect(href).toMatch(/^\/(danh-muc|san-pham)\/[a-z0-9-]+\/(\?sku=DEMO-[A-Z0-9-]+)?$/); continue; }
+      if (!href.startsWith('#')) { expect(href).toMatch(/^\/(?:(?:danh-muc|san-pham|chinh-sach)\/[a-z0-9-]+|bao-gia|lien-he)\/(\?sku=DEMO-[A-Z0-9-]+)?$/); continue; }
       const target = document.getElementById(href.slice(1));
       expect(target).not.toBeNull();
       expect(target?.getAttribute('tabindex')).toBe('-1');

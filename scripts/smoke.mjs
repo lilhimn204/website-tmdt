@@ -13,6 +13,10 @@ for (const [path, heading] of [
   ['/san-pham/', 'Tất cả sản phẩm'], ['/danh-muc/ram/', 'RAM'],
   ['/san-pham/ups-demo-1000/', 'UPS Online mẫu 1000'], ['/tim-kiem/', 'Tìm kiếm sản phẩm'],
   ['/so-sanh/', 'So sánh sản phẩm'], ['/gio-hang/', 'Giỏ hàng thử nghiệm'],
+  ['/dat-hang/', 'Đặt hàng'], ['/bao-gia/', 'Yêu cầu báo giá'],
+  ['/chinh-sach/', 'Chính sách và thông tin giao dịch'], ['/chinh-sach/bao-hanh/', 'Chính sách bảo hành'],
+  ['/ho-tro/', 'Hỗ trợ khách hàng'], ['/lien-he/', 'Liên hệ'], ['/thuong-hieu/', 'Thương hiệu trong bản DEMO'],
+  ['/dat-hang/da-tiep-nhan/', 'Chưa có xác nhận tiếp nhận đơn'],
 ]) {
   const response = await request(path);
   assert.equal(response.status, 200, path);
@@ -48,6 +52,6 @@ assert.equal((await missingApi.json()).error.code, 'NOT_FOUND');
 const missingPage = await request('/duong-dan-khong-ton-tai');
 assert.equal(missingPage.status, 404);
 assert.ok((await missingPage.text()).includes('Không tìm thấy trang'));
-for (const path of ['/san-pham/not-a-product/', '/danh-muc/not-a-category/']) assert.equal((await request(path)).status, 404, path);
+for (const path of ['/san-pham/not-a-product/', '/danh-muc/not-a-category/', '/chinh-sach/not-a-policy/', '/thuong-hieu/not-a-brand/']) assert.equal((await request(path)).status, 404, path);
 console.log('PASS real 404: API and page');
 console.log('All local Pages smoke checks passed.');

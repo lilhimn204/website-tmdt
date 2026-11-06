@@ -2,7 +2,7 @@
 
 Phiên bản 0.1 · Giai đoạn 04 · 04/11/2026 · **Đề xuất để phê duyệt thiết kế**.
 
-Website mới độc lập với XTREND. Tại mốc Giai đoạn 04, bộ này chỉ có wireframe tĩnh có chú thích. Cập nhật 05/11/2026: đã thực hiện 07.1–07.2, rồi triển khai nhóm **07.3–07.6 theo yêu cầu trực tiếp của người dùng**. Header/trang chủ/catalog/chi tiết/so sánh/giỏ tiếp tục dùng token hướng A; mobile card dạng hàng, filter dialog, bảng cuộn riêng và nhãn DEMO rõ. Xem [bàn giao hiện tại](docs/MODULE_07_3_06.md), [lịch sử 07.1](docs/MODULE_07_1.md) và [07.2](docs/MODULE_07_2.md). Đây chưa phải phê duyệt toàn bộ nhận diện hoặc dữ liệu kinh doanh; 07.7 chưa triển khai.
+Website mới độc lập với XTREND. Tại mốc Giai đoạn 04, bộ này chỉ có wireframe tĩnh có chú thích. Cập nhật 06/11/2026: đã triển khai frontend **07.1–07.10 ở chế độ DEMO theo các yêu cầu tiếp tục của người dùng**. Giữ hướng A, mobile card dạng hàng, dialog, bảng cuộn riêng; checkout/RFQ có form và rà soát nhưng chưa gửi giao dịch; trang thông tin giữ trạng thái chưa công bố. Xem [bàn giao hiện tại 07.7–07.10](docs/MODULE_07_7_10.md), [lịch sử 07.3–07.6](docs/MODULE_07_3_06.md), [07.1](docs/MODULE_07_1.md) và [07.2](docs/MODULE_07_2.md). Đây chưa phải phê duyệt dữ liệu kinh doanh, chính sách pháp lý, backend hoặc nhận diện cuối cùng.
 
 ## 1. Cách đọc bộ thiết kế
 

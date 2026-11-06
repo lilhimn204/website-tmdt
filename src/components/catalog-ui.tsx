@@ -21,7 +21,7 @@ export function CompareChoice({ sku }: { sku: string }) {
 export function CompareTray() {
   const { compare, clearCompare } = usePreview();
   const location = useLocation();
-  if (!compare.length || location.pathname.startsWith('/so-sanh')) return null;
+  if (!compare.length || ['/so-sanh', '/dat-hang', '/bao-gia'].some((path) => location.pathname.startsWith(path))) return null;
   return <aside aria-label="Danh sách so sánh" className="storefront-container w-full pb-6"><div className="flex flex-wrap items-center gap-3 rounded-xl border border-brand bg-brand-soft p-4">
     <p className="mr-auto text-sm text-ink">Đã chọn {compare.length}/3 SKU để so sánh</p>
     <Link to={comparisonHref(compare)} className="primary-button">Xem so sánh</Link>

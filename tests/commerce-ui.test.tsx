@@ -77,7 +77,7 @@ describe('07.3–07.6 — UI recovery and validation', () => {
     expect(screen.queryByText(/Giỏ hàng đang trống/)).toBeNull();
     act(() => store.initialize({ getItem: () => JSON.stringify({ version: 1, lines: [{ sku: 'DEMO-U1000-T', quantity: 2, price: 1 }] }), setItem: vi.fn() }));
     expect(within(screen.getByRole('complementary')).getByText('200.000 ₫')).toBeTruthy();
-    expect((screen.getByRole('button', { name: 'Đặt hàng chưa mở' }) as HTMLButtonElement).disabled).toBe(true);
+    expect(screen.getByRole('link', { name: 'Tiếp tục đặt hàng thử' }).getAttribute('href')).toBe('/dat-hang/');
   });
   it('rejects fractional quantities without changing the cart and supports removing its last line', async () => {
     const store = createPreviewStore(); store.initialize(); store.add('DEMO-U1000-T', 2);

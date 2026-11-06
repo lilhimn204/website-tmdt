@@ -2,18 +2,20 @@ import { Link, useParams, useNavigation } from 'react-router';
 import { usePreviewSearch } from './use-preview-search';
 import { CatalogCard, CatalogFeedback, DemoNotice } from './catalog-ui';
 import { CatalogFilters } from './catalog-filters';
-import { catalogCategories } from './catalog-data';
+import { catalogCategories, demoBrands, demoProducts } from './catalog-data';
 import { selectCatalog, specText } from './catalog-model';
 
-export function CatalogPage({ mode }: { mode: 'all' | 'category' | 'search' }) {
-  const { category: categorySlug } = useParams();
+export function CatalogPage({ mode }: { mode: 'all' | 'category' | 'search' | 'brand' }) {
+  const { category: categorySlug, brand: brandSlug } = useParams();
   const [params, setParams] = usePreviewSearch();
   const navigation = useNavigation();
   const routeCategory = mode === 'category' ? categorySlug : undefined;
-  const result = selectCatalog(params, routeCategory);
+  const brand = mode === 'brand' ? demoBrands.find((entry) => entry.slug === brandSlug) : undefined;
+  const result = selectCatalog(params, routeCategory, brand ? demoProducts.filter((entry) => entry.brand === brand.name) : demoProducts);
   const category = catalogCategories.find((entry) => entry.slug === routeCategory);
-  const title = mode === 'search' ? 'Tìm kiếm sản phẩm' : category?.label ?? (mode === 'category' ? 'Danh mục sản phẩm' : 'Tất cả sản phẩm');
-  if (routeCategory && !category) return <CatalogFeedback status="error" message="Không tìm thấy danh mục. Hãy dùng menu để chọn lại." />;
+  const title = brand?.name ?? (mode === 'search' ? 'Tìm kiếm sản phẩm' : category?.label ?? (mode === 'category' ? 'Danh mục sản phẩm' : 'Tất cả sản phẩm'));
+  if (mode === 'brand' && !brand) return <><h1 className="mb-4 text-3xl font-semibold">Không tìm thấy nhãn hàng</h1><Link to="/thuong-hieu/" className="primary-button">Xem danh sách nhãn DEMO</Link></>;
+  if (routeCategory && !category) return <><h1 className="mb-4 text-3xl font-semibold">Không tìm thấy danh mục</h1><CatalogFeedback status="error" message="Hãy dùng menu để chọn lại danh mục." /></>;
   const emptySearch = mode === 'search' && !result.query;
   const children = catalogCategories.filter((entry) => entry.parent === (routeCategory || null));
   function reset() { const next = new URLSearchParams(); if (result.query) next.set('q', result.query); setParams(next); }
@@ -30,9 +32,9 @@ export function CatalogPage({ mode }: { mode: 'all' | 'category' | 'search' }) {
     <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted"><Link to="/" className="underline underline-offset-4">Trang chủ</Link><span aria-hidden="true"> / </span>{title}</nav>
     <h1 id="catalog-title" tabIndex={-1} className="mb-4 text-3xl leading-tight font-semibold">{title}</h1>
     <DemoNotice />
-    {children.length > 0 && <nav aria-label="Nhóm danh mục" className="mb-6 flex flex-wrap gap-2">{children.map((entry) => <Link key={entry.slug} to={`/danh-muc/${entry.slug}/`} className="secondary-button">{entry.label}</Link>)}</nav>}
+    {children.length > 0 && <nav aria-label="Nhóm danh mục" className="mb-6 flex flex-wrap gap-2">{children.map((entry) => <Link key={entry.slug} to={brand ? `/thuong-hieu/${brand.slug}/?danh-muc=${entry.slug}` : `/danh-muc/${entry.slug}/`} className="secondary-button">{entry.label}</Link>)}</nav>}
     <div className="lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6">
-      <CatalogFilters params={params} {...(routeCategory ? { routeCategory } : {})} onApply={setParams} />
+      <CatalogFilters key={brandSlug} params={params} {...(routeCategory ? { routeCategory } : {})} {...(brand ? { fixedBrand: brand.name } : {})} onApply={setParams} />
       <section aria-label="Kết quả sản phẩm" className="min-w-0">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
           <p role="status" className="text-sm leading-6 text-muted">{emptySearch ? 'Nhập từ khóa để bắt đầu.' : `${result.total} SKU mẫu${result.query ? ` cho “${result.query}”` : ''}`}</p>

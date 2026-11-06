@@ -34,7 +34,8 @@ function PurchasePanel({ item }: { item: CatalogItem }) {
       {feedback && <p id="purchase-feedback" role={feedback.error ? 'alert' : 'status'} className={`mt-3 text-sm leading-6 ${feedback.error ? 'text-danger' : 'text-brand'}`}>{feedback.text}</p>}
     </form>
     <div className="mt-3 flex flex-wrap items-center gap-4"><CompareChoice sku={item.variant.sku} /><Link to="/gio-hang/" className="inline-flex min-h-12 items-center text-sm font-semibold text-brand underline underline-offset-4">Xem giỏ thử nghiệm</Link></div>
-    <p className="mt-2 text-xs leading-6 text-muted">Tư vấn và báo giá chưa mở. Thêm giỏ không giữ hàng; chưa có chức năng đặt hàng.</p>
+    <Link to={`/bao-gia/?sku=${encodeURIComponent(item.variant.sku)}`} className="secondary-button mt-3">Chuẩn bị yêu cầu báo giá</Link>
+    <p className="mt-2 text-xs leading-6 text-muted">Form báo giá chỉ giúp rà soát nhu cầu, chưa gửi yêu cầu. Thêm giỏ không giữ hàng hoặc tạo đơn.</p>
   </div>;
 }
 
@@ -42,7 +43,7 @@ export function ProductDetail() {
   const { slug } = useParams();
   const [params, setParams] = usePreviewSearch();
   const product = demoProducts.find((entry) => entry.slug === slug && entry.published);
-  if (!product) return <><CatalogFeedback status="error" message="Không tìm thấy sản phẩm công khai." /><Link to="/san-pham/" className="secondary-button mt-4">Về danh sách sản phẩm</Link></>;
+  if (!product) return <><h1 className="mb-4 text-3xl font-semibold">Không tìm thấy sản phẩm</h1><CatalogFeedback status="error" message="Sản phẩm không có trong danh mục công khai." /><Link to="/san-pham/" className="secondary-button mt-4">Về danh sách sản phẩm</Link></>;
   const variants = product.variants.filter((entry) => entry.published);
   const skuValues = params.getAll('sku');
   const supplied = skuValues[0];
