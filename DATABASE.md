@@ -1,8 +1,8 @@
 # DATABASE — Mô hình PostgreSQL và tính toàn vẹn
 
-Giai đoạn 05 · 04/11/2026 · **Thiết kế để duyệt; chưa có DDL, migrations hoặc database được tạo**.
+Thiết kế Giai đoạn 05 ngày 04/11/2026; cập nhật implementation 08.1–08.2 ngày 06/11/2026. **Đã có 8 SQL migrations và 52 bảng trên Supabase local; chưa tạo project online hoặc API nghiệp vụ.** Cột/constraint/index thực tế ở [supabase/SCHEMA.md](supabase/SCHEMA.md); phạm vi đã làm và các invariants/RPC còn chờ ở [MODULE_08_1_2](docs/MODULE_08_1_2.md).
 
-Đọc cùng [ARCHITECTURE](ARCHITECTURE.md), [ERD](architecture/ERD.md), [SECURITY](architecture/SECURITY.md) và [API](API.md). Các biểu thức constraint/index trong tài liệu là đặc tả, không phải script SQL có thể chạy.
+Đọc cùng [ARCHITECTURE](ARCHITECTURE.md), [ERD](architecture/ERD.md), [SECURITY](architecture/SECURITY.md) và [API](API.md). Phần bên dưới giữ đặc tả đích; không phải mọi quy tắc giao dịch đã được thực thi ở 08.2. Script SQL chạy được nằm trong `supabase/migrations`.
 
 ## 1. Quy ước
 
@@ -241,7 +241,7 @@ Dùng PostgreSQL READ COMMITTED + khóa tường minh/unique/constraints cho cá
 - Refund thực tế không vượt số receipt còn có thể hoàn. Ghi sai được điều chỉnh qua reversal có quyền/lý do và kiểm tra cân đối, không DELETE ledger; nếu reversal làm refund vượt receipt thì chặn để xử lý điều chỉnh hợp lệ.
 - Nhận trả khóa order/return source và inventory; tổng nhận/restock không vượt đã giao. Chỉ delta restock mới cộng on_hand. Chấp thuận case/refund không cộng tồn; cộng tồn không khẳng định đã hoàn tiền.
 
-## 9. Kế hoạch migrations — chỉ thiết kế
+## 9. Kế hoạch migrations ở mốc thiết kế Giai đoạn 05
 
 | Mã | Nhóm migration tương lai | Kiểm tra bắt buộc |
 |---|---|---|
@@ -257,4 +257,4 @@ Dùng PostgreSQL READ COMMITTED + khóa tường minh/unique/constraints cho cá
 
 Migrations versioned trong Git ở giai đoạn sau; không sửa lại file đã áp dụng production. Thứ tự FK vòng price pointer/current quote version xử lý bằng tạo bảng trước rồi thêm FK trong migration phù hợp. Mỗi migration có validation và kế hoạch rollback/forward-fix; không coi rollback ứng dụng là rollback dữ liệu.
 
-Áp dụng expand → migrate/backfill → verify → contract ở lần phát hành sau. Migration destructive cần backup đã kiểm chứng và kế hoạch phục hồi. Index concurrently nếu cần tránh khóa dài phải là bước riêng ngoài transaction bao migration phù hợp PostgreSQL; kiểm tra index invalid và quyền thực tế. Chưa sinh file `.sql`, chưa chạy migration hoặc SQL trực tiếp.
+Áp dụng expand → migrate/backfill → verify → contract ở lần phát hành sau. Migration destructive cần backup đã kiểm chứng và kế hoạch phục hồi. Index concurrently nếu cần tránh khóa dài phải là bước riêng ngoài transaction bao migration phù hợp PostgreSQL; kiểm tra index invalid và quyền thực tế. Mốc 08.2 đã triển khai schema nền bằng tám migration timestamp; chưa triển khai toàn bộ RPC/policy/publication/cron của kế hoạch đích bên trên.

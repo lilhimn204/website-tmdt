@@ -18,7 +18,9 @@ Spec Kit: yêu cầu có mã, tách giả định, nguồn, câu hỏi mở, ti�
 
 ## Giai đoạn hiện tại
 
-Giai đoạn 07, **hoàn thành phần frontend 07.7–07.10 ở chế độ DEMO**, tiếp nối 07.1–07.6. Người dùng yêu cầu “thực hiện nốt các task còn lại”, cho phép hoàn tất checkout, form báo giá, nội dung và responsive/accessibility của PROMPT 07 trong cùng lần. Giữ cấu trúc, DESIGN/SITEMAP/PRD. Hướng dẫn và nghiệm thu hiện tại ở [docs/MODULE_07_7_10.md](docs/MODULE_07_7_10.md). Các tài liệu module trước giữ lịch sử. Phạm vi không bao gồm backend giao dịch, database, admin hoặc deploy production.
+PROMPT 08: người dùng chỉ yêu cầu **08.1 và 08.2**, đã chọn “Chưa có — chuẩn bị local và hướng dẫn tạo project”. Đã tạo Supabase local, tám migrations/52 bảng và kiểm thử schema nền; chưa tạo/link project online. Hướng dẫn hiện tại ở [docs/MODULE_08_1_2.md](docs/MODULE_08_1_2.md). Dừng trước 08.3: chưa làm Auth/RLS nghiệp vụ, API bán hàng, admin/upload hoặc deploy. TTL, thuế/phí, RPO/RTO và dữ liệu doanh nghiệp vẫn chờ chốt.
+
+Giai đoạn 07 đã hoàn thành frontend 07.1–07.10 DEMO, push commit 42a79ce. Checkout và báo giá chỉ rà soát tại client; chưa có request gửi thật, receipt hoặc lưu PII. Tài liệu frontend ở [docs/MODULE_07_7_10.md](docs/MODULE_07_7_10.md), giữ nguyên lịch sử.
 
 Giai đoạn 01: đã nghiên cứu nguồn, lập phân tích nghiệp vụ/catalog và checklist. PROMPT 02 ngày 04/11/2026 xác nhận tài liệu Giai đoạn 01 đã phê duyệt để làm đầu vào. Các dữ liệu trước đây ghi Chưa xác minh và câu hỏi Q01–Q15 vẫn chưa có câu trả lời cụ thể; phê duyệt phân tích không chứng minh quyền bán, giá, tồn hoặc chính sách có hiệu lực.
 

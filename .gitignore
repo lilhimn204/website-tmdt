@@ -18,6 +18,9 @@ artifacts/
 *.pem
 *.key
 backups/
+supabase/.temp/
+supabase/.branches/
+supabase/.env*
 .DS_Store
 Thumbs.db
 .vscode/*

@@ -1,6 +1,8 @@
 # ARCHITECTURE — Kiến trúc website thương mại điện tử
 
-Phiên bản 0.2 · Giai đoạn 05, cập nhật phạm vi Giai đoạn 06 · 04/11/2026.
+Phiên bản 0.3 · Giai đoạn 05, cập nhật phạm vi 08.1–08.2 · 06/11/2026.
+
+08.1–08.2 đã dựng Supabase local/schema theo yêu cầu mới. Chưa tạo project online, chưa thêm API nghiệp vụ hoặc quyền/Auth 08.3. [Phạm vi và bằng chứng hiện tại](docs/MODULE_08_1_2.md) phân biệt rõ ràng phần đã triển khai với thiết kế đích bên dưới.
 
 **Trạng thái:** PROMPT 06 cho phép khởi tạo bộ khung theo kiến trúc này. Đã chọn React Router Framework Mode/Vite, prerender và Pages Functions để kiểm chứng local. Quyền này không tự đóng các quyết định kinh doanh còn thiếu hoặc cho phép triển khai giao dịch/production. Kết quả thực nghiệm của bộ khung được ghi riêng trong [VERIFICATION](docs/VERIFICATION.md).
 
@@ -17,9 +19,9 @@ PROMPT 05 cho phép thiết kế kiến trúc; không đồng nghĩa tự duyệ
 | Tệp | Nội dung |
 |---|---|
 | [DATABASE.md](DATABASE.md) | Bảng/cột, thuộc tính, constraints, indexes, migration và giao dịch |
-| `API.md` — chưa tạo | REST nghiệp vụ còn cần đặc tả trước khi triển khai chức năng; starter chỉ có health |
+| [API.md](API.md) | Hợp đồng health hiện có; REST nghiệp vụ còn cần đặc tả theo từng module |
 | [ERD](architecture/ERD.md) | Quan hệ catalog, giao dịch, quyền truy cập bằng Mermaid |
-| `architecture/SECURITY.md` — chưa tạo | Auth, authorization, RLS và quyền guest phải hoàn thiện trước backend nghiệp vụ |
+| [SECURITY.md](architecture/SECURITY.md) | Default-deny đã có; Auth, authorization, RLS nghiệp vụ và quyền guest tiếp tục ở 08.3 |
 | `architecture/ENVIRONMENTS.md` — chưa tạo | Bản khởi tạo hiện có `.env.example`, `.dev.vars.example` và README |
 | `architecture/OPERATIONS.md` — chưa tạo | Backup/restore, quota và xử lý sự cố cần hoàn thiện trước production |
 | `architecture/IMPLEMENTATION_PLAN.md` — chưa tạo | Bộ khung Giai đoạn 06 dùng [checklist riêng](docs/SETUP_CHECKLIST.md); không coi toàn bộ TECH đã đạt |

@@ -1,8 +1,13 @@
 # Local Cloudflare bindings only. Copy to .dev.vars when needed.
 APP_ENV="local"
 
-# Future server secrets belong in .dev.vars locally and Cloudflare Secrets online.
-# SUPABASE_URL=
-# SUPABASE_SECRET_KEY=
-# DATA_API_GATEWAY_SECRET=
-# TURNSTILE_SECRET_KEY=
+# Local Supabase URL only; the health API does not connect to it yet.
+SUPABASE_URL="http://127.0.0.1:54321"
+
+# Leave blank for 08.1-08.2. SQL tests use the local Docker database directly.
+# For later modules, use .dev.vars locally and Cloudflare Secrets online.
+# Do not paste secrets into chat, source code, screenshots or a VITE_ variable.
+SUPABASE_PUBLISHABLE_KEY=""
+SUPABASE_SECRET_KEY=""
+DATA_API_GATEWAY_SECRET=""
+TURNSTILE_SECRET_KEY=""

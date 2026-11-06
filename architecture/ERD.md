@@ -1,6 +1,6 @@
 # ERD — Quan hệ dữ liệu
 
-Giai đoạn 05 · Đề xuất, chưa tạo bảng. Chi tiết cột/constraint/nullable ở [DATABASE.md](../DATABASE.md); quyền ở [SECURITY.md](SECURITY.md). Các sơ đồ chia theo miền để đọc được, không phải nhiều database tách rời.
+Giai đoạn 05, cập nhật 08.2: đã tạo 52 bảng trên Supabase local. Chi tiết thực tế ở [SCHEMA.md](../supabase/SCHEMA.md), thiết kế ở [DATABASE.md](../DATABASE.md), quyền nền ở [SECURITY.md](SECURITY.md). Các sơ đồ chia theo miền để đọc được, không phải nhiều database tách rời.
 
 Ký hiệu Mermaid: `||` đúng một, `o|` không hoặc một, `o{` không hoặc nhiều, `|{` một hoặc nhiều. Một số bảng hiển thị lại giữa sơ đồ để nối miền. Audit/idempotency có tham chiếu đa loại được kiểm soát trong RPC; không giả rằng chuỗi entity_id là FK SQL tới mọi bảng.
 
@@ -237,4 +237,4 @@ erDiagram
 
 `auth_users` là biểu diễn `auth.users` do Supabase quản lý, không tạo bảng thay thế. Guest session không tham gia Auth/account và không có quyền tự sửa/hủy đơn. Bảng idempotency liên kết kết quả bằng loại resource + ID và actor scope server xác định; invariants được kiểm trong RPC. `site_content`, `operation_runs`, `abuse_counters` không cần FK giả chỉ để nối hình.
 
-Các sơ đồ đã đối chiếu tên bảng với data dictionary; chưa chạy DDL hoặc kiểm thử referential integrity trên PostgreSQL. Hiệu lực thực tế phải chứng minh bằng migration và test ở giai đoạn implementation.
+Các sơ đồ đã đối chiếu tên bảng với data dictionary. 08.2 đã chạy migrations và test referential integrity trên PostgreSQL local. Quan hệ chuyển quote dùng `orders.quote_id` làm nguồn duy nhất, không tạo cột ngược dư `quotes.converted_order_id`. Các cardinality ở thời điểm publish/checkout và chuyển trạng thái còn cần RPC theo [phạm vi bàn giao](../docs/MODULE_08_1_2.md).
