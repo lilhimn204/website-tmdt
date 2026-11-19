@@ -1,6 +1,66 @@
-# API — trạng thái module 08.3
+# API — trạng thái module 08.4
 
-Cập nhật 19/11/2026. Cloudflare Pages Functions có health và ba endpoint Auth quản trị. Chưa có API sản phẩm, giỏ, checkout, đơn, RFQ hoặc upload. Frontend vẫn DEMO và khóa gửi đơn/báo giá thật.
+Cập nhật 19/11/2026. Có health, ba endpoint Auth quản trị và bốn endpoint công khai đọc thương hiệu/danh mục. Chưa có API sản phẩm, giỏ, checkout, đơn, RFQ hoặc upload. Frontend vẫn DEMO, chưa nối dữ liệu catalog thật và khóa gửi đơn/báo giá thật. [Hướng dẫn 08.4](docs/MODULE_08_4.md).
+
+## Thương hiệu và danh mục công khai — 08.4
+
+| Phương thức / URL | Nội dung |
+|---|---|
+| GET, HEAD /api/v1/brands | Phân trang thương hiệu active |
+| GET, HEAD /api/v1/brands/{slug} | Chi tiết thương hiệu active |
+| GET, HEAD /api/v1/categories | Danh mục gốc hoặc con trực tiếp của parent |
+| GET, HEAD /api/v1/categories/{slug} | Chi tiết, loại kỹ thuật và breadcrumb công khai |
+
+Khách không cần đăng nhập. Pages gọi Supabase bằng publishable key + gateway, **không chuyển tiếp Authorization/Cookie của người gọi**. Public RPC chỉ cấp EXECUTE cho anon; signed-in client vẫn đọc qua các URL Pages này. Không mở CORS; cùng origin với frontend. GET/HEAD không cần Origin hay CSRF token vì không ghi dữ liệu. POST/PUT/PATCH/DELETE/OPTIONS trả 405, Allow: GET, HEAD.
+
+**Danh sách:** hỗ trợ `limit` (mặc định 20, số nguyên 1–100), `after` (slug cuối của trang trước). Categories hỗ trợ thêm `parent` (slug danh mục cha); thiếu parent là lấy gốc, không trả toàn cây trong một response. Không chấp nhận tham số rỗng, trùng, ngoài whitelist hoặc query quá 1024 ký tự. Detail không nhận query. Slug 1–160 ký tự a–z/0–9, dấu gạch nối ở giữa; không tự chuẩn hóa URL sai.
+
+Brand sắp theo slug với collation C. Category sắp sort_order tăng rồi slug C; cursor lấy từ last item, ràng buộc cùng parent. Không có offset, tổng số giả, giá, tồn hoặc số lượng sản phẩm. Dữ liệu không đổi thì phân trang không lặp/bỏ sót. Nếu danh mục đổi giữa các request, client nên quay về trang đầu; cursor bị ẩn/xóa/chuyển parent trả 400, không có snapshot xuyên request.
+
+GET `/api/v1/brands?limit=2`, ví dụ cấu trúc (mọi giá trị dưới đây là minh họa):
+
+```json
+{
+  "data":[{"id":"00000000-0000-0000-0000-000000000001","name":"Thương hiệu mẫu","slug":"thuong-hieu-mau"}],
+  "page":{"limit":2,"next_cursor":null,"has_more":false}
+}
+```
+
+Khi còn trang, next_cursor là slug phần tử cuối và has_more=true. Dùng `?limit=2&after={next_cursor}`; với danh mục giữ nguyên `parent`. Database chưa có dữ liệu thật sẽ trả `data: []`, next_cursor=null, has_more=false. Đây không phải lỗi.
+
+GET `/api/v1/brands/thuong-hieu-mau`:
+
+```json
+{"data":{"id":"00000000-0000-0000-0000-000000000001","name":"Thương hiệu mẫu","slug":"thuong-hieu-mau","description":"Mô tả đã được duyệt"}}
+```
+
+Brand list chỉ có id/name/slug. Detail thêm description dạng text; frontend phải render text an toàn, không đưa vào HTML thô. Chưa trả logo URL, object key, trạng thái nội bộ hoặc version; media/upload thuộc 08.10.
+
+GET `/api/v1/categories/ups`:
+
+```json
+{"data":{"id":"00000000-0000-0000-0000-000000000002","name":"UPS","slug":"ups","parent_slug":"nguon-dien","sort_order":0,"product_type":{"code":"ups","name":"Bộ lưu điện"},"breadcrumbs":[{"name":"Nguồn điện","slug":"nguon-dien"},{"name":"UPS","slug":"ups"}]}}
+```
+
+Category list dùng cùng các trường trừ breadcrumbs. Root có parent_slug=null; node điều hướng chưa gắn loại kỹ thuật có product_type=null, không suy thành loại khác. Breadcrumb đi từ gốc đến chính node. Lấy các con bằng `/api/v1/categories?parent=ups`. Danh mục công khai không có con trả [] còn cha không tồn tại/không công khai trả 404.
+
+**Quy tắc công bố:** brand/category phải active; mọi tổ tiên của category phải active. Nếu category gắn product_type thì type cũng phải active. Nhánh vi phạm bị ẩn toàn bộ, kể cả truy cập URL con trực tiếp. Draft/archived/không tồn tại dùng cùng 404. Active là trạng thái cho phép công bố metadata, không chứng minh có SKU đang bán, quyền phân phối hoặc tồn hàng.
+
+Mọi response no-store và noindex; HEAD giữ status/headers, không body kể cả lỗi. Ẩn dữ liệu có hiệu lực ở request tiếp theo. Timeout upstream 8 giây; giới hạn JSON upstream 256 KiB; chỉ trả DTO whitelist, không thông báo SQL hoặc credential. Không cache để tránh giữ metadata vừa bị thu hồi. Giới hạn này chưa thay thế WAF/rate limit phân tán trước production.
+
+| HTTP | Code | Ý nghĩa |
+|---|---|---|
+| 400 | CATALOG_INVALID_QUERY | Query/slug/limit không hợp lệ |
+| 400 | CATALOG_INVALID_CURSOR | Cursor không tồn tại, không công khai hoặc khác parent; quay lại trang đầu |
+| 404 | CATALOG_NOT_FOUND | Không có metadata công khai tương ứng |
+| 405 | METHOD_NOT_ALLOWED | Endpoint chỉ đọc |
+| 429 | CATALOG_RATE_LIMITED | Upstream giới hạn truy cập; chờ rồi thử lại |
+| 503 | CATALOG_NOT_CONFIGURED | Thiếu/sai bindings hoặc gateway |
+| 503 | CATALOG_UNAVAILABLE | Lỗi kết nối, timeout, redirect, payload quá lớn/sai hợp đồng; không coi là catalog rỗng |
+
+Body lỗi: `{"error":{"code":"CATALOG_NOT_FOUND","message":"Không tìm thấy thương hiệu hoặc danh mục công khai."}}`.
+
+SQL RPC tương ứng: public_brands(requested_limit integer=20, after_slug text=null), public_brand(requested_slug text), public_categories(requested_limit integer=20, after_slug text=null, parent_slug text=null), public_category(requested_slug text). RPC list trả `{items,next_cursor}`; Pages chuẩn hóa thành `{data,page}`. SQL cũng kiểm limit/slug/cursor, không chỉ dựa vào BFF. 08.4 chưa có CRUD admin; giữ cho 08.10.
 
 ## Health
 
@@ -77,6 +137,6 @@ Body: `{"error":{"code":"MFA_REQUIRED","message":"Cần xác thực MFA trước
 
 ## Supabase bên trong
 
-Data API chỉ expose api, có admin_context() và set_admin_access(...). Chỉ authenticated có EXECUTE; không cấp anon/service_role. Pages dùng publishable key + JWT người dùng + X-Data-Api-Gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
+Data API chỉ expose api: admin_context/set_admin_access cấp EXECUTE cho authenticated, bốn public_* catalog RPC cấp cho anon. Không cấp các RPC này cho service_role. Admin dùng publishable key + JWT gốc + gateway; public chỉ publishable key + gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
 
-08.4–08.10 đặc tả DTO/nghiệp vụ riêng. Quyền guest xem đơn, giá/tồn server-side, transaction giữ hàng, idempotency checkout, chống spam khách và Storage signed URL chưa làm ở 08.3. Xem [bảo mật](architecture/SECURITY.md), [hướng dẫn](docs/MODULE_08_3.md).
+08.5–08.10 tiếp tục DTO/nghiệp vụ riêng. Quyền guest xem đơn, giá/tồn server-side, transaction giữ hàng, idempotency checkout, chống spam khách và Storage signed URL chưa làm. Xem [bảo mật](architecture/SECURITY.md), [hướng dẫn Auth](docs/MODULE_08_3.md).

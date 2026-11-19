@@ -1,8 +1,8 @@
 # ARCHITECTURE — Kiến trúc website thương mại điện tử
 
-Phiên bản 0.4 · Giai đoạn 05, cập nhật phạm vi 08.3 · 19/11/2026.
+Phiên bản 0.5 · Giai đoạn 05, cập nhật phạm vi 08.4 · 19/11/2026.
 
-08.1–08.3 đã dựng Supabase local/schema và Auth/MFA/RLS. Pages xác minh bearer với Supabase Auth rồi gọi RPC bằng chính JWT người dùng, publishable key và gateway server-only. Chưa tạo project online hoặc API bán hàng. [Phạm vi và bằng chứng hiện tại](docs/MODULE_08_3.md) phân biệt phần đã triển khai với thiết kế đích bên dưới.
+08.1–08.4 đã dựng Supabase local/schema, Auth/MFA/RLS và public brand/category reads. Admin xác minh bearer với Auth rồi gọi RPC bằng JWT gốc; public reads dùng publishable key, không chuyển bearer/cookie của khách. Cả hai cần gateway server-only. Public SQL chỉ trả metadata active với nhánh tổ tiên/type active, không mở raw-table grants. Chưa tạo project online, API sản phẩm hoặc giao dịch bán hàng. [Phạm vi và bằng chứng hiện tại](docs/MODULE_08_4.md) phân biệt phần triển khai với thiết kế đích bên dưới.
 
 **Trạng thái:** PROMPT 06 cho phép khởi tạo bộ khung theo kiến trúc này. Đã chọn React Router Framework Mode/Vite, prerender và Pages Functions để kiểm chứng local. Quyền này không tự đóng các quyết định kinh doanh còn thiếu hoặc cho phép triển khai giao dịch/production. Kết quả thực nghiệm của bộ khung được ghi riêng trong [VERIFICATION](docs/VERIFICATION.md).
 
@@ -19,7 +19,7 @@ PROMPT 05 cho phép thiết kế kiến trúc; không đồng nghĩa tự duyệ
 | Tệp | Nội dung |
 |---|---|
 | [DATABASE.md](DATABASE.md) | Bảng/cột, thuộc tính, constraints, indexes, migration và giao dịch |
-| [API.md](API.md) | Health và session/access/logout hiện có; REST bán hàng còn cần đặc tả theo module |
+| [API.md](API.md) | Health, session/access/logout, public brands/categories; REST sản phẩm/giao dịch tiếp tục theo module |
 | [ERD](architecture/ERD.md) | Quan hệ catalog, giao dịch, quyền truy cập bằng Mermaid |
 | [SECURITY.md](architecture/SECURITY.md) | Auth/MFA, RLS/ACL, quyền staff và gateway đã có; quyền guest/order tiếp tục ở 08.7–08.8 |
 | `architecture/ENVIRONMENTS.md` — chưa tạo | Bản khởi tạo hiện có `.env.example`, `.dev.vars.example` và README |

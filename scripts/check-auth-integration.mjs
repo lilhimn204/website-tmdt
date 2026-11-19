@@ -5,6 +5,7 @@ import { dirname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
 import { bindProjectToLoopback } from './docker-loopback.mjs';
+import { checkPublicCatalog } from './lib/public-catalog-integration.mjs';
 
 // A disposable, named LOCAL stack. Never link/reset the application database.
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -160,6 +161,7 @@ try {
   ensure(sql("select count(*) from app.admin_profiles p join app.admin_user_roles ur on ur.user_id=p.user_id join app.admin_roles r on r.id=ur.role_id where p.active and r.code='owner';") === '1', 'Must retain one owner'); pass('two simultaneous owner removals preserve one active owner');
   ensure(sql("select count(*) from app.audit_events where action='security.access.changed' and actor_type='admin';") === '6', 'Audit must contain only committed mutations'); pass('successful grants/revocations audited; rejected writes rolled back');
   console.log(`Auth integration: ${checks} checks passed with real local Auth, TOTP, PostgREST and Pages Functions.`);
+  await checkPublicCatalog({ sql, api, origin, publishable: status.PUBLISHABLE_KEY, gateway });
 } catch (error) {
   console.error(`FAIL: ${error.message}`); process.exitCode = 1;
   if (stackCreated) {

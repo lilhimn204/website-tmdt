@@ -35,8 +35,9 @@ console.log('PASS: direct Data API requests without the server gateway are denie
 const catalog = await fetch(`${api}/rest/v1/`, { headers: gatewayHeaders });
 assert.equal(catalog.status, 200);
 const spec = await catalog.json();
-assert.ok(!Object.keys(spec.paths ?? {}).some(path => path !== '/'), 'no business endpoint exposed');
-console.log('PASS: Data API healthy; anon sees no admin or business endpoint.');
+assert.deepEqual(Object.keys(spec.paths ?? {}).filter(path => path !== '/').sort(),
+  ['/rpc/public_brand', '/rpc/public_brands', '/rpc/public_categories', '/rpc/public_category'].sort(), 'only four public navigation RPCs exposed to anon');
+console.log('PASS: Data API healthy; anon sees exactly four public catalog RPCs, no admin or raw tables.');
 for (const schema of ['app', 'private', 'public']) {
   const response = await fetch(`${api}/rest/v1/orders`, { headers: { ...gatewayHeaders, 'Accept-Profile': schema } });
   assert.equal(response.status, 406, `${schema} must not be exposed`);

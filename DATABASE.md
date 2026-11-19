@@ -1,6 +1,6 @@
 # DATABASE — Mô hình PostgreSQL và tính toàn vẹn
 
-Thiết kế Giai đoạn 05 ngày 04/11/2026; cập nhật implementation 08.3 ngày 19/11/2026. **Đã có 12 SQL migrations và 52 bảng nghiệp vụ trên Supabase local; chưa tạo project online hoặc API bán hàng.** 08.3 thêm vai trò, RLS, hai RPC Auth và bảng nội bộ `admin_control_state`/`gateway_secrets`; cột/constraint/index ở [supabase/SCHEMA.md](supabase/SCHEMA.md), quyền ở [SECURITY](architecture/SECURITY.md). Xem [08.3](docs/MODULE_08_3.md) và phạm vi nền [08.1–08.2](docs/MODULE_08_1_2.md).
+Thiết kế Giai đoạn 05 ngày 04/11/2026; cập nhật implementation 08.4 ngày 19/11/2026. **Đã có 14 SQL migrations và 52 bảng nghiệp vụ trên Supabase local; chưa tạo project online hoặc API giao dịch bán hàng.** Có hai RPC Auth và bốn RPC public brand/category, private helper kiểm query/cây công khai, hai partial indexes phục vụ đọc active. Không thêm bảng hoặc dữ liệu doanh nghiệp, không đổi grants raw tables. Cột/constraint/index ở [supabase/SCHEMA.md](supabase/SCHEMA.md), quyền ở [SECURITY](architecture/SECURITY.md). Xem [08.4](docs/MODULE_08_4.md), [Auth 08.3](docs/MODULE_08_3.md), nền [08.1–08.2](docs/MODULE_08_1_2.md).
 
 Đọc cùng [ARCHITECTURE](ARCHITECTURE.md), [ERD](architecture/ERD.md), [SECURITY](architecture/SECURITY.md) và [API](API.md). Phần bên dưới giữ đặc tả đích; không phải mọi quy tắc giao dịch đã được thực thi ở 08.2. Script SQL chạy được nằm trong `supabase/migrations`.
 

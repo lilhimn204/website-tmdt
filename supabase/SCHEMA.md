@@ -1,10 +1,10 @@
-# Schema thực tế — module 08.3
+# Schema thực tế — module 08.4
 
 Sinh từ PostgreSQL local bằng `npm.cmd run db:docs`. Migrations là nguồn chuẩn; tài liệu này chỉ đọc metadata, không có dữ liệu khách hoặc secret.
 
-52 bảng trong `app`; RLS bật. 08.3 cấp SELECT hạn chế theo vai trò và MFA; không cấp ghi trực tiếp. `api` có admin_context/set_admin_access. `private` giữ khóa cây danh mục, khóa quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).
+52 bảng trong `app`; RLS bật. Staff đọc hạn chế theo vai trò/MFA, không ghi trực tiếp. `api` có hai RPC Auth và bốn RPC public brand/category trả projection đã duyệt. `private` giữ helpers, khóa cây/quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).
 
-Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).
+Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.4](../docs/MODULE_08_4.md), [Auth 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).
 
 ## app.abuse_counters
 
@@ -273,6 +273,7 @@ Indexes:
 
 ```sql
 CREATE UNIQUE INDEX brands_pkey ON app.brands USING btree (id)
+CREATE INDEX brands_public_slug ON app.brands USING btree (((slug)::text) COLLATE "C") WHERE (status = 'active'::text)
 CREATE UNIQUE INDEX brands_slug_key ON app.brands USING btree (slug)
 ```
 
@@ -349,6 +350,7 @@ Indexes:
 
 ```sql
 CREATE UNIQUE INDEX categories_pkey ON app.categories USING btree (id)
+CREATE INDEX categories_public_children ON app.categories USING btree (parent_id, sort_order, ((slug)::text) COLLATE "C") WHERE (status = 'active'::text)
 CREATE UNIQUE INDEX categories_slug_key ON app.categories USING btree (slug)
 CREATE INDEX category_parent ON app.categories USING btree (parent_id)
 ```
