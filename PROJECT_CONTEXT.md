@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT
 
-Cập nhật: 06/11/2026, Asia/Bangkok.
+Cập nhật: 19/11/2026, Asia/Bangkok.
 
 ## Mục tiêu và ràng buộc đã nhận
 
@@ -18,7 +18,9 @@ Spec Kit: yêu cầu có mã, tách giả định, nguồn, câu hỏi mở, ti�
 
 ## Giai đoạn hiện tại
 
-PROMPT 08: người dùng chỉ yêu cầu **08.1 và 08.2**, đã chọn “Chưa có — chuẩn bị local và hướng dẫn tạo project”. Đã tạo Supabase local, tám migrations/52 bảng và kiểm thử schema nền; chưa tạo/link project online. Hướng dẫn hiện tại ở [docs/MODULE_08_1_2.md](docs/MODULE_08_1_2.md). Dừng trước 08.3: chưa làm Auth/RLS nghiệp vụ, API bán hàng, admin/upload hoặc deploy. TTL, thuế/phí, RPO/RTO và dữ liệu doanh nghiệp vẫn chờ chốt.
+PROMPT 08 bắt đầu từ 08.1–08.2; người dùng chọn “Chưa có — chuẩn bị local và hướng dẫn tạo project”, sau đó yêu cầu tiếp tục. Phạm vi hiện tại là **08.3 Auth/MFA/RLS**, không tự mở 08.4–08.10. Có 12 migrations/52 bảng, 6 vai trò/23 quyền, API session/access/logout, kiểm tra phiên/factor sống và gateway PostgREST. Hướng dẫn: [docs/MODULE_08_3.md](docs/MODULE_08_3.md). Chưa tạo/link project online hoặc Owner thật; không có UI đăng nhập/admin nghiệp vụ, API bán hàng, upload hoặc deploy. TTL, thuế/phí, RPO/RTO và dữ liệu doanh nghiệp vẫn chờ chốt.
+
+08.3 đã đạt 131 Vitest, 136 pgTAP, 2 concurrency nền, 7 HTTP surface, 21 integration Auth/TOTP/Pages thật; typecheck/lint/build 61 URL/Functions compile đạt. Stack integration riêng đã dọn. Không đưa .dev.vars, CLI cache hoặc test credentials vào Git/ZIP. Bước tiếp theo theo yêu cầu mới: 08.4 API thương hiệu/danh mục; chưa tự triển khai.
 
 Giai đoạn 07 đã hoàn thành frontend 07.1–07.10 DEMO, push commit 42a79ce. Checkout và báo giá chỉ rà soát tại client; chưa có request gửi thật, receipt hoặc lưu PII. Tài liệu frontend ở [docs/MODULE_07_7_10.md](docs/MODULE_07_7_10.md), giữ nguyên lịch sử.
 

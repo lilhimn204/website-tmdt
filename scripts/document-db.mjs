@@ -19,10 +19,10 @@ if (result.status !== 0) throw new Error(result.stderr || 'Cannot read local sch
 const tables = JSON.parse(result.stdout);
 if (tables.length !== 52) throw new Error('Expected 52 business tables before documenting schema');
 const escape = value => String(value ?? '—').replaceAll('|', '\\|').replaceAll('\n', ' ');
-const lines = ['# Schema thực tế — module 08.2', '',
+const lines = ['# Schema thực tế — module 08.3', '',
   'Sinh từ PostgreSQL local bằng `npm.cmd run db:docs`. Migrations là nguồn chuẩn; tài liệu này chỉ đọc metadata, không có dữ liệu khách hoặc secret.', '',
-  '52 bảng trong `app`; RLS bật và chưa có policy cho phép. `api` chưa có RPC/view. `private.catalog_integrity_lock` chỉ điều phối chỉnh cây danh mục. Quan hệ tổng thể: [ERD](../architecture/ERD.md).', '',
-  'Ràng buộc trigger, giới hạn chưa triển khai và checklist: [bàn giao 08.1–08.2](../docs/MODULE_08_1_2.md).', ''];
+  '52 bảng trong `app`; RLS bật. 08.3 cấp SELECT hạn chế theo vai trò và MFA; không cấp ghi trực tiếp. `api` có admin_context/set_admin_access. `private` giữ khóa cây danh mục, khóa quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).', '',
+  'Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).', ''];
 for (const table of tables) {
   lines.push(`## app.${table.name}`, '', `RLS: ${table.rls ? 'bật' : 'tắt'}.`, '', '| Cột | Kiểu PostgreSQL | NOT NULL | Default / generated |', '|---|---|---|---|');
   for (const column of table.columns) lines.push(`| ${column.name} | ${escape(column.type)} | ${column.required ? 'Có' : 'Không'} | ${column.generated ? 'GENERATED: ' : ''}${escape(column.default)} |`);

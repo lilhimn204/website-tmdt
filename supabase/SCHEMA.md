@@ -1,10 +1,10 @@
-# Schema thực tế — module 08.2
+# Schema thực tế — module 08.3
 
 Sinh từ PostgreSQL local bằng `npm.cmd run db:docs`. Migrations là nguồn chuẩn; tài liệu này chỉ đọc metadata, không có dữ liệu khách hoặc secret.
 
-52 bảng trong `app`; RLS bật và chưa có policy cho phép. `api` chưa có RPC/view. `private.catalog_integrity_lock` chỉ điều phối chỉnh cây danh mục. Quan hệ tổng thể: [ERD](../architecture/ERD.md).
+52 bảng trong `app`; RLS bật. 08.3 cấp SELECT hạn chế theo vai trò và MFA; không cấp ghi trực tiếp. `api` có admin_context/set_admin_access. `private` giữ khóa cây danh mục, khóa quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).
 
-Ràng buộc trigger, giới hạn chưa triển khai và checklist: [bàn giao 08.1–08.2](../docs/MODULE_08_1_2.md).
+Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).
 
 ## app.abuse_counters
 
@@ -57,6 +57,8 @@ CHECK ((authz_version > 0));
 PRIMARY KEY (user_id);
 -- admin_profiles_user_id_fkey
 FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE RESTRICT;
+-- last_owner_check
+TRIGGER DEFERRABLE INITIALLY DEFERRED;
 ```
 
 Indexes:
@@ -83,6 +85,8 @@ FOREIGN KEY (permission_code) REFERENCES app.permission_definitions(code) ON DEL
 PRIMARY KEY (role_id, permission_code);
 -- admin_role_permissions_role_id_fkey
 FOREIGN KEY (role_id) REFERENCES app.admin_roles(id) ON DELETE RESTRICT;
+-- last_owner_check
+TRIGGER DEFERRABLE INITIALLY DEFERRED;
 ```
 
 Indexes:
@@ -111,6 +115,8 @@ UNIQUE (code);
 PRIMARY KEY (id);
 -- admin_roles_status_check
 CHECK ((status = ANY (ARRAY['active'::text, 'archived'::text])));
+-- last_owner_check
+TRIGGER DEFERRABLE INITIALLY DEFERRED;
 ```
 
 Indexes:
@@ -142,6 +148,8 @@ PRIMARY KEY (user_id, role_id);
 FOREIGN KEY (role_id) REFERENCES app.admin_roles(id) ON DELETE RESTRICT;
 -- admin_user_roles_user_id_fkey
 FOREIGN KEY (user_id) REFERENCES app.admin_profiles(user_id) ON DELETE RESTRICT;
+-- last_owner_check
+TRIGGER DEFERRABLE INITIALLY DEFERRED;
 ```
 
 Indexes:

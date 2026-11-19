@@ -5,7 +5,8 @@ import { randomUUID } from 'node:crypto';
 // Docker Desktop may ignore the bridge's default host binding. Recreate only this
 // project's three published containers with explicit loopback ports, retaining
 // the exact configuration and named volumes. Secrets stay in process memory.
-export async function bindProjectToLoopback() {
+export async function bindProjectToLoopback(project = 'website-tmdt') {
+  if (!['website-tmdt','website-tmdt-auth-test'].includes(project)) throw new Error('Unexpected local project for port binding.');
   const context = spawnSync('docker', ['context', 'inspect'], { encoding: 'utf8', windowsHide: true });
   if (context.status !== 0) throw new Error('Cannot inspect the local Docker context.');
   const endpoint = JSON.parse(context.stdout)[0].Endpoints.docker.Host;
@@ -34,8 +35,9 @@ export async function bindProjectToLoopback() {
       req.end(body);
     });
   }
+  let reboundDatabase = false;
   for (const service of ['db', 'kong', 'studio']) {
-    const name = `supabase_${service}_website-tmdt`;
+    const name = `supabase_${service}_${project}`;
     const original = await api('GET', `/containers/${name}/json`);
     const published = Object.values(original.NetworkSettings.Ports).flat().filter(Boolean);
     if (published.every(port => ['127.0.0.1', '::1'].includes(port.HostIp))) continue;
@@ -75,6 +77,15 @@ export async function bindProjectToLoopback() {
     }
     // Remove only the replaced, stopped container. Never remove volumes.
     await api('DELETE', `/containers/${backup}`);
+    if (service === 'db') reboundDatabase = true;
     console.log(`Bound ${service} to 127.0.0.1; retained project data volume(s).`);
+  }
+  if (reboundDatabase) {
+    // Connection pools can keep terminated DB connections after container replacement
+    // (Auth then fails its first write with SQLSTATE 57P01). Reconnect local dependents.
+    for (const service of ['auth', 'rest', 'storage', 'pg_meta']) {
+      await api('POST', `/containers/supabase_${service}_${project}/restart?t=10`);
+    }
+    console.log('Reconnected local database clients after loopback binding.');
   }
 }

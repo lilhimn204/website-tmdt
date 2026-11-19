@@ -1,11 +1,13 @@
 # Local Cloudflare bindings only. Copy to .dev.vars when needed.
 APP_ENV="local"
+APP_ORIGIN="http://127.0.0.1:8788"
 
-# Local Supabase URL only; the health API does not connect to it yet.
+# Auth adapter uses this URL; the health API still does not probe the database.
 SUPABASE_URL="http://127.0.0.1:54321"
 
-# Leave blank for 08.1-08.2. SQL tests use the local Docker database directly.
-# For later modules, use .dev.vars locally and Cloudflare Secrets online.
+# Run npm.cmd run auth:setup:local to fill the local publishable/gateway values.
+# The admin adapter never uses SUPABASE_SECRET_KEY; leave it blank in 08.3.
+# Configure hosted secrets only when deploying the corresponding later modules.
 # Do not paste secrets into chat, source code, screenshots or a VITE_ variable.
 SUPABASE_PUBLISHABLE_KEY=""
 SUPABASE_SECRET_KEY=""

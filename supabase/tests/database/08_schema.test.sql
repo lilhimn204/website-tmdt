@@ -7,21 +7,22 @@ $$ select ('00000000-0000-0000-0000-' || lpad(n::text,12,'0'))::uuid $$;
 
 select is((select count(*)::integer from pg_tables where schemaname = 'app'),52,'all 52 planned business tables exist');
 select is((select count(*)::integer from pg_tables where schemaname = 'app' and rowsecurity),52,'RLS enabled on every business table');
-select is((select count(*)::integer from pg_policies where schemaname in ('app','api','private')),0,'no permissive application policies before 08.3');
-select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname in ('app','api','private') and p.prosecdef),0,'no SECURITY DEFINER escape hatch');
-select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'api'),0,'no business RPC before the API modules');
+select is((select count(*)::integer from pg_policies where schemaname='app' and permissive='PERMISSIVE' and cmd<>'SELECT'),0,'no direct-write policies for authenticated users');
+select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname in ('app','api','private') and p.prosecdef and p.proname not in ('is_active_admin','has_permission','set_admin_access','require_gateway','keep_last_owner')),0,'only reviewed auth definers exist');
+select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'api'),2,'only two auth RPCs, no business RPC');
 select ok(not has_schema_privilege('anon','app','USAGE'),'anon cannot reach business schema');
-select ok(not has_schema_privilege('authenticated','app','USAGE'),'authenticated cannot reach business schema');
+select ok(has_schema_privilege('authenticated','app','USAGE'),'authenticated reaches explicitly granted reads through RLS');
 select ok(not has_schema_privilege('service_role','app','USAGE'),'service role has no direct schema access');
 select ok(not exists(select 1 from pg_tables t cross join (values('anon'),('authenticated'),('service_role')) r(role)
-  where schemaname = 'app' and (has_table_privilege(r.role,format('%I.%I',schemaname,tablename),'SELECT')
+  where schemaname = 'app' and ((r.role<>'authenticated' and has_table_privilege(r.role,format('%I.%I',schemaname,tablename),'SELECT'))
     or has_table_privilege(r.role,format('%I.%I',schemaname,tablename),'INSERT')
     or has_table_privilege(r.role,format('%I.%I',schemaname,tablename),'UPDATE')
     or has_table_privilege(r.role,format('%I.%I',schemaname,tablename),'DELETE')
-    or has_table_privilege(r.role,format('%I.%I',schemaname,tablename),'TRUNCATE'))),'all three API roles denied direct DML and TRUNCATE');
+    or has_table_privilege(r.role,format('%I.%I',schemaname,tablename),'TRUNCATE'))),'all API roles denied writes; anon/service denied raw reads');
 select ok(not exists(select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace
   cross join (values('anon'),('authenticated'),('service_role')) r(role)
-  where n.nspname in ('app','private','api') and has_function_privilege(r.role,p.oid,'EXECUTE')),'no API role can invoke private helpers');
+  where n.nspname in ('app','private','api') and has_function_privilege(r.role,p.oid,'EXECUTE') and not
+  (p.proname='require_gateway' or (r.role='authenticated' and p.proname in ('is_active_admin','has_permission','admin_context','set_admin_access')))), 'only explicit auth helper/RPC execute grants exist');
 
 -- Fixture data lives only in this transaction and is rolled back at the end.
 insert into auth.users(id) values(pg_temp.id(1));

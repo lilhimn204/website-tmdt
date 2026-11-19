@@ -1,6 +1,6 @@
 # Website TMĐT
 
-**Cập nhật 06/11/2026 — 08.1–08.2:** đã chuẩn bị Supabase local, 8 SQL migrations và 52 bảng nghiệp vụ, mặc định khóa quyền truy cập. Chưa tạo project online và chưa nối frontend/API bán hàng vào database. Xem [hướng dẫn Windows, tạo project online và checklist](docs/MODULE_08_1_2.md), [schema thực tế](supabase/SCHEMA.md). Mở Docker Desktop rồi chạy `npm.cmd run db:start`; kiểm tra bằng `npm.cmd run check:db`. Các lệnh chỉ chạy local.
+**Cập nhật 19/11/2026 — 08.3:** đã bổ sung Auth/MFA, 6 vai trò, RLS và 3 endpoint quản trị phiên/quyền; tổng 12 migrations, 52 bảng nghiệp vụ. Xem [hướng dẫn Windows và checklist 08.3](docs/MODULE_08_3.md), [API](API.md), [schema](supabase/SCHEMA.md). Chưa tạo project online hoặc Owner thật; frontend tiếp tục DEMO. Sau khi mở Docker Desktop, chạy lần lượt `npm.cmd run db:start`, `npm.cmd run db:migrate`, `npm.cmd run auth:setup:local`, `npm.cmd run check:db`. Lệnh setup tự ghi cấu hình local vào tệp được Git bỏ qua, không in secret. Hướng dẫn tạo project online giữ tại [08.1–08.2](docs/MODULE_08_1_2.md).
 
 Hiện tại: **đã hoàn thành frontend Giai đoạn 07 ở chế độ DEMO, gồm 07.1–07.10**. Có điều hướng/trang chủ, danh mục/tìm/lọc, chi tiết, so sánh, giỏ, checkout rà soát, form báo giá B2B và các trang thông tin. Giữ React + Vite + TypeScript strict + Tailwind CSS + React Router, cùng Cloudflare Pages Functions. **Chưa tiếp nhận đơn hoặc báo giá thật**: chưa có API giao dịch, dữ liệu doanh nghiệp và chính sách được phê duyệt.
 

@@ -32,7 +32,10 @@
     "test:db:concurrency": "node scripts/check-db-concurrency.mjs",
     "check:db": "npm run db:lint && npm run test:db && npm run test:db:concurrency && npm run test:db:surface",
     "db:docs": "node scripts/document-db.mjs",
-    "test:db:surface": "node scripts/check-db-surface.mjs"
+    "test:db:surface": "node scripts/check-db-surface.mjs",
+    "auth:setup:local": "node scripts/setup-auth-local.mjs",
+    "auth:bootstrap:local": "node scripts/bootstrap-owner-local.mjs",
+    "test:auth:integration": "node scripts/check-auth-integration.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "2.1.10",

@@ -1,33 +1,82 @@
-# API — trạng thái đến module 08.1–08.2
+# API — trạng thái module 08.3
 
-Backend dùng Cloudflare Pages Functions và sẽ gọi Supabase Data API/RPC qua HTTPS theo [ARCHITECTURE.md](ARCHITECTURE.md). 08.1–08.2 chỉ chuẩn bị local/schema; **chưa thêm API nghiệp vụ hoặc kết nối database từ Functions**. Xem [bàn giao](docs/MODULE_08_1_2.md).
+Cập nhật 19/11/2026. Cloudflare Pages Functions có health và ba endpoint Auth quản trị. Chưa có API sản phẩm, giỏ, checkout, đơn, RFQ hoặc upload. Frontend vẫn DEMO và khóa gửi đơn/báo giá thật.
 
-## Endpoint đang có
+## Health
 
-`GET /api/v1/health` → HTTP 200, JSON:
+`GET /api/v1/health` trả 200: `{"status":"ok","scope":"starter","database":"not_configured"}`. HEAD trả 200 không body; phương thức khác trả 405, Allow: GET, HEAD. Đây chỉ là health bộ khung; không probe Supabase hoặc xác nhận giao dịch hoạt động.
+
+Đường dẫn chưa triển khai trả 404: `{"error":{"code":"NOT_FOUND","message":"API này chưa tồn tại."}}`.
+
+## Quy tắc chung cho admin
+
+- Cùng origin với website; HTTPS khi online. Local mặc định http://127.0.0.1:8788.
+- `Authorization: Bearer <access_token>` từ Supabase Auth. Không nhận token qua cookie, query hoặc body. Không gửi refresh token vào ba endpoint này.
+- Pages gọi Auth `/user` xác minh chính bearer đó trước khi kiểm claims. Database kiểm profile/role/session/factor sống; không lấy quyền từ metadata.
+- POST bắt buộc Origin đúng APP_ORIGIN. GET cho phép không có Origin nhưng từ chối Origin sai. Không mở CORS; từ chối Sec-Fetch-Site: cross-site.
+- POST JSON tối đa 4096 byte, không body nén hoặc query string. Response no-store; không trả token, email Auth, gateway hoặc lỗi SQL thô.
+- Chưa cung cấp UI đăng nhập/MFA/nhân sự. Mật khẩu và TOTP gửi trực tiếp tới Supabase Auth bằng SDK/API chính thức; backend không lưu mật khẩu.
+
+## GET /api/v1/admin/session
+
+Không body. HTTP 200, ví dụ cấu trúc (UUID/tên/version chỉ minh họa):
 
 ```json
-{"status":"ok","scope":"starter","database":"not_configured"}
+{"data":{"user_id":"00000000-0000-0000-0000-000000000001","display_name":"Nhân sự mẫu","authz_version":"2","roles":["sales"],"permissions":["catalog.read","inventory.read","orders.contact.read","orders.process","orders.read","quotes.read","quotes.write"]}}
 ```
 
-`database: not_configured` chỉ việc endpoint chưa có adapter/kết nối DB, không có nghĩa máy không có Supabase local. Endpoint không probe database và không chứng minh checkout hoạt động.
+Chỉ trả chính người đăng nhập. Version là chuỗi bigint, client không tự cộng/trừ hoặc đoán. Quyền đọc lại mỗi request, không cache theo JWT cũ.
 
-`HEAD /api/v1/health` → HTTP 200, không body. Phương thức khác → HTTP 405, `Allow: GET, HEAD`:
+## POST /api/v1/admin/access
+
+Chỉ Owner có security.manage, phiên MFA sống. Đúng bảy trường; không nhận trường ngoài hợp đồng:
 
 ```json
-{"error":{"code":"METHOD_NOT_ALLOWED","message":"Chỉ hỗ trợ GET và HEAD."}}
+{
+  "user_id":"00000000-0000-0000-0000-000000000002",
+  "display_name":"Nhân sự mẫu",
+  "roles":["sales"],
+  "active":true,
+  "expected_version":"0",
+  "reason":"Phân công nhân sự đã được duyệt",
+  "request_id":"00000000-0000-0000-0000-000000000003"
+}
 ```
 
-Đường dẫn API chưa triển khai → HTTP 404:
+- Target phải là Auth user đã xác nhận, không anonymous/deleted/banned. Endpoint không tự tạo tài khoản.
+- display_name: 1–100 ký tự sau trim; reason: 3–500, không nhập secret hoặc thông tin khách.
+- roles: tập duy nhất từ owner/catalog/sales/warehouse/finance/support, tối đa 6. Active cần ít nhất một vai trò. Đây là thay toàn bộ tập vai trò.
+- expected_version: "0" cho profile chưa tồn tại; nếu có, lấy version tin cậy hiện tại. Chưa có API liệt kê nhân sự; operator local xem profile trong Studio. Không expose bảng public để lấy version.
+- request_id: UUID liên kết audit, **không phải idempotency key**. Gửi lại với version cũ bị 409. Nếu mất response, đọc trạng thái/version/audit trước khi quyết định gửi lại.
 
-```json
-{"error":{"code":"NOT_FOUND","message":"API này chưa tồn tại."}}
-```
+200 trả `{"data":{"user_id":"00000000-0000-0000-0000-000000000002","active":true,"roles":["sales"],"authz_version":"2"}}` (version phụ thuộc lịch sử). Một transaction thực hiện kiểm quyền, CAS version, profile, assignments và audit. Hàng khóa chung tuần tự hóa thay quyền; kiểm quyền lại sau chờ khóa. Deferred trigger bảo vệ ít nhất một Owner hoạt động có security.manage, kể cả request đồng thời.
 
-## Supabase local ở giai đoạn này
+## POST /api/v1/admin/logout
 
-`http://127.0.0.1:54321/rest/v1/` chỉ expose schema `api` rỗng. Không có endpoint thương hiệu, sản phẩm, đơn hoặc báo giá để frontend sử dụng. Schema `app` và `private` không expose; requests chọn những schema này bị PostgREST từ chối. Public signup tắt. Không dùng secret key để mở quyền trực tiếp trong quá trình thử.
+Không body hoặc JSON {}. Chấp nhận bearer hợp lệ ở aal1 để người chưa MFA cũng thoát được. Gọi Supabase logout scope=local; thành công trả **204 không body**, không giả thành công khi Auth lỗi. Không đăng xuất các phiên khác. Phiên vừa xóa không vượt qua kiểm tra auth.sessions dù JWT chưa hết hạn.
 
-## Hợp đồng sẽ viết theo module tiếp theo
+## Lỗi admin
 
-08.3 xác định JWT/admin, guest context, CSRF/gateway và lỗi quyền. 08.4–08.6 đặc tả DTO catalog/search/filter/compare. 08.7–08.8 đặc tả checkout/order, tiền VND dạng chuỗi, server-authoritative pricing, transaction/idempotency/unknown-result và quyền xem đơn. 08.9 xử lý RFQ; 08.10 admin/upload. Chưa có request/response giả cho những endpoint chưa tồn tại. Frontend vẫn ghi DEMO và khóa submit thật.
+Body: `{"error":{"code":"MFA_REQUIRED","message":"Cần xác thực MFA trước khi truy cập quản trị."}}`.
+
+| HTTP | Code | Cách xử lý |
+|---|---|---|
+| 400 | INVALID_ACCESS_INPUT | Kiểm tra trường, query, JSON và kiểu dữ liệu |
+| 401 | UNAUTHENTICATED | Đăng nhập lại; có WWW-Authenticate: Bearer |
+| 403 | MFA_REQUIRED | Hoàn tất TOTP challenge/verify, dùng token aal2 mới |
+| 403 | FORBIDDEN | Thiếu quyền, bị vô hiệu hóa hoặc session/factor hết hiệu lực |
+| 403 | ORIGIN_NOT_ALLOWED | Dùng origin đúng, không mở CORS tùy tiện |
+| 405 | METHOD_NOT_ALLOWED | Dùng phương thức trong Allow |
+| 409 | ACCESS_VERSION_CONFLICT | Đọc lại trạng thái/version |
+| 409 | LAST_OWNER_REQUIRED | Giữ ít nhất một Owner hoạt động |
+| 413 | PAYLOAD_TOO_LARGE | Vượt 4096 byte hoặc Content-Length sai |
+| 415 | UNSUPPORTED_MEDIA_TYPE | Dùng JSON, không Content-Encoding |
+| 429 | TOO_MANY_REQUESTS | Auth đang rate limit; chờ rồi thử lại |
+| 503 | AUTH_NOT_CONFIGURED | Operator kiểm tra bindings/gateway hash |
+| 503 | AUTH_UNAVAILABLE | Không xác nhận thay đổi thành công; kiểm tra trạng thái |
+
+## Supabase bên trong
+
+Data API chỉ expose api, có admin_context() và set_admin_access(...). Chỉ authenticated có EXECUTE; không cấp anon/service_role. Pages dùng publishable key + JWT người dùng + X-Data-Api-Gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
+
+08.4–08.10 đặc tả DTO/nghiệp vụ riêng. Quyền guest xem đơn, giá/tồn server-side, transaction giữ hàng, idempotency checkout, chống spam khách và Storage signed URL chưa làm ở 08.3. Xem [bảo mật](architecture/SECURITY.md), [hướng dẫn](docs/MODULE_08_3.md).
