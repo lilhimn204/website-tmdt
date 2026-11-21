@@ -1,10 +1,10 @@
-# Schema thực tế — module 08.6
+# Schema thực tế — module 08.7
 
 Sinh từ PostgreSQL local bằng `npm.cmd run db:docs`. Migrations là nguồn chuẩn; tài liệu này chỉ đọc metadata, không có dữ liệu khách hoặc secret.
 
-52 bảng trong `app`; RLS bật. Staff đọc hạn chế theo vai trò/MFA, không ghi trực tiếp. `api` có hai RPC Auth và mười hai RPC public catalog/discovery trả projection đã duyệt. `private` giữ helpers, khóa cây/quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).
+52 bảng trong `app`; RLS bật. Staff đọc hạn chế theo vai trò/MFA, không ghi trực tiếp. `api` có hai RPC Auth và mười hai RPC public catalog/discovery trả projection đã duyệt và một service-only commerce_request cho phiên khách/cart/preview. `private` giữ helpers, khóa cây/quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).
 
-Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.6](../docs/MODULE_08_6.md), [Auth 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).
+Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.7](../docs/MODULE_08_7.md), [Auth 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).
 
 ## app.abuse_counters
 
@@ -32,6 +32,7 @@ PRIMARY KEY (action, bucket_key_hash, window_start);
 Indexes:
 
 ```sql
+CREATE INDEX abuse_counters_expiry ON app.abuse_counters USING btree (expires_at)
 CREATE UNIQUE INDEX abuse_counters_pkey ON app.abuse_counters USING btree (action, bucket_key_hash, window_start)
 CREATE INDEX abuse_expiry ON app.abuse_counters USING btree (expires_at)
 ```

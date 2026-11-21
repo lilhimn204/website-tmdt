@@ -1,8 +1,8 @@
 # ARCHITECTURE — Kiến trúc website thương mại điện tử
 
-Phiên bản 0.7 · Giai đoạn 05, cập nhật phạm vi 08.6 · 21/11/2026.
+Phiên bản 0.8 · Giai đoạn 05, cập nhật phạm vi 08.7 · 21/11/2026.
 
-08.1–08.6 đã dựng Supabase local/schema, Auth/MFA/RLS, public catalog reads và discovery tìm kiếm/lọc/so sánh. Public API dùng publishable key + gateway, không caller JWT/cookie; chỉ projection được duyệt, không raw-table grants. Search dùng name/brand document đồng bộ transaction, xác minh visibility từ nguồn hiện hành, lọc đúng SKU và enrich DTO sau pagination. So sánh 2–3 SKU cùng loại; unknown tạo incomplete. Giữ tiền/decimal dạng chuỗi, EOL/not-for-sale/purchase_enabled=false. Chưa có frontend integration, cloud project, checkout hay giữ kho. [Phạm vi và bằng chứng hiện tại](docs/MODULE_08_6.md) phân biệt phần đã làm với thiết kế đích bên dưới.
+08.1–08.6 đã dựng Supabase local/schema, Auth/MFA/RLS, public catalog reads và discovery tìm kiếm/lọc/so sánh. Public API dùng publishable key + gateway, không caller JWT/cookie; chỉ projection được duyệt, không raw-table grants. Search dùng name/brand document đồng bộ transaction, xác minh visibility từ nguồn hiện hành, lọc đúng SKU và enrich DTO sau pagination. So sánh 2–3 SKU cùng loại; unknown tạo incomplete. Giữ tiền/decimal dạng chuỗi, EOL/not-for-sale/purchase_enabled=false. 08.7 thêm Pages → service-only commerce_request cho phiên khách/CSRF và cart/checkout preview. Hash token trong DB, HMAC IP bucket, giới hạn nguyên tử; stable review đọc giá/tồn/policy trong cùng snapshot của lời gọi helper. Không tạo đơn, không giữ kho; 08.8 phải kiểm lại và khóa tồn trong transaction riêng. Chưa có frontend integration hoặc cloud project. [Phạm vi và bằng chứng hiện tại](docs/MODULE_08_7.md) phân biệt phần đã làm với thiết kế đích bên dưới.
 
 **Trạng thái:** PROMPT 06 cho phép khởi tạo bộ khung theo kiến trúc này. Đã chọn React Router Framework Mode/Vite, prerender và Pages Functions để kiểm chứng local. Quyền này không tự đóng các quyết định kinh doanh còn thiếu hoặc cho phép triển khai giao dịch/production. Kết quả thực nghiệm của bộ khung được ghi riêng trong [VERIFICATION](docs/VERIFICATION.md).
 

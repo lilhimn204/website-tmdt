@@ -1,6 +1,18 @@
-# Bảo mật — module 08.6
+# Bảo mật — module 08.7
 
-Cập nhật 21/11/2026. Đã có Auth/MFA, staff permissions, RLS, mutation cấp quyền, gateway và public brand/category/product/variant/specification reads. Chưa là security sign-off production. [Vận hành Auth](../docs/MODULE_08_3.md), [discovery](../docs/MODULE_08_6.md), [public products](../docs/MODULE_08_5.md), [navigation](../docs/MODULE_08_4.md), [API](../API.md).
+Cập nhật 21/11/2026. Đã có Auth/MFA, staff permissions, RLS, mutation cấp quyền, gateway, public catalog/discovery và guest cart/preview 08.7. Chưa là security sign-off production. [Vận hành Auth](../docs/MODULE_08_3.md), [discovery](../docs/MODULE_08_6.md), [public products](../docs/MODULE_08_5.md), [navigation](../docs/MODULE_08_4.md), [API](../API.md).
+
+## Commerce review 08.7
+
+Bốn POST endpoint session/logout/cart/preview đi qua một RPC commerce_request chỉ service_role EXECUTE. Secret key ở Pages backend, gửi apikey; admin không dùng secret này. Raw schema/table grants và RLS không nới; fixed search_path, helpers invoker không cấp EXECUTE API roles. Gateway vẫn kiểm mọi Data API call. Secret keys có quyền cao và chỉ phù hợp server; ở dự án này ACL tiếp tục đóng raw tables, không dựa vào RLS để bảo vệ khỏi BYPASSRLS. [Supabase API keys](https://supabase.com/docs/guides/api/api-keys).
+
+Session và CSRF là hai token ngẫu nhiên 32 byte độc lập; DB lưu hash. Cookie production __Host/HttpOnly/Secure/SameSite=Strict/Path=/, không Domain. CSRF synchronizer qua JSON/header; strict Origin trên cả bootstrap, không CORS và không simple content type. Session endpoint reuse giữ guest ID/expiry, rotate CSRF để phục hồi sau reload; logout/expiry bị kiểm tại DB. Cookie sai/trùng bị từ chối. Không có anonymous Supabase signup hoặc cấp quyền staff/đơn hàng cho guest. Đây là các lớp bảo vệ kết hợp, không coi SameSite là thay thế token. [OWASP CSRF](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).
+
+Rate limit SQL atomic theo IP HMAC và session hash. Lỗi trả envelope để giữ số lần đã đếm. Không log IP thô, token/CSRF hoặc customer data. Deployment target Cloudflare Pages lấy CF-Connecting-IP, local bỏ qua header giả và dùng loopback; không dùng X-Forwarded-For. Nếu chuyển sang runtime/origin khác phải thiết kế lại trust proxy, không tiếp tục tin header tùy ý. Worker cùng zone do chủ tài khoản kiểm soát có thể sửa địa chỉ trong subrequest; cần kiểm soát Worker routes trước production. [Cloudflare request headers](https://developers.cloudflare.com/fundamentals/reference/http-request-headers/).
+
+Payload 64 KiB/50 dòng/quantity 10000 là technical bound, policy business có thể thấp hơn. Không nhận client price/tax/zone/stock. Giỏ check dữ liệu hiện hành, unknown không là 0. Preview chỉ chấp nhận policy active đã duyệt, algorithm version được hỗ trợ và shipping rule duy nhất; trả chuỗi tiền/line totals, fingerprint gắn phiên. Không insert orders/reservations hoặc cập nhật inventory; 08.8 phải revalidate trong transaction có khóa. Chưa cấp quyền xem đơn bằng mã đoán được. Chưa thu thập họ tên/điện thoại/địa chỉ chi tiết trong preview.
+
+Production còn cần D05/D07, retention session/grant, WAF/Turnstile cho tạo đơn, kiểm thử tải và vận hành backup. TTL local 1800 không là phê duyệt doanh nghiệp. 08.7 đã kiểm ACL service/anon, CSRF/expiry/logout, input tampering, price changes, money overflow và rate limit 34 request đồng thời. Integration có mạng Docker riêng để không trùng DNS alias database với project ứng dụng. [Bàn giao](../docs/MODULE_08_7.md).
 
 ## Public reads 08.4–08.6
 
@@ -35,7 +47,7 @@ Mọi staff hợp lệ đọc được định nghĩa vai trò/quyền và profi
 
 ## Definer, bootstrap và toàn vẹn
 
-- Allowlist definer: is_active_admin, has_permission, require_gateway, set_admin_access, keep_last_owner và mười hai public catalog/discovery RPC ở trên. Cố định search_path=pg_catalog, tên schema đầy đủ, không dynamic SQL theo input. Predicate Auth chỉ kiểm chính auth.uid(); public RPC chỉ trả projection trạng thái công khai.
+- Allowlist definer: is_active_admin, has_permission, require_gateway, set_admin_access, keep_last_owner mười hai public catalog/discovery RPC và commerce_request ở trên. Cố định search_path=pg_catalog, tên schema đầy đủ, không dynamic SQL theo input. Predicate Auth chỉ kiểm chính auth.uid(); public RPC chỉ trả projection trạng thái công khai.
 - keep_last_owner là deferred trigger, cần definer vì chạy sau khi RPC thoát definer. Không API role nào có EXECUTE trực tiếp. Migration bổ sung sửa lỗi này mà không mở đọc bảng nội bộ.
 - Bootstrap là invoker/operator-only, một lần, target đã confirmed, có reason/audit; không EXECUTE ứng dụng. Migrations/signup không tự tạo Owner.
 - Cấp quyền cần security.manage, MFA, version, whitelist roles/reason; serialize trên admin_control_state; kiểm quyền lại sau khóa; profile/assignments/audit cùng transaction. Thu hồi Owner cuối cùng rollback ở commit. PostgreSQL superuser có thể thay DDL nên không phải tài khoản ứng dụng.
@@ -46,7 +58,7 @@ Mọi staff hợp lệ đọc được định nghĩa vai trò/quyền và profi
 
 ## HTTP và vận hành
 
-POST cần Origin chính xác, bearer, JSON tối đa 4 KiB. Không cookie auth/query token/CORS public. Upstream timeout 8 giây, redirect=manual và từ chối 3xx để không chuyển credential sang host khác; lỗi chuẩn hóa; response no-store. workerd không hỗ trợ redirect=error dù TypeScript/Node chấp nhận; dùng theo [Cloudflare Request](https://developers.cloudflare.com/workers/runtime-apis/request/). Supabase Auth có rate limit nền tảng; bước xác minh chuyển lỗi 429. **Chưa có rate limiter phân tán riêng của Pages/WAF hoặc Turnstile**; cần cấu hình/kiểm thử trước public rollout và API khách 08.7–08.9. Body limit không thay cho chống spam.
+POST quản trị cần Origin chính xác, bearer, JSON tối đa 4 KiB. Không cookie auth/query token/CORS public. Upstream timeout 8 giây, redirect=manual và từ chối 3xx để không chuyển credential sang host khác; lỗi chuẩn hóa; response no-store. workerd không hỗ trợ redirect=error dù TypeScript/Node chấp nhận; dùng theo [Cloudflare Request](https://developers.cloudflare.com/workers/runtime-apis/request/). Supabase Auth có rate limit nền tảng; bước xác minh chuyển lỗi 429. **Chưa có rate limiter phân tán riêng của Pages/WAF hoặc Turnstile**; cần cấu hình/kiểm thử trước public rollout và API khách 08.7–08.9. Body limit không thay cho chống spam.
 
 Gateway chỉ áp dụng PostgREST, không Auth/Storage. Signup/anonymous local tắt; chưa có bucket/upload policy. config.toml không tự cấu hình project hosted. Đổi khóa/phục hồi MFA xem runbook 08.3.
 

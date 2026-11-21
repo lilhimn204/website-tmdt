@@ -1,3 +1,4 @@
+import { checkCheckout } from './lib/checkout-integration.mjs';
 import { spawn, spawnSync } from 'node:child_process';
 import { createHash, createHmac, randomBytes, randomUUID } from 'node:crypto';
 import { cpSync, existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
@@ -12,10 +13,11 @@ import { checkDiscovery } from './lib/discovery-integration.mjs';
 // A disposable, named LOCAL stack. Never link/reset the application database.
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const project = 'website-tmdt-auth-test';
+const network = 'website-tmdt-auth-test-only';
 const scratch = resolve(root, 'artifacts', project);
 const api = 'http://127.0.0.1:55421', origin = 'http://127.0.0.1:8791';
 const cli = resolve(root, 'node_modules/supabase/dist/supabase.js');
-let worker, stackCreated = false, checks = 0;
+let worker, stackCreated = false, networkCreated = false, checks = 0;
 function ensure(condition, label) { if (!condition) throw new Error(label); }
 function pass(label) { checks++; console.log(`PASS ${checks}: ${label}`); }
 function run(binary, args, input, cwd = root) {
@@ -71,8 +73,14 @@ try {
   };`);
   writeFileSync(resolve(scratch, 'wrangler.json'), JSON.stringify({ name: project, compatibility_date: '2026-11-04', send_metrics: false, pages_build_output_dir: resolve(root, 'build/client') }));
   console.log('Starting disposable Auth integration stack; CLI credentials suppressed.');
+  // Different projects share Docker DNS aliases such as "db". Never share the
+  // application network, even when tests are launched alongside pgTAP.
+  const networks = run('docker', ['network', 'ls', '--format', '{{.Name}}']);
+  ensure(!networks.split(/\r?\n/).includes(network), 'Disposable network already exists; inspect this test project before retrying');
+  run('docker', ['network', 'create', '-o', 'com.docker.network.bridge.host_binding_ipv4=127.0.0.1', network]);
+  networkCreated = true;
   stackCreated = true;
-  run(process.execPath, [cli, 'start', '--workdir', scratch, '--network-id', 'website-tmdt-local-only']);
+  run(process.execPath, [cli, 'start', '--workdir', scratch, '--network-id', network]);
   await bindProjectToLoopback(project);
   // Explicit loopback binding recreates containers; wait for their health checks.
   let status;
@@ -84,7 +92,7 @@ try {
   ensure(status.API_URL === api && status.PUBLISHABLE_KEY?.startsWith('sb_publishable_'), 'Unexpected test stack URL/key format');
   const gateway = randomBytes(32).toString('base64url');
   sql(`insert into private.gateway_secrets(slot,secret_hash) values('current','${createHash('sha256').update(gateway).digest('hex')}');`);
-  const bindings = { APP_ENV: 'local', APP_ORIGIN: origin, SUPABASE_URL: api, SUPABASE_PUBLISHABLE_KEY: status.PUBLISHABLE_KEY, DATA_API_GATEWAY_SECRET: gateway };
+  const bindings = { APP_ENV: 'local', APP_ORIGIN: origin, SUPABASE_URL: api, SUPABASE_PUBLISHABLE_KEY: status.PUBLISHABLE_KEY, DATA_API_GATEWAY_SECRET: gateway, SUPABASE_SECRET_KEY: status.SECRET_KEY, REQUEST_HASH_SECRET: randomBytes(32).toString('base64url'), GUEST_SESSION_TTL_SECONDS: '1800' };
   writeFileSync(resolve(scratch, '.dev.vars'), Object.entries(bindings).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join('\n'));
   worker = spawn(process.execPath, [resolve(root, 'node_modules/wrangler/bin/wrangler.js'), 'pages', 'dev', '--cwd', scratch, '--ip', '127.0.0.1', '--port', '8791'], { cwd: scratch, windowsHide: true, stdio: 'ignore', env: { ...process.env, CI: 'true', WRANGLER_SEND_METRICS: 'false' } });
   worker.on('error', () => {});
@@ -166,6 +174,7 @@ try {
   await checkPublicCatalog({ sql, api, origin, publishable: status.PUBLISHABLE_KEY, gateway });
   await checkPublicProducts({ sql, api, origin, publishable: status.PUBLISHABLE_KEY, gateway });
   await checkDiscovery({ sql, api, origin, publishable: status.PUBLISHABLE_KEY, gateway });
+  await checkCheckout({ sql, api, origin, publishable: status.PUBLISHABLE_KEY, secret: status.SECRET_KEY, gateway });
 } catch (error) {
   console.error(`FAIL: ${error.message}`); process.exitCode = 1;
   if (stackCreated) {
@@ -189,5 +198,9 @@ try {
       run(process.execPath, [cli, 'stop', '--workdir', scratch, '--project-id', project, '--no-backup']);
       console.log('Disposable test stack removed. Application database and its users were not changed.');
     } catch { console.error('Test cleanup failed; follow the module instructions for website-tmdt-auth-test only.'); process.exitCode = 1; }
+  }
+  if (networkCreated) {
+    try { run('docker', ['network', 'rm', network]); }
+    catch { console.error('Disposable network cleanup failed; application network was not touched.'); process.exitCode = 1; }
   }
 }

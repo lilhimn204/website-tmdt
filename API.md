@@ -1,6 +1,114 @@
-# API — trạng thái module 08.6
+# API — trạng thái module 08.7
 
-Cập nhật 21/11/2026. Có health, ba endpoint Auth quản trị, chín endpoint đọc navigation/sản phẩm/SKU/thông số và ba endpoint discovery bên dưới. Chưa có giỏ/checkout/đơn/RFQ/upload backend. Frontend vẫn DEMO, chưa nối catalog thật và khóa gửi đơn/báo giá thật. [Hướng dẫn 08.6](docs/MODULE_08_6.md).
+Cập nhật 21/11/2026. Có health, ba endpoint Auth quản trị, chín endpoint đọc navigation/sản phẩm/SKU/thông số và ba endpoint discovery bên dưới. Đã thêm phiên khách, kiểm giỏ và preview checkout 08.7 bên dưới. Chưa có tạo/quản lý đơn, RFQ hoặc upload backend. Frontend vẫn DEMO, chưa nối catalog thật và khóa gửi đơn/báo giá thật. [Hướng dẫn 08.7](docs/MODULE_08_7.md).
+
+## Phiên khách, giỏ hàng và preview — 08.7
+
+| POST URL | Body | Kết quả |
+|---|---|---|
+| /api/v1/guest/session | `{}` | Cookie HttpOnly + `{data:{expires_at,csrf_token}}` |
+| /api/v1/guest/logout | `{}` | Thu hồi phiên, xóa cookie, `{data:{logged_out:true}}` |
+| /api/v1/cart/review | `{items:[{variant_id,quantity}]}` | Dữ liệu SKU hiện hành và issues từng dòng |
+| /api/v1/checkout/preview | items, destination, payment_method, shipping_service | Rà soát, tổng theo chính sách đã duyệt và fingerprint |
+
+Tất cả chỉ nhận JSON tối đa 64 KiB, POST, không query string/Content-Encoding, không CORS. `Origin` phải đúng APP_ORIGIN; Sec-Fetch-Site cross-site/same-site bị từ chối. Body không chấp nhận trường thừa. Ngoại trừ session bootstrap, cần cookie phiên và `X-CSRF-Token` vừa được server cấp. Không dùng Bearer quản trị cho các endpoint này. Mọi response no-store/nosniff/noindex. Không ghi request/credential/PII vào log.
+
+### Phiên và CSRF
+
+POST guest/session là ngoại lệ bootstrap không cần CSRF nhưng vẫn kiểm Origin/JSON/rate limit. Server tạo token 32 byte ngẫu nhiên, cookie `__Host-tmdt_guest` với Secure, HttpOnly, SameSite=Strict, Path=/, không Domain. Local loopback dùng `tmdt_guest_local` không Secure để thử HTTP. Database chỉ lưu SHA-256 của session token và CSRF. CSRF trả trong JSON, client giữ trong bộ nhớ và gửi header, không URL/localStorage.
+
+Gọi session khi cookie còn hiệu lực giữ nguyên phiên và expiry, cấp CSRF mới; token CSRF cũ hết hiệu lực, kể cả tab khác. Khi cookie không có/hết hạn/thu hồi, tạo phiên mới. Cookie sai định dạng hoặc trùng tên trả lỗi, không chọn tùy ý. Logout yêu cầu đúng CSRF, thu hồi phiên trong database và đặt Max-Age=0. Guest không tự có quyền staff hoặc quyền xem bất kỳ đơn hàng nào; order grants thuộc 08.8.
+
+GUEST_SESSION_TTL_SECONDS bắt buộc, 60–86400 giây là giới hạn kỹ thuật hiện tại. Local helper đặt 1800 để thử; **D07 production chưa duyệt, không có default**. Hết hạn không đồng nghĩa đã xóa bản ghi: retention/cleanup session còn cần quyết định D07. Bộ đếm chống spam hết hạn sau hai phút, dọn tối đa 100 hàng/lời gọi bằng expiry index.
+
+### Cart review
+
+Request minh họa dùng UUID TEST, không phải catalog doanh nghiệp:
+
+```json
+{"items":[{"variant_id":"70000000-0000-0000-0000-000000000020","quantity":2}]}
+```
+
+Giỏ nằm ở browser; server không lưu giỏ. Chấp nhận 0–50 dòng, SKU UUID không trùng sau chuẩn hóa chữ hoa/thường, quantity integer 1–10000 (technical bound). Giá/model/tax/fee/stock từ client đều không được nhận. Hạn mức mua thật thấp hơn do policy đã duyệt quyết định.
+
+Response giỏ rỗng:
+
+```json
+{"data":{"lines":[],"policy_configured":false,"order_created":false,"inventory_reserved":false,"submission_enabled":false}}
+```
+
+Mỗi phần tử lines có variant_id, quantity, variant (DTO 08.5 hoặc null), issues (mã lỗi bên dưới), amounts (null hoặc `{net_vnd,tax_vnd,total_vnd}` đều là chuỗi). Giữ thứ tự yêu cầu. Không trả raw on_hand/reserved, giá lịch sử, source note, reviewer, session ID/hash hoặc nội dung yêu cầu của người khác. Thiếu/ẩn/nháp cùng ITEM_UNAVAILABLE và variant=null. Giá/lifecycle/bảo hành/visibility dùng projection public hiện hành; thông số required_for_publish phải được xác minh, active. Số 0/false hợp lệ, unknown khác dữ liệu đã xác minh.
+
+Issues: ITEM_UNAVAILABLE, NOT_RETAIL, PRICE_UNAVAILABLE, TAX_UNKNOWN, WARRANTY_UNAVAILABLE, STOCK_UNKNOWN, INSUFFICIENT_STOCK, SPECIFICATION_UNVERIFIED, QUANTITY_LIMIT, AMOUNT_OVERFLOW. Giỏ vẫn trả 200 để client trình bày lỗi từng dòng. Nếu chưa có chính sách, policy_configured=false, amounts=null; không tự tính tổng hoặc hiểu unknown là 0. purchase_enabled/submission_enabled vẫn false vì chưa có API tạo đơn.
+
+### Checkout preview
+
+```json
+{
+  "items":[{"variant_id":"70000000-0000-0000-0000-000000000020","quantity":2}],
+  "destination":{"province_code":"TEST-P","ward_code":"TEST-W"},
+  "payment_method":"cod",
+  "shipping_service":"standard"
+}
+```
+
+Preview yêu cầu ít nhất một dòng. payment_method chỉ cod/bank_transfer; mã tỉnh/phường/service 1–32 ký tự chữ ASCII, số, `_` hoặc `-`, phải có trong policy/rule đã duyệt. Đây là mã do doanh nghiệp lập mapping, không tự công bố danh mục hành chính. Không nhận địa chỉ chi tiết, họ tên, điện thoại, email hoặc số tài khoản trong preview. Tạo đơn 08.8 mới thu thập/validate thông tin giao hàng đầy đủ và kiểm địa bàn khớp.
+
+Nếu policy chưa đủ/không hỗ trợ: HTTP 503 CHECKOUT_NOT_CONFIGURED. Nếu dòng có issues: HTTP 422 CHECKOUT_REVIEW_BLOCKED kèm data như cart, không totals/fingerprint. Thành công HTTP 200 có data của cart cộng:
+
+```json
+{
+  "totals":{"items_net_vnd":"18014398509481986","items_tax_vnd":"0","shipping_net_vnd":"101","shipping_tax_vnd":"10","total_vnd":"18014398509482097","currency":"VND"},
+  "terms_version":"TEST-terms",
+  "policy_version":700,
+  "calculated_at":"2026-11-21T00:00:00+00:00",
+  "fingerprint":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+}
+```
+
+Đây chỉ là các trường bổ sung minh họa của fixture TEST; thời gian/hash thực tế do server tính. Không phải response tạo đơn, không mã đơn, không giữ kho. Fingerprint SHA-256 từ dữ liệu canonical gồm phiên, danh sách SKU/quantity đã sort, phiên bản giá/bảo hành/policy, rule giao hàng, địa bàn/phương thức và totals. Không chứa thời điểm tính nên cùng dữ liệu giữ cùng hash. Hash chỉ hỗ trợ phát hiện thay đổi, **không phải authorization hoặc cam kết giá/tồn**. 08.8 phải đọc/khóa/kiểm lại dữ liệu và không tin totals/fingerprint từ client.
+
+### Policy v1 — chỉ có hiệu lực sau khi doanh nghiệp duyệt
+
+commerce_policy_versions phải active, approved_at không ở tương lai, các trường bắt buộc của schema đầy đủ, tax_rule_version chính xác `vnd-line-half-up-v1`, rules_json đúng schema dưới. Không migration/seed nào tự tạo policy active. Ví dụ sau **chỉ dành cho kiểm thử**, không là quyết định kinh doanh:
+
+```json
+{
+  "schema_version":1,
+  "max_lines":10,
+  "max_line_quantity":5,
+  "max_total_quantity":20,
+  "payment_methods":["cod","bank_transfer"],
+  "cod_max_total_vnd":"9223372036854775807",
+  "destinations":[{"province_code":"TEST-P","ward_code":"TEST-W","zone_code":"TEST-Z"}]
+}
+```
+
+Không trường thừa. max_lines 1–50, max_line_quantity 1–10000, max_total_quantity 1–500000; giá trị nguyên JSON. cod_max_total_vnd chuỗi nguyên dương trong bigint, áp dụng lên tổng gồm phí/thuế nếu COD. payment_methods 1–2 lựa chọn hợp lệ không trùng. destinations 1–20000 mapping duy nhất theo cặp tỉnh/phường; zone_code cũng 1–32 ký tự. Không fallback vùng giao hàng hoặc wildcard.
+
+Shipping rule active thuộc đúng policy, zone lấy từ mapping phía server, service khách chọn và method_conditions có đúng `{"payment_methods":["cod","bank_transfer"]}` hoặc tập con. Không có rule: 422 SHIPPING_UNSUPPORTED; nhiều rule cùng khớp: 503 CHECKOUT_NOT_CONFIGURED, không tự chọn theo priority. Thuế của shipping phải xác định. Phí 0 chỉ khi rule đã duyệt lưu 0, không do không tìm thấy rule.
+
+Thuật toán vnd-line-half-up-v1 được triển khai nhưng **D05 chưa duyệt để sử dụng thật**: NET line_net=unit×quantity, line_tax=round_half_up(line_net×bps/10000). GROSS line_total=unit×quantity, line_tax=round_half_up(line_total×bps/(10000+bps)), line_net=line_total−line_tax. Tính trên từng dòng rồi cộng; shipping là dòng riêng. Với exempt/not_applicable, tax=0 có căn cứ explicit; taxable rate=0 hợp lệ; unknown bị chặn. PostgreSQL numeric dùng cho intermediate, giới hạn kết quả không vượt bigint, truyền chuỗi; không dùng JS Number cho tiền. Phiên bản thuật toán khác bị chặn cho tới khi triển khai/kiểm chứng riêng.
+
+### RPC, giới hạn và mã lỗi
+
+Pages chỉ gọi `api.commerce_request(action_name text,session_hash text,csrf_hash text,ip_hash text,body jsonb)` với action session/logout/cart/preview đóng. RPC SECURITY DEFINER, fixed search_path=pg_catalog, chỉ EXECUTE service_role + gateway. Không cấp service_role USAGE schema app, raw SELECT/DML hoặc EXECUTE private helpers. Public catalog tiếp tục anon; admin tiếp tục JWT thật của staff. Pages gửi secret qua apikey, không Bearer/cookie caller. Timeout 8 giây, redirect manual, JSON upstream tối đa 1 MiB, DTO allowlist và kiểm số học tổng/ID/số lượng khớp request.
+
+Rate limit theo phút cố định: session 20/IP; cart/preview/logout 60/action/IP, mỗi phiên 30/action. IP lấy từ CF-Connecting-IP chỉ trên deployment Cloudflare, không X-Forwarded-For; local luôn một bucket loopback. HMAC IP bằng key backend riêng trước khi lưu. Bộ đếm upsert nguyên tử và bão hòa; lỗi nghiệp vụ trả envelope để không rollback lượt đã đếm. Thao tác cùng phiên khóa row để tránh race rotation/logout. Chưa có WAF/Turnstile/production load test; tạo đơn 08.8 cần bổ sung chống spam theo kiến trúc.
+
+| HTTP | Code |
+|---|---|
+| 400 | INVALID_COMMERCE_INPUT |
+| 401 | GUEST_SESSION_REQUIRED |
+| 403 | ORIGIN_NOT_ALLOWED, CSRF_INVALID |
+| 405 | METHOD_NOT_ALLOWED, Allow: POST |
+| 413 | PAYLOAD_TOO_LARGE |
+| 415 | UNSUPPORTED_MEDIA_TYPE |
+| 422 | CHECKOUT_REVIEW_BLOCKED, PAYMENT_UNSUPPORTED, DESTINATION_UNSUPPORTED, SHIPPING_UNSUPPORTED, COD_LIMIT_EXCEEDED, AMOUNT_OVERFLOW |
+| 429 | TOO_MANY_REQUESTS, Retry-After: 60 |
+| 503 | COMMERCE_NOT_CONFIGURED (bindings), CHECKOUT_NOT_CONFIGURED (policy), COMMERCE_UNAVAILABLE (upstream/malformed response) |
+
+Lỗi dạng `{error:{code,message}}`; chỉ CHECKOUT_REVIEW_BLOCKED bổ sung data dòng hàng. Thông báo tiếng Việt không chứa lỗi SQL/secret. Request/response và nghiệm thu: [08.7](docs/MODULE_08_7.md).
 
 ## Tìm kiếm, bộ lọc và so sánh — 08.6
 
@@ -290,6 +398,6 @@ Body: `{"error":{"code":"MFA_REQUIRED","message":"Cần xác thực MFA trước
 
 ## Supabase bên trong
 
-Data API chỉ expose api: admin_context/set_admin_access cấp EXECUTE cho authenticated, mười hai public_* catalog RPC cấp cho anon. Không cấp các RPC này cho service_role. Admin dùng publishable key + JWT gốc + gateway; public chỉ publishable key + gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
+Data API chỉ expose api: admin_context/set_admin_access cấp EXECUTE cho authenticated, mười hai public_* catalog RPC cấp cho anon. Không cấp các RPC này cho service_role. commerce_request riêng được cấp cho service_role, dùng secret key + gateway. Admin dùng publishable key + JWT gốc + gateway; public chỉ publishable key + gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
 
-08.5–08.10 tiếp tục DTO/nghiệp vụ riêng. Quyền guest xem đơn, giá/tồn server-side, transaction giữ hàng, idempotency checkout, chống spam khách và Storage signed URL chưa làm. Xem [bảo mật](architecture/SECURITY.md), [hướng dẫn Auth](docs/MODULE_08_3.md).
+08.7 đã kiểm giá/tồn server-side và rate limit cho review. 08.8–08.10 còn quyền guest xem đơn, transaction giữ hàng/tạo đơn, idempotency, Turnstile và Storage signed URL. Xem [bảo mật](architecture/SECURITY.md), [hướng dẫn Auth](docs/MODULE_08_3.md).

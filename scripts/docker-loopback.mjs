@@ -7,6 +7,7 @@ import { randomUUID } from 'node:crypto';
 // the exact configuration and named volumes. Secrets stay in process memory.
 export async function bindProjectToLoopback(project = 'website-tmdt') {
   if (!['website-tmdt','website-tmdt-auth-test'].includes(project)) throw new Error('Unexpected local project for port binding.');
+  const network = project === 'website-tmdt' ? 'website-tmdt-local-only' : 'website-tmdt-auth-test-only';
   const context = spawnSync('docker', ['context', 'inspect'], { encoding: 'utf8', windowsHide: true });
   if (context.status !== 0) throw new Error('Cannot inspect the local Docker context.');
   const endpoint = JSON.parse(context.stdout)[0].Endpoints.docker.Host;
@@ -41,7 +42,7 @@ export async function bindProjectToLoopback(project = 'website-tmdt') {
     const original = await api('GET', `/containers/${name}/json`);
     const published = Object.values(original.NetworkSettings.Ports).flat().filter(Boolean);
     if (published.every(port => ['127.0.0.1', '::1'].includes(port.HostIp))) continue;
-    if (original.HostConfig.NetworkMode !== 'website-tmdt-local-only' || original.HostConfig.AutoRemove || original.Mounts.some(m => m.Type === 'volume' && !m.Name.startsWith('supabase_'))) {
+    if (original.HostConfig.NetworkMode !== network || original.HostConfig.AutoRemove || original.Mounts.some(m => m.Type === 'volume' && !m.Name.startsWith('supabase_'))) {
       throw new Error(`Unexpected configuration for ${name}; refusing to replace it.`);
     }
     const config = structuredClone(original.Config);
@@ -52,7 +53,7 @@ export async function bindProjectToLoopback(project = 'website-tmdt') {
     host.Binds = (host.Binds ?? []).filter(bind => !mounts.some(m => bind.includes(`:${m.Destination}:`) || bind.endsWith(`:${m.Destination}`)));
     host.Mounts = (host.Mounts ?? []).filter(mount => !mounts.some(m => mount.Target === m.Destination));
     for (const mount of mounts) host.Binds.push(`${mount.Name}:${mount.Destination}:${mount.RW ? 'rw' : 'ro'}`);
-    const aliases = original.NetworkSettings.Networks['website-tmdt-local-only'].Aliases;
+    const aliases = original.NetworkSettings.Networks[network].Aliases;
     const backup = `${name}_rebind_${randomUUID().slice(0, 8)}`;
     await api('POST', `/containers/${name}/stop?t=10`);
     await api('POST', `/containers/${name}/rename?name=${backup}`);
@@ -60,7 +61,7 @@ export async function bindProjectToLoopback(project = 'website-tmdt') {
     try {
       replacement = await api('POST', `/containers/create?name=${name}`, {
         ...config, HostConfig: host,
-        NetworkingConfig: { EndpointsConfig: { 'website-tmdt-local-only': { Aliases: aliases } } },
+        NetworkingConfig: { EndpointsConfig: { [network]: { Aliases: aliases } } },
       });
       // CLI copies the gateway config/TLS certificates into its writable layer.
       // Preserve that directory in memory; otherwise a later db reset/reload fails.

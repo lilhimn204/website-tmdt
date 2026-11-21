@@ -8,8 +8,8 @@ $$ select ('00000000-0000-0000-0000-' || lpad(n::text,12,'0'))::uuid $$;
 select is((select count(*)::integer from pg_tables where schemaname = 'app'),52,'all 52 planned business tables exist');
 select is((select count(*)::integer from pg_tables where schemaname = 'app' and rowsecurity),52,'RLS enabled on every business table');
 select is((select count(*)::integer from pg_policies where schemaname='app' and permissive='PERMISSIVE' and cmd<>'SELECT'),0,'no direct-write policies for authenticated users');
-select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname in ('app','api','private') and p.prosecdef and p.proname not in ('is_active_admin','has_permission','set_admin_access','require_gateway','keep_last_owner','public_brands','public_brand','public_categories','public_category','public_products','public_product','public_product_variants','public_product_variant','public_variant_specifications','public_product_filters','public_search_products','public_compare_products')),0,'only reviewed auth and public catalog definers exist');
-select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'api'),14,'two auth and twelve public catalog RPCs only');
+select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname in ('app','api','private') and p.prosecdef and p.proname not in ('is_active_admin','has_permission','set_admin_access','require_gateway','keep_last_owner','public_brands','public_brand','public_categories','public_category','public_products','public_product','public_product_variants','public_product_variant','public_variant_specifications','public_product_filters','public_search_products','public_compare_products','commerce_request')),0,'only reviewed auth and public catalog definers exist');
+select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'api'),15,'two auth, twelve public and one service commerce RPC');
 select ok(not has_schema_privilege('anon','app','USAGE'),'anon cannot reach business schema');
 select ok(has_schema_privilege('authenticated','app','USAGE'),'authenticated reaches explicitly granted reads through RLS');
 select ok(not has_schema_privilege('service_role','app','USAGE'),'service role has no direct schema access');
@@ -22,7 +22,7 @@ select ok(not exists(select 1 from pg_tables t cross join (values('anon'),('auth
 select ok(not exists(select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace
   cross join (values('anon'),('authenticated'),('service_role')) r(role)
   where n.nspname in ('app','private','api') and has_function_privilege(r.role,p.oid,'EXECUTE') and not
-  (p.proname='require_gateway' or (r.role='authenticated' and p.proname in ('is_active_admin','has_permission','admin_context','set_admin_access'))
+  (p.proname='require_gateway' or (r.role='service_role' and p.proname='commerce_request') or (r.role='authenticated' and p.proname in ('is_active_admin','has_permission','admin_context','set_admin_access'))
     or (r.role='anon' and p.proname in ('public_brands','public_brand','public_categories','public_category','public_products','public_product','public_product_variants','public_product_variant','public_variant_specifications','public_product_filters','public_search_products','public_compare_products')))), 'only explicit auth and public catalog execute grants exist');
 
 -- Fixture data lives only in this transaction and is rolled back at the end.

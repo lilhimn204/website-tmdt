@@ -2,6 +2,10 @@
 
 Cập nhật: 21/11/2026, Asia/Bangkok.
 
+## Mốc hiện tại — 08.7
+
+Ngày 21/11/2026, hoàn tất API phiên khách/CSRF, cart review và checkout preview. 20 migrations/52 bảng/15 RPC; không tạo đơn hoặc giữ hàng. 426 unit, 395 pgTAP, 4 concurrency catalog, 7 surface, 131 integration thực tế đạt; build 61 URL. Đã tách Docker network của integration khỏi ứng dụng, kiểm rate limit đồng thời. [Bàn giao 08.7](docs/MODULE_08_7.md), [contract](API.md). Main DB không seed doanh nghiệp; fixture rollback/disposable. D05/D07, số SKU/tải, TTL COD/chuyển khoản, RPO/RTO còn chưa chốt. Frontend DEMO chưa nối API. Tiếp theo 08.8, không tự triển khai 08.9–08.10.
+
 ## Mục tiêu và ràng buộc đã nhận
 
 - Website thương mại điện tử công nghệ hoàn toàn mới, độc lập với xtrend.vn về tên, nhận diện và dữ liệu.
