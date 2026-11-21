@@ -1,10 +1,10 @@
-# Schema thực tế — module 08.4
+# Schema thực tế — module 08.5
 
 Sinh từ PostgreSQL local bằng `npm.cmd run db:docs`. Migrations là nguồn chuẩn; tài liệu này chỉ đọc metadata, không có dữ liệu khách hoặc secret.
 
-52 bảng trong `app`; RLS bật. Staff đọc hạn chế theo vai trò/MFA, không ghi trực tiếp. `api` có hai RPC Auth và bốn RPC public brand/category trả projection đã duyệt. `private` giữ helpers, khóa cây/quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).
+52 bảng trong `app`; RLS bật. Staff đọc hạn chế theo vai trò/MFA, không ghi trực tiếp. `api` có hai RPC Auth và chín RPC public catalog trả projection đã duyệt. `private` giữ helpers, khóa cây/quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).
 
-Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.4](../docs/MODULE_08_4.md), [Auth 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).
+Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.5](../docs/MODULE_08_5.md), [Auth 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).
 
 ## app.abuse_counters
 
@@ -1367,6 +1367,7 @@ CREATE UNIQUE INDEX product_variants_pkey ON app.product_variants USING btree (i
 CREATE UNIQUE INDEX product_variants_sku_normalized_key ON app.product_variants USING btree (sku_normalized)
 CREATE INDEX sku_prefix ON app.product_variants USING btree (sku_normalized text_pattern_ops)
 CREATE INDEX variants_product ON app.product_variants USING btree (product_id)
+CREATE INDEX variants_public_product ON app.product_variants USING btree (product_id, id) WHERE (data_status = 'ready'::text)
 ```
 
 ## app.products
@@ -1421,6 +1422,7 @@ Indexes:
 CREATE INDEX products_collection ON app.products USING btree (publication_status, brand_id, product_type_id, id)
 CREATE UNIQUE INDEX products_id_product_type_id_key ON app.products USING btree (id, product_type_id)
 CREATE UNIQUE INDEX products_pkey ON app.products USING btree (id)
+CREATE INDEX products_public_slug ON app.products USING btree (((slug)::text) COLLATE "C") WHERE (publication_status = 'published'::text)
 CREATE UNIQUE INDEX products_slug_key ON app.products USING btree (slug)
 ```
 

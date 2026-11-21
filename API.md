@@ -1,6 +1,75 @@
-# API — trạng thái module 08.4
+# API — trạng thái module 08.5
 
-Cập nhật 19/11/2026. Có health, ba endpoint Auth quản trị và bốn endpoint công khai đọc thương hiệu/danh mục. Chưa có API sản phẩm, giỏ, checkout, đơn, RFQ hoặc upload. Frontend vẫn DEMO, chưa nối dữ liệu catalog thật và khóa gửi đơn/báo giá thật. [Hướng dẫn 08.4](docs/MODULE_08_4.md).
+Cập nhật 19/11/2026. Có health, ba endpoint Auth quản trị, bốn endpoint đọc thương hiệu/danh mục và năm endpoint đọc sản phẩm/SKU/thông số. Chưa có tìm kiếm/lọc/so sánh backend, giỏ, checkout, đơn, RFQ hoặc upload. Frontend vẫn DEMO, chưa nối catalog thật và khóa gửi đơn/báo giá thật. [Hướng dẫn 08.5](docs/MODULE_08_5.md).
+
+## Sản phẩm, biến thể, thông số công khai — 08.5
+
+| GET, HEAD URL | Query | Nội dung / thứ tự |
+|---|---|---|
+| /api/v1/products | limit, after | Danh sách sản phẩm, slug theo collation C |
+| /api/v1/products/{slug} | Không | Chi tiết sản phẩm |
+| /api/v1/products/{slug}/variants | limit, after | SKU của đúng sản phẩm, UUID tăng |
+| /api/v1/products/{slug}/variants/{variantId} | Không | SKU, model, giá công khai, trạng thái tồn và bảo hành |
+| /api/v1/products/{slug}/variants/{variantId}/specifications | limit, after | Định nghĩa và giá trị riêng SKU, display_order rồi code C |
+
+`limit` mặc định 20, nguyên 1–100. `after` là next_cursor từ response trước: slug cho products, UUID cho variants, code cho specifications. Cursor phải còn công khai và đúng phạm vi; không nhận offset, search, sort hoặc bộ lọc trong 08.5. Query không quá 1024 ký tự, cấm tên lạ, trùng hoặc rỗng. Detail cấm mọi query. Slug/code dùng a–z, 0–9, gạch nối ở giữa, tối đa 160; variantId là UUID, không dùng SKU làm đường dẫn vì SKU có thể chứa dấu `/` hoặc khoảng trắng. UUID được chuẩn hóa chữ thường.
+
+List có `{data: [...], page: {limit, next_cursor, has_more}}`; detail có `{data: object}`. Không có tổng số suy đoán. Database trống trả danh sách trống; detail không tồn tại trả 404. Cursor bị thu hồi trả 400 `CATALOG_INVALID_CURSOR`, client tải lại trang đầu. Phân trang ổn định khi dữ liệu không đổi, chưa có snapshot xuyên nhiều request.
+
+**Điều kiện công khai:** product published; brand và technical type active; primary category cùng mọi tổ tiên/type của nhánh active; có ít nhất một SKU ready. Chỉ SKU ready được trả. Nháp, ẩn, thiếu SKU ready, sai sản phẩm hoặc không tồn tại cùng 404 `CATALOG_NOT_FOUND`. Lifecycle không phải publication: EOL/discontinued vẫn tra cứu được. `ready`/`published` là cờ duyệt dữ liệu đang có trong schema, không tự chứng minh quyền phân phối, tính đầy đủ để checkout hay thay thế workflow duyệt của 08.10.
+
+Product list có id/name/slug/model_family (nullable)/lifecycle_status, brand `{id,name,slug}`, product_type `{code,name}`, primary_category `{id,name,slug}`. Detail thêm description. Không nhúng danh sách SKU không giới hạn. Category dùng API 08.4 để đọc breadcrumb. Mô tả là plain text; frontend không được đưa thẳng vào HTML.
+
+Ví dụ cấu trúc SKU dưới đây **chỉ minh họa, không phải dữ liệu kinh doanh**:
+
+```json
+{
+  "data": {
+    "id": "50000000-0000-0000-0000-000000000020",
+    "product_id": "50000000-0000-0000-0000-000000000010",
+    "sku": "TEST/sku 20",
+    "model": "TEST model",
+    "variant_label": "",
+    "lifecycle_status": "active",
+    "sales_mode": "retail",
+    "price": {"amount_vnd":"1250000","basis":"GROSS","tax_status":"taxable","tax_rate_bps":0},
+    "availability": "unknown",
+    "warranty": null,
+    "purchase_enabled": false
+  }
+}
+```
+
+- `lifecycle_status` hiệu lực: eol nếu product hoặc SKU eol; tiếp theo discontinued nếu một trong hai ngừng bán; còn lại active. EOL/discontinued ép `sales_mode=not_for_sale`; active giữ retail/quote_only/not_for_sale đã cấu hình.
+- `purchase_enabled` luôn false trong 08.5 vì API checkout chưa triển khai. Không dùng in_stock hoặc retail để tự bật giao dịch. Sau này checkout vẫn phải kiểm tra lại giá/tồn/chính sách server-side trong giao dịch.
+- `price` chỉ từ current_price_id cùng SKU, sales_mode cấu hình retail, approved_at không nằm tương lai. Không lấy giá lịch sử “mới nhất” làm fallback. Quote-only/not_for_sale cấu hình không công bố giá. EOL của SKU từng retail có thể giữ giá để tham khảo, vẫn bị chặn bán.
+- amount_vnd là chuỗi số nguyên dương trong miền bigint PostgreSQL, không Number/float. basis NET/GROSS thể hiện chưa/đã gồm thuế; không tự tính thêm thuế. taxable có tax_rate_bps nguyên 0–10000; exempt/not_applicable/unknown có rate=null. unknown không phải miễn thuế hay thuế 0; chưa đủ để checkout. Không có giá phù hợp thì price=null, không dùng 0.
+- availability chỉ phản ánh tồn: in_stock khi available>0, out_of_stock khi có inventory và available=0, unknown khi chưa có hàng inventory. Không lộ on_hand/reserved/số lượng hoặc coi đây là giữ hàng; inventory.available do database tính on_hand−reserved.
+- warranty chỉ lấy warranty_version_id của SKU, policy active, phiên bản đã duyệt và có hiệu lực tại statement_timestamp. Null nghĩa chưa có chính sách công khai phù hợp, không phải bảo hành 0 tháng. Không kế thừa theo brand/model chưa duyệt. Object gồm policy_code/name/duration_months (nullable, nguyên ≥0)/start_rule/provider_name/coverage/exclusions/process; không có reviewer hoặc ID nội bộ phiên bản.
+
+Specifications trả mọi definition active được gắn với loại kỹ thuật của SKU, kể cả chưa có giá trị. Ví dụ một phần tử:
+
+```json
+{"code":"power","label":"Công suất","group_code":"technical","data_type":"number","unit":{"code":"W","name":"Watt"},"display_order":0,"required_for_publish":true,"value_status":"known","value":"0.000000"}
+```
+
+| data_type | value khi known |
+|---|---|
+| number | Chuỗi decimal numeric(20,6); giữ số 0, không dùng float |
+| boolean | true hoặc false; false vẫn là dữ liệu known |
+| text | Text không rỗng, render như text |
+| enum | `{code,label}` của option active |
+| multi_enum | Mảng không rỗng `{code,label}`, sắp sort_order rồi code |
+
+value_status còn có unknown/not_applicable/not_supported, luôn value=null. Missing value, thiếu verified_at, verified_at tương lai, numeric ngoài bounds hoặc option đã archived đều trả unknown. Nếu một lựa chọn multi_enum archived thì **toàn bộ giá trị unknown**, không trả mảng bị cắt như thể đầy đủ. Không kế thừa thông số giữa SKU. unit nullable, chỉ number có unit. required_for_publish là metadata cho quy trình duyệt, không phải bằng chứng rằng mọi điều kiện bán đã đạt. Không lộ source_note/source_asset_id/verified_by.
+
+Các endpoint dùng transport an toàn chung với 08.4: publishable key + server gateway, không forward caller bearer/cookie, không service secret, timeout 8 giây, tối đa 256 KiB JSON upstream và chặn redirect. DTO validate rồi whitelist từng trường/nested object. Text mô tả/exclusions/value tối đa 128000 ký tự ở BFF; label/identifier tối đa 2000. Dữ liệu quá lớn/sai kiểu trả 503, không cắt giá trị âm thầm; giảm limit hoặc chỉnh dữ liệu đã duyệt. Header no-store/nosniff/noindex; HEAD giữ status/header và không body. POST/PUT/PATCH/DELETE/OPTIONS trả 405 với Allow: GET, HEAD.
+
+Lỗi JSON `{error:{code,message}}`: 400 CATALOG_INVALID_QUERY/CATALOG_INVALID_CURSOR; 404 CATALOG_NOT_FOUND; 405 METHOD_NOT_ALLOWED; 429 CATALOG_RATE_LIMITED khi upstream giới hạn; 503 CATALOG_NOT_CONFIGURED khi thiếu binding/gateway, hoặc CATALOG_UNAVAILABLE khi kết nối/DTO lỗi. Không có data giả khi lỗi, không trả SQL diagnostic. Giới hạn query/timeout/payload không thay thế WAF/rate limit production.
+
+RPC internal tương ứng: public_products(requested_limit integer=20,after_slug text=null); public_product(requested_slug text); public_product_variants(requested_slug text,requested_limit integer=20,after_id uuid=null); public_product_variant(requested_slug text,requested_variant_id uuid); public_variant_specifications(requested_slug text,requested_variant_id uuid,requested_limit integer=20,after_code text=null). Tất cả chỉ EXECUTE cho anon sau gateway; SQL kiểm độc lập publication/scope/cursor/limit. Ba private helpers không cho API roles EXECUTE. Không có table grants mới.
+
+08.5 chưa trả ảnh/tài liệu hoặc Storage URL (quyền media và phát hành file ở 08.10), danh mục phụ, phụ kiện, quan hệ tương thích, tìm kiếm/lọc/so sánh (08.6), admin CRUD hoặc frontend integration. Không suy [] là “không có tài liệu”: trường media chưa thuộc contract.
 
 ## Thương hiệu và danh mục công khai — 08.4
 
@@ -137,6 +206,6 @@ Body: `{"error":{"code":"MFA_REQUIRED","message":"Cần xác thực MFA trước
 
 ## Supabase bên trong
 
-Data API chỉ expose api: admin_context/set_admin_access cấp EXECUTE cho authenticated, bốn public_* catalog RPC cấp cho anon. Không cấp các RPC này cho service_role. Admin dùng publishable key + JWT gốc + gateway; public chỉ publishable key + gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
+Data API chỉ expose api: admin_context/set_admin_access cấp EXECUTE cho authenticated, chín public_* catalog RPC cấp cho anon. Không cấp các RPC này cho service_role. Admin dùng publishable key + JWT gốc + gateway; public chỉ publishable key + gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
 
 08.5–08.10 tiếp tục DTO/nghiệp vụ riêng. Quyền guest xem đơn, giá/tồn server-side, transaction giữ hàng, idempotency checkout, chống spam khách và Storage signed URL chưa làm. Xem [bảo mật](architecture/SECURITY.md), [hướng dẫn Auth](docs/MODULE_08_3.md).

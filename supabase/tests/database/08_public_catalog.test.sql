@@ -26,7 +26,7 @@ insert into app.categories(id,name,slug,status,parent_id,sort_order,product_type
  (pg_temp.cid(20),'PRIVATE type child','test-public-type-child','active',pg_temp.cid(19),0,null),
  (pg_temp.cid(21),'TEST empty root','test-public-empty-root','active',null,9,null);
 set constraints all immediate;
-select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='api' and p.proname like 'public_%'),4,'exactly four public metadata RPCs');
+select is((select count(*)::integer from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='api' and p.proname in ('public_brand','public_brands','public_category','public_categories')),4,'exactly four public metadata RPCs');
 select ok(not has_function_privilege('authenticated','api.public_brands(integer,text)','EXECUTE'),'public reads do not inherit a caller admin context');
 select ok(not has_function_privilege('service_role','api.public_brands(integer,text)','EXECUTE'),'no service-role shortcut');
 select ok(not has_function_privilege('anon','private.public_category_rows()','EXECUTE'),'internal tree helper not executable by anon');

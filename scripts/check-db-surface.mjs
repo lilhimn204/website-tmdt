@@ -36,8 +36,8 @@ const catalog = await fetch(`${api}/rest/v1/`, { headers: gatewayHeaders });
 assert.equal(catalog.status, 200);
 const spec = await catalog.json();
 assert.deepEqual(Object.keys(spec.paths ?? {}).filter(path => path !== '/').sort(),
-  ['/rpc/public_brand', '/rpc/public_brands', '/rpc/public_categories', '/rpc/public_category'].sort(), 'only four public navigation RPCs exposed to anon');
-console.log('PASS: Data API healthy; anon sees exactly four public catalog RPCs, no admin or raw tables.');
+  ['/rpc/public_brand', '/rpc/public_brands', '/rpc/public_categories', '/rpc/public_category', '/rpc/public_products', '/rpc/public_product', '/rpc/public_product_variants', '/rpc/public_product_variant', '/rpc/public_variant_specifications'].sort(), 'only nine public catalog RPCs exposed to anon');
+console.log('PASS: Data API healthy; anon sees exactly nine public catalog RPCs, no admin or raw tables.');
 for (const schema of ['app', 'private', 'public']) {
   const response = await fetch(`${api}/rest/v1/orders`, { headers: { ...gatewayHeaders, 'Accept-Profile': schema } });
   assert.equal(response.status, 406, `${schema} must not be exposed`);
