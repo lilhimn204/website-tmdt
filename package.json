@@ -36,7 +36,8 @@
     "auth:setup:local": "node scripts/setup-auth-local.mjs",
     "auth:bootstrap:local": "node scripts/bootstrap-owner-local.mjs",
     "test:auth:integration": "node scripts/check-auth-integration.mjs",
-    "test:backend:integration": "node scripts/check-auth-integration.mjs"
+    "test:backend:integration": "node scripts/check-auth-integration.mjs",
+    "test:db:query-plan": "node scripts/check-discovery-query-plan.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "2.1.10",

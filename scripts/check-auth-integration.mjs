@@ -7,6 +7,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { bindProjectToLoopback } from './docker-loopback.mjs';
 import { checkPublicCatalog } from './lib/public-catalog-integration.mjs';
 import { checkPublicProducts } from './lib/public-products-integration.mjs';
+import { checkDiscovery } from './lib/discovery-integration.mjs';
 
 // A disposable, named LOCAL stack. Never link/reset the application database.
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -164,6 +165,7 @@ try {
   console.log(`Auth integration: ${checks} checks passed with real local Auth, TOTP, PostgREST and Pages Functions.`);
   await checkPublicCatalog({ sql, api, origin, publishable: status.PUBLISHABLE_KEY, gateway });
   await checkPublicProducts({ sql, api, origin, publishable: status.PUBLISHABLE_KEY, gateway });
+  await checkDiscovery({ sql, api, origin, publishable: status.PUBLISHABLE_KEY, gateway });
 } catch (error) {
   console.error(`FAIL: ${error.message}`); process.exitCode = 1;
   if (stackCreated) {

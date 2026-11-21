@@ -19,10 +19,10 @@ if (result.status !== 0) throw new Error(result.stderr || 'Cannot read local sch
 const tables = JSON.parse(result.stdout);
 if (tables.length !== 52) throw new Error('Expected 52 business tables before documenting schema');
 const escape = value => String(value ?? '—').replaceAll('|', '\\|').replaceAll('\n', ' ');
-const lines = ['# Schema thực tế — module 08.5', '',
+const lines = ['# Schema thực tế — module 08.6', '',
   'Sinh từ PostgreSQL local bằng `npm.cmd run db:docs`. Migrations là nguồn chuẩn; tài liệu này chỉ đọc metadata, không có dữ liệu khách hoặc secret.', '',
-  '52 bảng trong `app`; RLS bật. Staff đọc hạn chế theo vai trò/MFA, không ghi trực tiếp. `api` có hai RPC Auth và chín RPC public catalog trả projection đã duyệt. `private` giữ helpers, khóa cây/quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).', '',
-  'Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.5](../docs/MODULE_08_5.md), [Auth 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).', ''];
+  '52 bảng trong `app`; RLS bật. Staff đọc hạn chế theo vai trò/MFA, không ghi trực tiếp. `api` có hai RPC Auth và mười hai RPC public catalog/discovery trả projection đã duyệt. `private` giữ helpers, khóa cây/quản trị và hash gateway; không expose. Quan hệ: [ERD](../architecture/ERD.md).', '',
+  'Tệp này liệt kê cột/constraint/index. Policy, trigger, RPC và kiểm thử: [bàn giao 08.6](../docs/MODULE_08_6.md), [Auth 08.3](../docs/MODULE_08_3.md), [bảo mật](../architecture/SECURITY.md). Schema nền: [08.1–08.2](../docs/MODULE_08_1_2.md).', ''];
 for (const table of tables) {
   lines.push(`## app.${table.name}`, '', `RLS: ${table.rls ? 'bật' : 'tắt'}.`, '', '| Cột | Kiểu PostgreSQL | NOT NULL | Default / generated |', '|---|---|---|---|');
   for (const column of table.columns) lines.push(`| ${column.name} | ${escape(column.type)} | ${column.required ? 'Có' : 'Không'} | ${column.generated ? 'GENERATED: ' : ''}${escape(column.default)} |`);

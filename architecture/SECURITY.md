@@ -1,14 +1,16 @@
-# Bảo mật — module 08.5
+# Bảo mật — module 08.6
 
-Cập nhật 19/11/2026. Đã có Auth/MFA, staff permissions, RLS, mutation cấp quyền, gateway và public brand/category/product/variant/specification reads. Chưa là security sign-off production. [Vận hành Auth](../docs/MODULE_08_3.md), [public products](../docs/MODULE_08_5.md), [navigation](../docs/MODULE_08_4.md), [API](../API.md).
+Cập nhật 21/11/2026. Đã có Auth/MFA, staff permissions, RLS, mutation cấp quyền, gateway và public brand/category/product/variant/specification reads. Chưa là security sign-off production. [Vận hành Auth](../docs/MODULE_08_3.md), [discovery](../docs/MODULE_08_6.md), [public products](../docs/MODULE_08_5.md), [navigation](../docs/MODULE_08_4.md), [API](../API.md).
 
-## Public reads 08.4–08.5
+## Public reads 08.4–08.6
 
-Chín hàm public_brands/public_brand/public_categories/public_category/public_products/public_product/public_product_variants/public_product_variant/public_variant_specifications được cấp EXECUTE cho anon. Các hàm SECURITY DEFINER do postgres sở hữu **bypass table RLS một cách có giới hạn** để trả projection id/name/slug và các trường công khai đã liệt kê trong API; không coi RLS staff là bộ lọc của đường đọc này. SQL kiểm status=active, active ancestors và active technical type; private helper đi từ gốc công khai, không cho đọc nháp qua URL con. Không đổi grants/SELECT/DML/schema exposure của anon. Helper nội bộ không có EXECUTE cho API roles.
+Mười hai hàm public_brands/public_brand/public_categories/public_category/public_products/public_product/public_product_variants/public_product_variant/public_variant_specifications/public_search_products/public_product_filters/public_compare_products được cấp EXECUTE cho anon. Các hàm SECURITY DEFINER do postgres sở hữu **bypass table RLS một cách có giới hạn** để trả projection id/name/slug và các trường công khai đã liệt kê trong API; không coi RLS staff là bộ lọc của đường đọc này. SQL kiểm status=active, active ancestors và active technical type; private helper đi từ gốc công khai, không cho đọc nháp qua URL con. Không đổi grants/SELECT/DML/schema exposure của anon. Helper nội bộ không có EXECUTE cho API roles.
 
 Public Pages adapter chỉ dùng publishable key + gateway; không chuyển tiếp token/cookie của người gọi, không dùng service secret. RPC whitelist, limit tối đa 100, slug tối đa 160, query whitelist/không trùng; SQL kiểm lại. Không nhận tên bảng/cột/SQL từ client. Cả hai bên kiểm cursor trong tập công khai và cùng parent. DTO bỏ trường không allowlist, payload upstream tối đa 256 KiB, timeout 8 giây, redirect manual rồi chặn 3xx, lỗi chuẩn hóa không rò chẩn đoán. Responses no-store; giữ cơ chế gateway. Chưa có WAF/rate limiter phân tán hoặc cache invalidation cho public deployment.
 
 08.5 kiểm product published, brand/type/primary category và toàn bộ nhánh active, ít nhất một SKU ready. Variant và specification phải thuộc đúng product slug; không lộ draft qua UUID hoặc cursor. Giá chỉ current pointer đã duyệt, tiền dạng chuỗi; lịch sử giá, reviewer, nguồn nội bộ, on_hand/reserved không công khai. Spec chưa xác minh/option archived trả unknown, EOL và discontinued trả not_for_sale; purchase_enabled=false ở mọi SKU. Private helpers invoker không có EXECUTE cho API roles. Public definer dùng search_path=pg_catalog và tên schema đầy đủ. Không thêm DML hoặc endpoint quản trị trong 08.5.
+
+08.6 giới hạn q 200, URL query 16384, filters JSON 4096 byte/10 thuộc tính/10 lựa chọn, limit 100/offset 5000, compare 2–3 UUID cùng loại. Rule/type/option/cursor được SQL kiểm lại, không dynamic SQL. Match/filter/count dùng cùng tập public SKUs, typed filter kiểm verified_at và toàn bộ option set; không lấy search document làm authority. Trigger projection invoker, không quyền EXECUTE cho API roles; không mở API viết. Comparison ẩn/mất trả 404 toàn yêu cầu, unknown luôn incomplete. Cần WAF/rate limits và đo tải theo catalog thật trước production; bound/timeout hiện có chưa thay thế các biện pháp đó.
 
 ## Ranh giới tin cậy
 
@@ -33,7 +35,7 @@ Mọi staff hợp lệ đọc được định nghĩa vai trò/quyền và profi
 
 ## Definer, bootstrap và toàn vẹn
 
-- Allowlist definer: is_active_admin, has_permission, require_gateway, set_admin_access, keep_last_owner và chín public catalog RPC ở trên. Cố định search_path=pg_catalog, tên schema đầy đủ, không dynamic SQL theo input. Predicate Auth chỉ kiểm chính auth.uid(); public RPC chỉ trả projection trạng thái công khai.
+- Allowlist definer: is_active_admin, has_permission, require_gateway, set_admin_access, keep_last_owner và mười hai public catalog/discovery RPC ở trên. Cố định search_path=pg_catalog, tên schema đầy đủ, không dynamic SQL theo input. Predicate Auth chỉ kiểm chính auth.uid(); public RPC chỉ trả projection trạng thái công khai.
 - keep_last_owner là deferred trigger, cần definer vì chạy sau khi RPC thoát definer. Không API role nào có EXECUTE trực tiếp. Migration bổ sung sửa lỗi này mà không mở đọc bảng nội bộ.
 - Bootstrap là invoker/operator-only, một lần, target đã confirmed, có reason/audit; không EXECUTE ứng dụng. Migrations/signup không tự tạo Owner.
 - Cấp quyền cần security.manage, MFA, version, whitelist roles/reason; serialize trên admin_control_state; kiểm quyền lại sau khóa; profile/assignments/audit cùng transaction. Thu hồi Owner cuối cùng rollback ở commit. PostgreSQL superuser có thể thay DDL nên không phải tài khoản ứng dụng.

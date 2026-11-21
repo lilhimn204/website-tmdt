@@ -1,6 +1,90 @@
-# API — trạng thái module 08.5
+# API — trạng thái module 08.6
 
-Cập nhật 19/11/2026. Có health, ba endpoint Auth quản trị, bốn endpoint đọc thương hiệu/danh mục và năm endpoint đọc sản phẩm/SKU/thông số. Chưa có tìm kiếm/lọc/so sánh backend, giỏ, checkout, đơn, RFQ hoặc upload. Frontend vẫn DEMO, chưa nối catalog thật và khóa gửi đơn/báo giá thật. [Hướng dẫn 08.5](docs/MODULE_08_5.md).
+Cập nhật 21/11/2026. Có health, ba endpoint Auth quản trị, chín endpoint đọc navigation/sản phẩm/SKU/thông số và ba endpoint discovery bên dưới. Chưa có giỏ/checkout/đơn/RFQ/upload backend. Frontend vẫn DEMO, chưa nối catalog thật và khóa gửi đơn/báo giá thật. [Hướng dẫn 08.6](docs/MODULE_08_6.md).
+
+## Tìm kiếm, bộ lọc và so sánh — 08.6
+
+| GET, HEAD URL | Chức năng |
+|---|---|
+| /api/v1/search | Tìm và lọc danh sách SKU công khai, phân trang/count/sort |
+| /api/v1/product-types/{code}/filters | Định nghĩa bộ lọc của một loại kỹ thuật active |
+| /api/v1/compare | So sánh 2–3 SKU cùng loại, phân trang hàng thông số |
+
+Đây là các API riêng; contract của `/products` ở 08.5 giữ nguyên. Mọi quy tắc visibility, gateway, no-store, DTO whitelist, timeout 8 giây, giới hạn JSON upstream 256 KiB và GET/HEAD-only tiếp tục áp dụng. Không nhận/gửi bearer hoặc cookie khách tới public RPC. Không mở CORS, raw-table ACL, service secret hay API ghi catalog.
+
+### Search: query và thứ tự
+
+| Query | Quy tắc |
+|---|---|
+| q | Tùy chọn, tối đa 200 ký tự trước/sau chuẩn hóa. Bỏ q để duyệt; không truyền q rỗng. Không ký tự control |
+| brands | 1–10 slug active phân tách dấu phẩy; không trùng. OR giữa các hãng |
+| category | Slug danh mục công khai; gồm chính nó và các nhánh con công khai, tính cả membership phụ |
+| type | Code loại kỹ thuật active; bắt buộc khi có bộ lọc kỹ thuật |
+| filters | JSON object đã URL-encode; tối đa 4096 byte/10 thuộc tính, cấu trúc bên dưới |
+| sort | relevance (mặc định), price_asc hoặc price_desc |
+| limit | Số nguyên 1–100, mặc định 20 |
+| offset | Số nguyên 0–5000, mặc định 0 |
+
+Query URL tối đa 16384 ký tự; cấm tham số lạ, trùng hoặc giá trị rỗng. SQL kiểm độc lập bound/type/scope/active metadata; không ghép SQL từ client. Brand/category/type không công khai hoặc không tồn tại cùng 404. API không tự bỏ bộ lọc cũ khi đổi loại: trả 400 CATALOG_INVALID_FILTER để frontend sau này thông báo và cho người dùng gỡ/chọn lại.
+
+q được chuẩn hóa Unicode NFKC và khoảng trắng. SKU/model khớp chính xác không phân biệt hoa/thường đứng trước; tiếp theo tiền tố nguyên mã; tiếp theo tên sản phẩm/thương hiệu. Giữ dấu phân cách của mã: UPS-100 không tự trở thành UPS100. Ký tự `%`/`_` không là wildcard. Tên/hãng dùng unaccent và PostgreSQL full-text `simple`, AND giữa các từ; có/không dấu tiếng Việt tương đương. Không có fuzzy typo, stemming tiếng Việt, synonym, semantic search hoặc tìm thông số bằng văn bản tự do.
+
+Đơn vị kết quả là **một SKU**, không phải một sản phẩm gộp; mỗi kết quả chỉ rõ product và variant thỏa tất cả điều kiện. Cùng sản phẩm có hai SKU phù hợp thì có hai kết quả. Sort relevance theo nhóm exact → prefix → text; nếu không q là browse. Trong cùng nhóm, slug sản phẩm collation C rồi UUID SKU làm thứ tự ổn định.
+
+Sort giá theo **amount_vnd công khai đang hiển thị**, bigint chính xác; null đứng cuối ở cả hai chiều, tie-breaker slug/UUID. NET/GROSS và tax_status vẫn trả nguyên vẹn: phép sắp này chưa quy đổi các cơ sở thuế khác nhau thành tổng tiền phải trả. Client phải giữ nhãn thuế; không gọi đây là so sánh tổng chi phí hay báo giá checkout. Quy tắc thuế/làm tròn/phí vẫn cần doanh nghiệp chốt trước giao dịch.
+
+Ví dụ chỉ mô tả request:
+
+```text
+GET /api/v1/search?q=UPS-100&brands=hang-a,hang-b&limit=20&offset=0
+```
+
+Response rỗng khi chưa có catalog thật:
+
+```json
+{"data":[],"query":{"q":"UPS-100","brands":[],"category":null,"type":null,"filters":{},"sort":"relevance"},"page":{"limit":20,"offset":0,"total":0,"total_products":0,"has_more":false,"next_offset":null,"truncated":false}}
+```
+
+Khi có kết quả, mỗi data item có `{product,variant,match_type}`. Product dùng DTO list 08.5; variant dùng DTO chi tiết 08.5; match_type là exact/prefix/text/browse. Không trả search document, source revision hoặc nội dung nháp. `query` là các điều kiện đã áp dụng, dùng đối chiếu phản hồi; xử lý response cũ về trễ thuộc frontend khi nối API.
+
+total là số SKU phù hợp, total_products là số product khác nhau. Count và page cùng truy vấn/snapshot. Trang vượt số kết quả trả [] và count thật. next_offset là offset trang tiếp theo khi còn kết quả và không vượt 5000. Nếu còn kết quả nhưng vượt trần, truncated=true, has_more=true, next_offset=null: yêu cầu thu hẹp từ khóa/bộ lọc. Không có snapshot giữa nhiều request; khi catalog thay đổi, tải lại từ đầu, không cam kết offset không dịch chuyển.
+
+### Filters: giá trị và metadata
+
+Trước URL-encode, filters có cấu trúc như ví dụ minh họa sau; code thực tế lấy từ endpoint filters, không hardcode bộ UPS cho RAM:
+
+```json
+{"power":{"min":"500","max":"1000"},"wifi":{"values":[false]},"interfaces":{"values":["usb","lan"]}}
+```
+
+- number: min và/hoặc max là **chuỗi decimal** trong numeric(20,6); inclusive, min≤max. Không nhận JSON number, NaN, exponent hoặc tự đổi đơn vị. Giá trị theo canonical unit trong metadata.
+- boolean: values chứa true/false đúng kiểu, tối đa hai giá trị khác nhau.
+- enum/multi_enum: values gồm 1–10 code option active, không trùng. OR giữa lựa chọn trong cùng thuộc tính; AND giữa thuộc tính. Multi-enum khớp khi có ít nhất một lựa chọn được yêu cầu.
+- Không lọc text tự do, definition không filterable, nháp/archived hoặc thuộc loại khác. Mọi rule đều áp lên **cùng một SKU**. Missing/unverified/unknown/NA/not_supported không đáp ứng lọc số/boolean/option cụ thể. Multi-enum có một lựa chọn archived thì toàn bộ giá trị unknown, không lọc trên tập đã bị cắt.
+
+`GET /api/v1/product-types/{code}/filters?limit=20&after={code}`: limit 1–100, after là code cuối trang trước; sắp display_order rồi code C. Chỉ definitions active + filterable của loại đang chọn, thuộc number/boolean/enum/multi_enum; không có đếm facet động hoặc suy ra cấu hình ngành hàng. Loại active chưa có definition trả filters=[]; loại ẩn/không có trả 404.
+
+Response `{data:{product_type:{code,name},filters:[...]},page:{limit,next_cursor,has_more}}`. Mỗi filter gồm code/label/group_code/data_type/unit nullable/display_order/min_value/max_value/options. min/max chỉ number, dạng decimal string hoặc null. options chỉ enum/multi_enum, mảng `{code,label}` từ options active, có thể rỗng; các kiểu khác options=null. Metadata không bảo đảm mọi option đều có sản phẩm phù hợp. Option list quá 1000 hoặc response quá 256 KiB bị chặn 503, không cắt mảng âm thầm; giảm limit không giải quyết một definition quá lớn, cần rà soát taxonomy.
+
+### Compare: cột, hàng và dữ liệu thiếu
+
+`GET /api/v1/compare?ids={uuid1},{uuid2}[,{uuid3}]&limit=20&after={definition-code}`. Phải có 2–3 UUID khác nhau, cùng product_type, tất cả đang công khai. Giữ đúng thứ tự IDs làm thứ tự cột, không tự thay SKU. Sai số lượng/duplicate/UUID trả 400 CATALOG_INVALID_QUERY; khác loại trả 400 CATALOG_INCOMPATIBLE_COMPARISON; bất kỳ SKU nháp/ẩn/mất trả 404 CATALOG_NOT_FOUND cho cả yêu cầu, không trả bảng thiếu cột như thành công. Client cần làm mới lựa chọn và giải thích SKU không còn công khai, không tiếp tục dùng bảng cũ.
+
+Response `{data:{product_type,items:[{product,variant}],rows:[...]},page:{limit,next_cursor,has_more}}`. items gồm DTO hiện hành từ 08.5, kể cả EOL/not_for_sale/purchase_enabled=false; không tự cho mua vì cột có giá hoặc còn tồn. Rows chỉ active definitions được đánh comparable của loại hàng, sắp display_order/code, limit 1–100. Không có comparable definition thì rows=[] kèm các cột hợp lệ.
+
+Một hàng có code/label/group_code/data_type/unit/display_order, cells theo thứ tự IDs, và comparison. Cell gồm variant_id/value_status/value với kiểu và ý nghĩa 08.5. Ví dụ:
+
+```json
+{"code":"wifi","label":"Wi-Fi","group_code":"connection","data_type":"boolean","unit":null,"display_order":0,"cells":[{"variant_id":"60000000-0000-0000-0000-000000000030","value_status":"known","value":false},{"variant_id":"60000000-0000-0000-0000-000000000031","value_status":"unknown","value":null}],"comparison":"incomplete"}
+```
+
+comparison=equal khi mọi trạng thái/giá trị đã xác minh bằng nhau; different khi các giá trị/trạng thái đã xác minh khác nhau; incomplete khi có ít nhất một unknown. Hai unknown luôn incomplete, không phải equal. false/0 vẫn known, not_supported và not_applicable vẫn trạng thái riêng. BFF kiểm lại nhãn comparison; không tin nhãn equal trái với dữ liệu. Multi-enum so theo tập code, không thứ tự lựa chọn; số so chính xác decimal. Không xếp hạng “tốt nhất”, đánh giá tương thích hoặc tính runtime UPS. Frontend lọc “khác biệt” sau này cần giữ cả hàng incomplete để người mua thấy thiếu dữ liệu.
+
+### RPC và projection
+
+RPC mới: public_search_products(requested_query text='',brand_slugs text[]='{}',category_slug text=null,type_code text=null,spec_filters jsonb='{}',requested_sort text='relevance',requested_limit integer=20,requested_offset integer=0); public_product_filters(requested_type text,requested_limit integer=20,after_code text=null); public_compare_products(variant_ids uuid[],requested_limit integer=20,after_code text=null). Chỉ cấp EXECUTE cho anon; các helper không cấp cho API roles. Transport thêm hai lỗi 22023 có kiểm soát CATALOG_INVALID_FILTER/CATALOG_INCOMPATIBLE_COMPARISON vào nhóm 400; các lỗi khác giữ contract 08.5.
+
+catalog_search_documents là projection nội bộ của tên product + brand đã chuẩn hóa, không chứa giá/tồn/chính sách và không là nguồn quyết định quyền. Trigger đồng bộ khi thêm/sửa SKU, đổi tên/hãng product hoặc tên brand; xóa SKU dọn document. Các cập nhật cùng giao dịch. Brand/variant dùng cùng khóa cấu trúc catalog đã có để serialize chỉnh sửa; dưới REPEATABLE READ có thể nhận serialization failure, transaction viết phải retry. Public visibility/giá/tồn/verification luôn đọc nguồn hiện hành, kể cả khi document nháp còn tồn tại nội bộ. Search lọc/count IDs trước, enrich DTO cho page có giới hạn; typed filter dùng EXISTS trên đúng variant.
 
 ## Sản phẩm, biến thể, thông số công khai — 08.5
 
@@ -69,7 +153,7 @@ Lỗi JSON `{error:{code,message}}`: 400 CATALOG_INVALID_QUERY/CATALOG_INVALID_C
 
 RPC internal tương ứng: public_products(requested_limit integer=20,after_slug text=null); public_product(requested_slug text); public_product_variants(requested_slug text,requested_limit integer=20,after_id uuid=null); public_product_variant(requested_slug text,requested_variant_id uuid); public_variant_specifications(requested_slug text,requested_variant_id uuid,requested_limit integer=20,after_code text=null). Tất cả chỉ EXECUTE cho anon sau gateway; SQL kiểm độc lập publication/scope/cursor/limit. Ba private helpers không cho API roles EXECUTE. Không có table grants mới.
 
-08.5 chưa trả ảnh/tài liệu hoặc Storage URL (quyền media và phát hành file ở 08.10), danh mục phụ, phụ kiện, quan hệ tương thích, tìm kiếm/lọc/so sánh (08.6), admin CRUD hoặc frontend integration. Không suy [] là “không có tài liệu”: trường media chưa thuộc contract.
+Endpoint 08.5 chưa trả ảnh/tài liệu hoặc Storage URL (quyền media/phát hành file ở 08.10), danh mục phụ, phụ kiện, quan hệ tương thích, admin CRUD hoặc frontend integration. Tìm kiếm/lọc/so sánh đã có ở các endpoint 08.6 bên trên. Không suy [] là “không có tài liệu”: trường media chưa thuộc contract.
 
 ## Thương hiệu và danh mục công khai — 08.4
 
@@ -206,6 +290,6 @@ Body: `{"error":{"code":"MFA_REQUIRED","message":"Cần xác thực MFA trước
 
 ## Supabase bên trong
 
-Data API chỉ expose api: admin_context/set_admin_access cấp EXECUTE cho authenticated, chín public_* catalog RPC cấp cho anon. Không cấp các RPC này cho service_role. Admin dùng publishable key + JWT gốc + gateway; public chỉ publishable key + gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
+Data API chỉ expose api: admin_context/set_admin_access cấp EXECUTE cho authenticated, mười hai public_* catalog RPC cấp cho anon. Không cấp các RPC này cho service_role. Admin dùng publishable key + JWT gốc + gateway; public chỉ publishable key + gateway. Pre-request hook so hash server-only. Thiếu/sai gateway → 403 GATEWAY_REQUIRED; không tắt hook để sửa kết nối. app/private/public không expose. Hook không áp dụng Auth/Storage.
 
 08.5–08.10 tiếp tục DTO/nghiệp vụ riêng. Quyền guest xem đơn, giá/tồn server-side, transaction giữ hàng, idempotency checkout, chống spam khách và Storage signed URL chưa làm. Xem [bảo mật](architecture/SECURITY.md), [hướng dẫn Auth](docs/MODULE_08_3.md).

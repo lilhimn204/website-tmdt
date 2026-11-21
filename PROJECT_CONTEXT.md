@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT
 
-Cập nhật: 19/11/2026, Asia/Bangkok.
+Cập nhật: 21/11/2026, Asia/Bangkok.
 
 ## Mục tiêu và ràng buộc đã nhận
 
@@ -18,9 +18,9 @@ Spec Kit: yêu cầu có mã, tách giả định, nguồn, câu hỏi mở, ti�
 
 ## Giai đoạn hiện tại
 
-PROMPT 08 đã hoàn thành local 08.1–08.5 theo các yêu cầu tiếp tục. Người dùng chọn “Chưa có — chuẩn bị local và hướng dẫn tạo project”. 08.5 thêm 5 public reads products/product/variants/variant/specifications, 1 migration (tổng 15), 3 private helpers và 2 indexes; giữ 52 bảng, 6 vai trò/23 quyền, Auth/MFA/RLS/gateway và bốn API navigation. Không forward caller JWT/cookie hoặc mở raw-table grants. Products phải published với brand/type/ancestor active và SKU ready; giá VND/decimal là chuỗi, unknown khác 0/false; EOL/not-for-sale không bật mua. purchase_enabled=false cho mọi SKU vì chưa có checkout. Hướng dẫn/file đầy đủ: [docs/MODULE_08_5.md](docs/MODULE_08_5.md), contract [API.md](API.md).
+PROMPT 08 đã hoàn thành local 08.1–08.6 theo yêu cầu tiếp tục. Người dùng chọn “Chưa có — chuẩn bị local và hướng dẫn tạo project”. 08.5 đã commit/push 333bcce; 08.6 thêm search/filter metadata/compare, tổng 18 migrations, 52 bảng, 2 Auth + 12 public RPC. Giữ Auth/MFA/RLS/gateway, public không forward caller JWT/cookie hoặc mở raw-table grants. Search tên/hãng có/không dấu, SKU/model exact/prefix giữ dấu phân cách; filters AND cùng SKU/OR lựa chọn; compare 2–3 cùng loại, unknown=incomplete. Search document đồng bộ transaction bằng triggers và catalog lock; tối ưu matched IDs/count trước enrich page. Giá và decimal dùng chuỗi, purchase_enabled=false. Hướng dẫn/file/contract: [08.6](docs/MODULE_08_6.md), [API](API.md).
 
-08.5 đạt 272 Vitest (77 mới), 247 pgTAP (60 mới), 2 concurrency nền, 7 HTTP surface, 70 integration thật (21 Auth + 23 navigation + 26 products); typecheck/lint/build 61 URL/Functions compile đạt. Fixture test rollback hoặc dùng stack riêng đã dọn; database ứng dụng không có catalog/Auth users/Owner thật. Không có project online, frontend integration, media delivery, admin CRUD hoặc giao dịch/deploy. Dữ liệu doanh nghiệp, TTL, thuế/phí, RPO/RTO vẫn chờ chốt. Bước kế tiếp theo yêu cầu mới: **08.6 API tìm kiếm, lọc và so sánh**; không tự triển khai. Hướng dẫn/historical proof các module trước giữ nguyên.
+08.6 đạt 358 Vitest (86 mới), 323 pgTAP (76 mới), 4 concurrency, 7 HTTP surface, 100 integration thật (21 Auth + 23 navigation + 26 products + 30 discovery); typecheck/lint/build 61 URL/Functions compile đạt. Query-plan fixture thêm 500 products/1000 SKU trong transaction rollback: khoảng 29 ms browse, 19 ms search+filter, 54 ms filter-only, chưa là load test/SLA production. Fixture test đã dọn/rollback; database ứng dụng không có catalog/Auth users/Owner thật. Không có project online, frontend integration, media/admin CRUD, giao dịch hoặc deploy. Sort giá dùng amount công khai đang hiển thị; chưa quy đổi NET/GROSS hay tạo tổng checkout. Dữ liệu doanh nghiệp, TTL giữ hàng, thuế/phí, RPO/RTO vẫn chờ chốt. Bước kế tiếp theo yêu cầu mới: **08.7 API giỏ hàng/checkout**; không tự triển khai. Các tài liệu bàn giao trước giữ lịch sử.
 
 Giai đoạn 07 đã hoàn thành frontend 07.1–07.10 DEMO, push commit 42a79ce. Checkout và báo giá chỉ rà soát tại client; chưa có request gửi thật, receipt hoặc lưu PII. Tài liệu frontend ở [docs/MODULE_07_7_10.md](docs/MODULE_07_7_10.md), giữ nguyên lịch sử.
 

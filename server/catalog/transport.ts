@@ -40,7 +40,7 @@ export async function publicRpc(env: AuthEnv, rpc: string, args: object, fetcher
       if (isObject(data)) {
         if (data.message === 'GATEWAY_REQUIRED') throw new CatalogError(503, 'CATALOG_NOT_CONFIGURED');
         if (data.code === 'PT404' && data.message === 'CATALOG_NOT_FOUND') throw new CatalogError(404, 'CATALOG_NOT_FOUND');
-        if (data.code === '22023' && ['CATALOG_INVALID_QUERY', 'CATALOG_INVALID_CURSOR'].includes(String(data.message))) throw new CatalogError(400, String(data.message));
+        if (data.code === '22023' && ['CATALOG_INVALID_QUERY', 'CATALOG_INVALID_CURSOR', 'CATALOG_INVALID_FILTER', 'CATALOG_INCOMPATIBLE_COMPARISON'].includes(String(data.message))) throw new CatalogError(400, String(data.message));
       }
       unavailable();
     }
